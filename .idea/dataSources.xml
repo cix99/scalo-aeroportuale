@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="PostgreSQL - scalo_aeroportuale@34.91.62.170" uuid="fe37e657-2858-4ee9-ab90-1e957257372a">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://34.91.62.170:5432/scalo_aeroportuale</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="User Data Source -" uuid="ca61dbb3-9dea-44fe-9282-38fc6d7bb4cd">
+      <synchronize>true</synchronize>
+      <configured-by-url>true</configured-by-url>
+      <jdbc-driver>java.sql.Driver</jdbc-driver>
+    </data-source>
+  </component>
+</project>
