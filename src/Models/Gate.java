@@ -11,12 +11,12 @@ public class Gate extends Model {
     public String nome_gate;
 
     public boolean store(){
-        String query = "INSERT INTO " + this.table_name + " (?)";
+        String query = "INSERT INTO " + this.table_name + " VALUES(?)";
         Boolean store = false;
         try {
             PreparedStatement statement = this.connection.prepareStatement(query);
             statement.setString(1, this.nome_gate);
-            store = statement.executeQuery();
+            statement.executeUpdate();
         }catch(SQLException e){
             System.out.println(e);
         }
