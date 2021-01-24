@@ -12,8 +12,8 @@ public class Model {
     {
         try {
             this.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://34.91.62.170:5432/scalo_aeroportuale",
-                    "postgres", "f3bJoHeGFwzkAcPg");
+                "jdbc:postgresql://34.91.62.170:5432/scalo_aeroportuale",
+                "postgres", "f3bJoHeGFwzkAcPg");
         } catch (SQLException e){
             System.out.println("SQL Exception:\n " + e);
         }
