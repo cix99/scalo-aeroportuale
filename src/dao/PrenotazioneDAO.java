@@ -7,6 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import Models.CentoKilometri;
+import Models.Coda;
+import Models.CompagniaAerea;
 import Models.Prenotazione;
 
 public class PrenotazioneDAO extends Jdbc {
@@ -25,7 +28,7 @@ public class PrenotazioneDAO extends Jdbc {
             statement.setObject(4, prenotazione.cognomePasseggero);
             statement.setObject(5, prenotazione.coda);
             statement.setObject(6, prenotazione.centoKilometri);
-            statement.setString(7, prenotazione.compagniaAerea);
+            statement.setString(7, prenotazione.compagniaAerea.nomeCompagnia);
             statement.executeUpdate();
             statement.close();
         }catch(SQLException e){
@@ -38,6 +41,9 @@ public class PrenotazioneDAO extends Jdbc {
     public List<Prenotazione> find(){
         String query = "SELECT * FROM " + this.tableName;
         List<Prenotazione> PrenotaioneList = new LinkedList<Prenotazione>();
+        CodaDAO codaDAO = new CodaDAO();
+        CentoKilometriDAO centoKilometriDAO = new CentoKilometriDAO();
+        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
         try {
             PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -47,9 +53,9 @@ public class PrenotazioneDAO extends Jdbc {
                 prenotazione.idTratta = resultSet.getInt("id_tratta");
                 prenotazione.nomePasseggero = resultSet.getString("nome_passeggero");
                 prenotazione.cognomePasseggero = resultSet.getString("cognome_passeggero");
-                prenotazione.coda = resultSet.getString("coda");
-                prenotazione.centoKilometri = resultSet.getString("cento_kilometri");
-                prenotazione.compagniaAerea = resultSet.getString("compagnia_aerea");
+                prenotazione.coda = (Coda) codaDAO.findByName(resultSet.getString("coda"));
+                prenotazione.centoKilometri = (CentoKilometri) centoKilometriDAO.findByCode(resultSet.getString("cento_kilometri"));
+                prenotazione.compagniaAerea = (CompagniaAerea) compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea"));
                 PrenotaioneList.add(prenotazione);
             }
             resultSet.close();

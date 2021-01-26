@@ -6,9 +6,13 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+import Models.CompagniaAerea;
+import Models.Gate;
 import Models.Stato;
-//import dao.CompagniaAereaDAO;
 import Models.Tratta;
+
+import dao.CompagniaAereaDAO;
+import dao.GateDAO;
 
 public class TrattaDAO extends Jdbc {
 
@@ -26,11 +30,11 @@ public class TrattaDAO extends Jdbc {
         try {
             PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
             statement.setString(1, tratta.destinazione);
-            statement.setString(2, tratta.compagniaAerea);
+            statement.setString(2, tratta.compagniaAerea.nomeCompagnia);
             statement.setObject(3, tratta.oraInizioImbarco);
             statement.setObject(4, tratta.oraFineImbarcoStimato);
             statement.setObject(5, tratta.oraFineImbarcoEffettivo);
-            statement.setString(6, tratta.gate);
+            statement.setString(6, tratta.gate.nomeGate);
             statement.executeUpdate();
             statement.close();
         }catch(SQLException e){
@@ -43,19 +47,22 @@ public class TrattaDAO extends Jdbc {
     public List<Tratta> find(){
         String query = "SELECT * FROM " + this.tableName;
         List<Tratta> TrattaList = new LinkedList<Tratta>();
+        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        GateDAO gateDAO = new GateDAO();
+
         try {
             PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Tratta tratta = new Tratta();
                 tratta.destinazione = resultSet.getString("destinazione");
-                tratta.compagniaAerea = resultSet.getString("compagnia_aerea");
+                tratta.compagniaAerea = (CompagniaAerea) compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea"));
                 tratta.oraInizioImbarco = resultSet.getTimestamp("ora_inizio_imbarco").toLocalDateTime();
                 tratta.oraFineImbarcoStimato = resultSet.getTimestamp("ora_fine_imbarco_stimato").toLocalDateTime();
                 tratta.oraFineImbarcoEffettivo = resultSet.getTimestamp("ora_fine_imbarco_effettivo").toLocalDateTime();
                 tratta.statoImbarco = Stato.valueOf(resultSet.getString("stato_imbarco"));
                 tratta.ritardo = resultSet.getBoolean("ritardo");
-                tratta.gate = resultSet.getString("gate");
+                tratta.gate = (Gate) gateDAO.findByName(resultSet.getString("gate"));
                 TrattaList.add(tratta);
             }
             resultSet.close();

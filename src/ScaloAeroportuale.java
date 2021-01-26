@@ -1,6 +1,7 @@
 import Controllers.HomeController;
 import dao.*;
 import Models.*;
+
 public class ScaloAeroportuale {
 
     public static void main(String[] args) {
@@ -11,9 +12,7 @@ public class ScaloAeroportuale {
         tratta.ora_fine_imbarco_stimato = LocalDateTime.of(2021,01,24,16,45);
         tratta.ora_fine_imbarco_effettivo = LocalDateTime.of(2021,01,24,16,45);
         tratta.gate = "1";
-
         tratta.store();*/
-
 
         /*
         Prenotazione prenotazione = new Prenotazione();
@@ -24,16 +23,15 @@ public class ScaloAeroportuale {
         prenotazione.cento_kilometri = null;
         prenotazione.compagnia_aerea = "Alitalia";
         prenotazione.store();
-
-        System.out.println(prenotazione.first().coda);
          */
-    	GateDAO gateDao = new GateDAO();
-    	//String input = "3";
-    	//Gate gate = new Gate();
-        //gateDao.Delete("3");
 
-        System.out.println(gateDao.last().getName());
-         
+
+        Tratta tratta = new Tratta();
+        TrattaDAO trattaDao = new TrattaDAO();
+        tratta = trattaDao.first();
+
+        System.out.println(tratta.compagniaAerea.nomeCompagnia);
+
 
         //HomeController.view();
     }

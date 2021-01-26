@@ -26,6 +26,27 @@ public class CodaDAO extends Jdbc{
         return coda;
     }
 
+    public Coda findByName(String nome){
+        String query = "SELECT * FROM " + this.tableName + " WHERE nome_coda = ?";
+        Coda coda = new Coda();
+        try {
+            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            statement.setString(1, nome);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                coda.nomeCoda = resultSet.getString("nome_coda");
+                break;
+            }
+            resultSet.close();
+            statement.close();
+
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+
+        return coda;
+    }
+
     public List<Coda> find(){
         String query = "SELECT * FROM " + this.tableName;
         List<Coda> codaList = new LinkedList<Coda>();

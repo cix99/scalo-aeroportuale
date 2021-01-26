@@ -37,7 +37,26 @@ public class GateDAO extends Jdbc{
         return true;
     }
 
-    public List<Gate> find(){
+    public Gate findByName(String nome){
+        String query = "SELECT * FROM " + this.tableName + " WHERE nome_gate = ?";
+        Gate gate = new Gate();
+        try {
+            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            statement.setString(1, nome);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                gate.nomeGate = resultSet.getString("nome_gate");
+                break;
+            }
+            resultSet.close();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return gate;
+    }
+
+    public List<Gate> get(){
         String query = "SELECT * FROM gate";
         List<Gate> gateList = new LinkedList<Gate>();
         try {
@@ -57,12 +76,12 @@ public class GateDAO extends Jdbc{
     }
 
     public Gate first(){
-        List<Gate> gateList = find();
+        List<Gate> gateList = get();
         return gateList.get(0);
     }
 
     public Gate last(){
-        List<Gate> gateList = find();
+        List<Gate> gateList = get();
         return gateList.get(gateList.size() - 1);
     }
 }

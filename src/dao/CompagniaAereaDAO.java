@@ -10,7 +10,7 @@ import Models.CompagniaAerea;
 
 public class CompagniaAereaDAO {
 
-	protected String tableName = "compagnia_aerea";
+	protected static String tableName = "compagnia_aerea";
 	
 	public CompagniaAerea store(CompagniaAerea compagniaAerea){
         String query = "INSERT INTO " + this.tableName + " VALUES (?)";
@@ -25,12 +25,31 @@ public class CompagniaAereaDAO {
         return compagniaAerea;
     }
 
-    public List<CompagniaAerea> find(String nome){
-        String query = "SELECT * FROM " + this.tableName + " WHERE nome_compagnia = ?";
-        List<CompagniaAerea> compagniaAereaList = new LinkedList<CompagniaAerea>();
+    public static CompagniaAerea findByName(String nome){
+        String query = "SELECT * FROM " + tableName + " WHERE nome_compagnia = ?";
+        CompagniaAerea compagniaAerea = new CompagniaAerea();
         try {
             PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
             statement.setString(1, nome);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                compagniaAerea.nomeCompagnia = resultSet.getString("nome_compagnia");
+                break;
+            }
+            resultSet.close();
+            statement.close();
+
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return compagniaAerea;
+    }
+
+    public List<CompagniaAerea> get(){
+        String query = "SELECT * FROM " + this.tableName;
+        List<CompagniaAerea> compagniaAereaList = new LinkedList<CompagniaAerea>();
+        try {
+            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 CompagniaAerea compagniaAerea = new CompagniaAerea();
@@ -47,12 +66,12 @@ public class CompagniaAereaDAO {
     }
 
     public CompagniaAerea first(String nome){
-        List<CompagniaAerea> compagniaAereaList = find(nome);
+        List<CompagniaAerea> compagniaAereaList = get();
         return compagniaAereaList.get(0);
     }
 
     public CompagniaAerea last(String nome){
-        List<CompagniaAerea> compagniaAereaList = find(nome);
+        List<CompagniaAerea> compagniaAereaList = get();
         return compagniaAereaList.get(compagniaAereaList.size() - 1);
     }
 
