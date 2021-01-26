@@ -1,5 +1,6 @@
 import Controllers.HomeController;
-
+import dao.*;
+import Models.*;
 public class ScaloAeroportuale {
 
     public static void main(String[] args) {
@@ -26,7 +27,14 @@ public class ScaloAeroportuale {
 
         System.out.println(prenotazione.first().coda);
          */
+    	GateDAO gateDao = new GateDAO();
+    	//String input = "3";
+    	//Gate gate = new Gate();
+        //gateDao.Delete("3");
 
-        HomeController.view();
+        System.out.println(gateDao.last().getName());
+         
+
+        //HomeController.view();
     }
 }
