@@ -4,7 +4,7 @@ public class CentoKilometri{
 
     public int id;
     public String codiceCompagnia;
-    public String compagniaAerea;
+    public CompagniaAerea compagniaAerea;
     public int punti;
 	
 	public CentoKilometri() {

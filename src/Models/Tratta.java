@@ -7,11 +7,11 @@ public class Tratta{
 
     public int id;
     public String destinazione;
-    public String compagniaAerea;
+    public CompagniaAerea compagniaAerea;
     public LocalDateTime oraInizioImbarco;
     public LocalDateTime oraFineImbarcoStimato;
     public LocalDateTime oraFineImbarcoEffettivo;
-    public String gate;
+    public Gate gate;
     public Stato statoImbarco;
     public Boolean ritardo;
 
