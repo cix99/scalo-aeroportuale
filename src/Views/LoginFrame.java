@@ -1,10 +1,8 @@
 package Views;
 
 import Controllers.LoginController;
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -13,73 +11,98 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.Action;
 import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import java.awt.Color;
 
 public class LoginFrame extends JFrame {
 
 	private JPanel contentPane;
+	private JTextField txtEmail;
 	private JPasswordField passwordField;
-	private JTextField textField;
-
 	/**
 	 * Create the frame.
 	 */
+	
 	public LoginFrame() {
-		setTitle("Login");
+		setTitle("Login-ScaloAeroportiale.java");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\decar\\Desktop\\aereo-150x150.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 750, 500);
+		setResizable(false);
+		setBounds(100, 100, 808, 547);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		contentPane.setBorder(UIManager.getBorder("Button.border"));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(204, 155, 244, 20);
-		contentPane.add(passwordField);
-		
-		JButton btnNewButton = new JButton("Login");
-		btnNewButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				LoginController.login();
+		JButton Accedi = new JButton("Accedi");
+		Accedi.setForeground(new Color(51, 255, 0));
+		Accedi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
+		Accedi.setContentAreaFilled(false);
+		Accedi.setBorder(null);
+		Accedi.setIcon(null);
+		Accedi.addMouseListener(new MouseAdapter() {
+		});
+		Accedi.setFont(new Font("Century Schoolbook", Font.PLAIN, 15));
+		Accedi.setBounds(607, 302, 80, 28);
+		contentPane.add(Accedi);
 		
-		btnNewButton.setBounds(474, 155, 105, 21);
-		contentPane.add(btnNewButton);
+		JLabel username = new JLabel("Username");
+		username.setForeground(new Color(255, 255, 255));
+		username.setFont(new Font("Century Schoolbook", Font.BOLD, 12));
+		username.setHorizontalAlignment(SwingConstants.LEFT);
+		username.setIcon(null);
+		username.setBounds(561, 174, 74, 14);
+		contentPane.add(username);
 		
-		textField = new JTextField();
-		textField.setBounds(204, 86, 244, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		JLabel password = new JLabel("Password");
+		password.setForeground(new Color(255, 255, 255));
+		password.setHorizontalAlignment(SwingConstants.LEFT);
+		password.setFont(new Font("Century Schoolbook", Font.BOLD, 12));
+		password.setBounds(561, 238, 74, 14);
+		contentPane.add(password);
 		
-		JLabel lblNewLabel = new JLabel("Username");
-		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setFont(new Font("Modern No. 20", Font.PLAIN, 15));
-		lblNewLabel.setBounds(90, 86, 84, 20);
-		contentPane.add(lblNewLabel);
+		txtEmail = new JTextField();
+		txtEmail.setToolTipText("Inserisci e_mail");
+		txtEmail.setBounds(561, 199, 186, 28);
+		contentPane.add(txtEmail);
+		txtEmail.setColumns(10);
+		txtEmail.setBorder(null);
 		
-		JLabel lblNewLabel_1 = new JLabel("Password");
-		lblNewLabel_1.setForeground(new Color(255, 255, 255));
-		lblNewLabel_1.setBounds(90, 155, 84, 20);
-		contentPane.add(lblNewLabel_1);
+		passwordField = new JPasswordField();
+		passwordField.setBounds(560, 263, 187, 28);
+		contentPane.add(passwordField);
+		passwordField.setBorder(null);
 		
-		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\decar\\Desktop\\abc.jpg"));
-		lblNewLabel_2.setBounds(0, 0, 1600, 1178);
-		contentPane.add(lblNewLabel_2);
+		JLabel LoginLabel = new JLabel("LOGIN");
+		LoginLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		LoginLabel.setFont(new Font("Maiandra GD", Font.BOLD, 26));
+		LoginLabel.setForeground(new Color(51, 255, 0));
+		LoginLabel.setBounds(588, 100, 118, 28);
+		contentPane.add(LoginLabel);
 		
-		JButton button = new JButton("New button");
-		button.setBounds(73, 258, 89, 23);
-		contentPane.add(button);
+		JLabel FinestraLog = new JLabel("");
+		FinestraLog.setIcon(new ImageIcon("C:\\Users\\decar\\Desktop\\sfondo login.jpg!d"));
+		FinestraLog.setBounds(530, 61, 240, 311);
+		contentPane.add(FinestraLog);
+		
+		JLabel SfondoLabel = new JLabel("");
+		SfondoLabel.setIcon(new ImageIcon("C:\\Users\\decar\\Desktop\\aereo.jpeg"));
+		SfondoLabel.setBounds(0, 0, 792, 508);
+		contentPane.add(SfondoLabel);
 	}
 }
