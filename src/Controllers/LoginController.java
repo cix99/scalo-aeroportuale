@@ -4,20 +4,20 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import Models.Tratta;
-import Views.LoginFrame;
+import Views.LoginView;
 
 public class LoginController {
 		
-	static LoginFrame frame = null;
+	static LoginView frame = null;
     
-    public static LoginFrame getFrame() {
+    public static LoginView getFrame() {
     	if (frame != null)
             return frame;
     	return instantiateFrame ();
     }
     
-    private static LoginFrame instantiateFrame () {
-    	frame = new LoginFrame();
+    private static LoginView instantiateFrame () {
+    	frame = new LoginView();
     	return frame;
     }
 	
@@ -25,7 +25,14 @@ public class LoginController {
 		getFrame().setVisible(true);
     }
     
-    public static void login() {
-        getFrame().setVisible(false);
+    public static void login(String username, String password) {
+    	if(username.equals("admin") && password.equals("password")) {
+    		getFrame().setVisible(false);
+    		HomeController.view();
+    	}
+    }
+    
+    public static void logout(){
+    	getFrame().setVisible(true);
     }
 }

@@ -25,7 +25,7 @@ import javax.swing.UIManager;
 
 import java.awt.Color;
 
-public class LoginFrame extends JFrame {
+public class LoginView extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtEmail;
@@ -34,7 +34,7 @@ public class LoginFrame extends JFrame {
 	 * Create the frame.
 	 */
 	
-	public LoginFrame() {
+	public LoginView() {
 		setTitle("Login-ScaloAeroportiale.java");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\decar\\Desktop\\aereo-150x150.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,15 +47,16 @@ public class LoginFrame extends JFrame {
 		
 		JButton Accedi = new JButton("Accedi");
 		Accedi.setForeground(new Color(51, 255, 0));
-		Accedi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
 		Accedi.setContentAreaFilled(false);
 		Accedi.setBorder(null);
 		Accedi.setIcon(null);
 		Accedi.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String username = txtEmail.getText();
+				String password = passwordField.getText();
+				LoginController.login(username, password);
+			}
 		});
 		Accedi.setFont(new Font("Century Schoolbook", Font.PLAIN, 15));
 		Accedi.setBounds(607, 302, 80, 28);
