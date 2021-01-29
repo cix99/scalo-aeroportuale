@@ -91,9 +91,9 @@ public class HomeView extends JFrame {
 		tratteButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MainPanel = HomeController.openCreaTratta();
-				MainPanel.setBounds(381, 65, 1045, 573);
-				layeredPane.add(MainPanel);
+			MainPanel = HomeController.openCreaTratta();
+			MainPanel.setBounds(381, 65, 1045, 573);
+			layeredPane.add(MainPanel);
 			}
 		});
 	}

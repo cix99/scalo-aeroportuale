@@ -1,4 +1,4 @@
-package dao;
+package DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,7 +8,7 @@ import java.util.List;
 
 import Models.Coda;
 
-public class CodaDAO extends Jdbc{
+public class CodaDAO extends JDBC {
 
 	protected String tableName = "coda";
 	
@@ -16,7 +16,7 @@ public class CodaDAO extends Jdbc{
         String query = "INSERT INTO " + this.tableName + " VALUES  (?)";
 
         try {
-            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, coda.nomeCoda);
             statement.executeUpdate();
             statement.close();
@@ -30,7 +30,7 @@ public class CodaDAO extends Jdbc{
         String query = "SELECT * FROM " + this.tableName + " WHERE nome_coda = ?";
         Coda coda = new Coda();
         try {
-            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, nome);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -51,7 +51,7 @@ public class CodaDAO extends Jdbc{
         String query = "SELECT * FROM " + this.tableName;
         List<Coda> codaList = new LinkedList<Coda>();
         try {
-            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Coda coda = new Coda();

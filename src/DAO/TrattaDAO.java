@@ -1,4 +1,4 @@
-package dao;
+package DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,10 +11,7 @@ import Models.Gate;
 import Models.Stato;
 import Models.Tratta;
 
-import dao.CompagniaAereaDAO;
-import dao.GateDAO;
-
-public class TrattaDAO extends Jdbc {
+public class TrattaDAO extends JDBC {
 
 	protected String tableName = "tratta";
 	
@@ -28,7 +25,7 @@ public class TrattaDAO extends Jdbc {
 //        }
 
         try {
-            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, tratta.destinazione);
             statement.setString(2, tratta.compagniaAerea.nomeCompagnia);
             statement.setObject(3, tratta.oraInizioImbarco);
@@ -51,7 +48,7 @@ public class TrattaDAO extends Jdbc {
         GateDAO gateDAO = new GateDAO();
 
         try {
-            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Tratta tratta = new Tratta();

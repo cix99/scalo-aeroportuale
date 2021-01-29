@@ -26,7 +26,6 @@ public class TratteController {
     public static TratteView viewIndex(){
     	return new TratteView();
     }
-    
     public static CreateTrattaView viewCreate() {
     	return new CreateTrattaView();
     }

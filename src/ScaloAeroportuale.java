@@ -1,7 +1,3 @@
-import java.awt.EventQueue;
-
-import dao.*;
-import Models.*;
 import Controllers.*;
 
 public class ScaloAeroportuale {

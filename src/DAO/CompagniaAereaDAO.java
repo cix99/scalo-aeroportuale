@@ -1,4 +1,4 @@
-package dao;
+package DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +15,7 @@ public class CompagniaAereaDAO {
 	public CompagniaAerea store(CompagniaAerea compagniaAerea){
         String query = "INSERT INTO " + this.tableName + " VALUES (?)";
         try {
-            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, compagniaAerea.nomeCompagnia);
             statement.executeUpdate();
             statement.close();
@@ -29,7 +29,7 @@ public class CompagniaAereaDAO {
         String query = "SELECT * FROM " + tableName + " WHERE nome_compagnia = ?";
         CompagniaAerea compagniaAerea = new CompagniaAerea();
         try {
-            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, nome);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -49,7 +49,7 @@ public class CompagniaAereaDAO {
         String query = "SELECT * FROM " + this.tableName;
         List<CompagniaAerea> compagniaAereaList = new LinkedList<CompagniaAerea>();
         try {
-            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 CompagniaAerea compagniaAerea = new CompagniaAerea();

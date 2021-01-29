@@ -1,4 +1,4 @@
-package dao;
+package DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +12,7 @@ import Models.Coda;
 import Models.CompagniaAerea;
 import Models.Prenotazione;
 
-public class PrenotazioneDAO extends Jdbc {
+public class PrenotazioneDAO extends JDBC {
 
 	protected String tableName = "prenotazione";
 	
@@ -20,7 +20,7 @@ public class PrenotazioneDAO extends Jdbc {
         String query = "INSERT INTO " + this.tableName + " (id, id_tratta, nome_passeggero, cognome_passeggero, coda, cento_kilometri, compagnia_aerea) VALUES  (?, ?, ?, ?, ?, ?, ?)";
 
         try {
-            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             UUID uuid = UUID.randomUUID();
             statement.setString(1, uuid.toString());
             statement.setInt(2, prenotazione.idTratta);
@@ -45,7 +45,7 @@ public class PrenotazioneDAO extends Jdbc {
         CentoKilometriDAO centoKilometriDAO = new CentoKilometriDAO();
         CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
         try {
-            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Prenotazione prenotazione = new Prenotazione();

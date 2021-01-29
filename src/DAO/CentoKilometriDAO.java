@@ -1,4 +1,4 @@
-package dao;
+package DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,9 +8,8 @@ import java.util.List;
 
 import Models.CentoKilometri;
 import Models.CompagniaAerea;
-import dao.CompagniaAereaDAO;
 
-public class CentoKilometriDAO extends Jdbc{
+public class CentoKilometriDAO extends JDBC {
 
 	protected String tableName = "cento_kilometri";
 	
@@ -18,7 +17,7 @@ public class CentoKilometriDAO extends Jdbc{
         String query = "INSERT INTO " + this.tableName + " (codice_compagnia, compagnia_aerea, punti) VALUES  (?, ?, ?)";
 
         try {
-            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, centoKilometri.codiceCompagnia);
             statement.setString(2, centoKilometri.compagniaAerea.nomeCompagnia);
             statement.setInt(3, centoKilometri.punti);
@@ -35,7 +34,7 @@ public class CentoKilometriDAO extends Jdbc{
         CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
         CentoKilometri centoKilometri = new CentoKilometri();
         try {
-            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, codiceCompagnia);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -57,7 +56,7 @@ public class CentoKilometriDAO extends Jdbc{
         List<CentoKilometri> centoKilometriList = new LinkedList<CentoKilometri>();
         CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
         try {
-            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 CentoKilometri centoKilometri = new CentoKilometri();
