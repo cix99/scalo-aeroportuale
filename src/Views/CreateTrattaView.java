@@ -4,7 +4,6 @@ import javax.swing.JPanel;
 
 import Controllers.HomeController;
 
-import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

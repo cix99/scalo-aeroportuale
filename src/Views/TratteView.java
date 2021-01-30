@@ -2,8 +2,6 @@ package Views;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JTable;
 
 public class TratteView extends JPanel {
 

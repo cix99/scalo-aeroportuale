@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import java.util.List;
 
 import Models.CompagniaAerea;
 import Models.Gate;
@@ -13,10 +12,10 @@ import Models.Tratta;
 
 public class TrattaDAO extends JDBC {
 
-	protected String tableName = "tratta";
+	private String tableName = "tratta";
 	
 	public Tratta store(Tratta tratta){
-        String query = "INSERT INTO " + this.tableName + " (destinazione, compagnia_aerea, ora_inizio_imbarco, ora_fine_imbarco_stimato, ora_fine_imbarco_effettivo, gate) VALUES  (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO " + tableName + " (destinazione, compagnia_aerea, ora_inizio_imbarco, ora_fine_imbarco_stimato, ora_fine_imbarco_effettivo, gate) VALUES  (?, ?, ?, ?, ?, ?)";
 
 //        CompagniaAerea compagniaAerea = new CompagniaAerea().first(tratta.compagniaAerea);
 //        if(compagniaAerea.nomeCompagnia == null){
@@ -41,9 +40,9 @@ public class TrattaDAO extends JDBC {
         return tratta;
     }
 
-    public List<Tratta> find(){
-        String query = "SELECT * FROM " + this.tableName;
-        List<Tratta> TrattaList = new LinkedList<Tratta>();
+    public LinkedList<Tratta> find(){
+        String query = "SELECT * FROM " + tableName;
+        LinkedList<Tratta> TrattaList = new LinkedList<Tratta>();
         CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
         GateDAO gateDAO = new GateDAO();
 
@@ -71,12 +70,12 @@ public class TrattaDAO extends JDBC {
     }
 
     public Tratta first(){
-        List<Tratta> TrattaList = find();
+    	LinkedList<Tratta> TrattaList = find();
         return TrattaList.get(0);
     }
 
     public Tratta last(){
-        List<Tratta> TrattaList = find();
+    	LinkedList<Tratta> TrattaList = find();
         return TrattaList.get(TrattaList.size() - 1);
     }
 }

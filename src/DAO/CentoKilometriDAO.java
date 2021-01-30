@@ -4,17 +4,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import java.util.List;
 
 import Models.CentoKilometri;
 import Models.CompagniaAerea;
 
 public class CentoKilometriDAO extends JDBC {
 
-	protected String tableName = "cento_kilometri";
+	private String tableName = "cento_kilometri";
 	
 	public CentoKilometri store(CentoKilometri centoKilometri){
-        String query = "INSERT INTO " + this.tableName + " (codice_compagnia, compagnia_aerea, punti) VALUES  (?, ?, ?)";
+        String query = "INSERT INTO " + tableName + " (codice_compagnia, compagnia_aerea, punti) VALUES  (?, ?, ?)";
 
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -30,7 +29,7 @@ public class CentoKilometriDAO extends JDBC {
     }
 
     public CentoKilometri findByCode(String codiceCompagnia){
-        String query = "SELECT * FROM " + this.tableName + " WHERE codice_compagnia = ?";
+        String query = "SELECT * FROM " + tableName + " WHERE codice_compagnia = ?";
         CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
         CentoKilometri centoKilometri = new CentoKilometri();
         try {
@@ -51,9 +50,9 @@ public class CentoKilometriDAO extends JDBC {
         return centoKilometri;
     }
 
-    public List<CentoKilometri> find(){
-        String query = "SELECT * FROM " + this.tableName;
-        List<CentoKilometri> centoKilometriList = new LinkedList<CentoKilometri>();
+    public LinkedList<CentoKilometri> find(){
+        String query = "SELECT * FROM " + tableName;
+        LinkedList<CentoKilometri> centoKilometriList = new LinkedList<CentoKilometri>();
         CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -75,12 +74,12 @@ public class CentoKilometriDAO extends JDBC {
     }
 
     public CentoKilometri first(){
-        List<CentoKilometri> centoKilometriList = find();
+        LinkedList<CentoKilometri> centoKilometriList = find();
         return centoKilometriList.get(0);
     }
 
     public CentoKilometri last(){
-        List<CentoKilometri> centoKilometriList = find();
+    	LinkedList<CentoKilometri> centoKilometriList = find();
         return centoKilometriList.get(centoKilometriList.size() - 1);
     }
 }

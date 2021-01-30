@@ -4,16 +4,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import java.util.List;
 
 import Models.CompagniaAerea;
 
 public class CompagniaAereaDAO {
 
-	protected static String tableName = "compagnia_aerea";
+	private String tableName = "compagnia_aerea";
 	
 	public CompagniaAerea store(CompagniaAerea compagniaAerea){
-        String query = "INSERT INTO " + this.tableName + " VALUES (?)";
+        String query = "INSERT INTO " + tableName + " VALUES (?)";
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, compagniaAerea.nomeCompagnia);
@@ -25,7 +24,7 @@ public class CompagniaAereaDAO {
         return compagniaAerea;
     }
 
-    public static CompagniaAerea findByName(String nome){
+    public CompagniaAerea findByName(String nome){
         String query = "SELECT * FROM " + tableName + " WHERE nome_compagnia = ?";
         CompagniaAerea compagniaAerea = new CompagniaAerea();
         try {
@@ -45,9 +44,9 @@ public class CompagniaAereaDAO {
         return compagniaAerea;
     }
 
-    public List<CompagniaAerea> get(){
-        String query = "SELECT * FROM " + this.tableName;
-        List<CompagniaAerea> compagniaAereaList = new LinkedList<CompagniaAerea>();
+    public LinkedList<CompagniaAerea> get(){
+        String query = "SELECT * FROM " + tableName;
+        LinkedList<CompagniaAerea> compagniaAereaList = new LinkedList<CompagniaAerea>();
         try {
             PreparedStatement statement = JDBC
             		.GetConnection().prepareStatement(query);
@@ -67,12 +66,12 @@ public class CompagniaAereaDAO {
     }
 
     public CompagniaAerea first(String nome){
-        List<CompagniaAerea> compagniaAereaList = get();
+    	LinkedList<CompagniaAerea> compagniaAereaList = get();
         return compagniaAereaList.get(0);
     }
 
     public CompagniaAerea last(String nome){
-        List<CompagniaAerea> compagniaAereaList = get();
+    	LinkedList<CompagniaAerea> compagniaAereaList = get();
         return compagniaAereaList.get(compagniaAereaList.size() - 1);
     }
 

@@ -1,9 +1,5 @@
 package Controllers;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
-import Models.Tratta;
 import Views.LoginView;
 
 public class LoginController {

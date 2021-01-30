@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
 import Models.CentoKilometri;
@@ -14,10 +13,10 @@ import Models.Prenotazione;
 
 public class PrenotazioneDAO extends JDBC {
 
-	protected String tableName = "prenotazione";
+	private String tableName = "prenotazione";
 	
 	public Prenotazione store(Prenotazione prenotazione){
-        String query = "INSERT INTO " + this.tableName + " (id, id_tratta, nome_passeggero, cognome_passeggero, coda, cento_kilometri, compagnia_aerea) VALUES  (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO " + tableName + " (id, id_tratta, nome_passeggero, cognome_passeggero, coda, cento_kilometri, compagnia_aerea) VALUES  (?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -38,9 +37,9 @@ public class PrenotazioneDAO extends JDBC {
         return prenotazione;
     }
 
-    public List<Prenotazione> find(){
-        String query = "SELECT * FROM " + this.tableName;
-        List<Prenotazione> PrenotaioneList = new LinkedList<Prenotazione>();
+    public LinkedList<Prenotazione> find(){
+        String query = "SELECT * FROM " + tableName;
+        LinkedList<Prenotazione> PrenotaioneList = new LinkedList<Prenotazione>();
         CodaDAO codaDAO = new CodaDAO();
         CentoKilometriDAO centoKilometriDAO = new CentoKilometriDAO();
         CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
@@ -67,12 +66,12 @@ public class PrenotazioneDAO extends JDBC {
     }
 
     public Prenotazione first(){
-        List<Prenotazione> PrenotaioneList = this.find();
+    	LinkedList<Prenotazione> PrenotaioneList = find();
         return PrenotaioneList.get(0);
     }
 
     public Prenotazione last(){
-        List<Prenotazione> PrenotaioneList = this.find();
+    	LinkedList<Prenotazione> PrenotaioneList = find();
         return PrenotaioneList.get(PrenotaioneList.size() - 1);
     }
 

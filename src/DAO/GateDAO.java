@@ -3,16 +3,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import java.util.List;
 
 import Models.Gate;
 
 public class GateDAO extends JDBC {
 
-    protected String tableName = "gate";
+    private String tableName = "gate";
 
     public Gate store(Gate gate){
-        String query = "INSERT INTO " + this.tableName + " VALUES (?)";
+        String query = "INSERT INTO " + tableName + " VALUES (?)";
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, gate.nomeGate);
@@ -24,7 +23,7 @@ public class GateDAO extends JDBC {
     }
     
     public boolean delete (String nomeGate) {
-    	String query = "DELETE FROM " + this.tableName + " WHERE nome_gate = (?)";
+    	String query = "DELETE FROM " + tableName + " WHERE nome_gate = (?)";
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, nomeGate);
@@ -38,7 +37,7 @@ public class GateDAO extends JDBC {
     }
 
     public Gate findByName(String nome){
-        String query = "SELECT * FROM " + this.tableName + " WHERE nome_gate = ?";
+        String query = "SELECT * FROM " + tableName + " WHERE nome_gate = ?";
         Gate gate = new Gate();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -56,9 +55,9 @@ public class GateDAO extends JDBC {
         return gate;
     }
 
-    public List<Gate> get(){
+    public LinkedList<Gate> get(){
         String query = "SELECT * FROM gate";
-        List<Gate> gateList = new LinkedList<Gate>();
+        LinkedList<Gate> gateList = new LinkedList<Gate>();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -76,12 +75,12 @@ public class GateDAO extends JDBC {
     }
 
     public Gate first(){
-        List<Gate> gateList = get();
+    	LinkedList<Gate> gateList = get();
         return gateList.get(0);
     }
 
     public Gate last(){
-        List<Gate> gateList = get();
+    	LinkedList<Gate> gateList = get();
         return gateList.get(gateList.size() - 1);
     }
 }
