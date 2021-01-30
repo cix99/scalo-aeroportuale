@@ -29,7 +29,7 @@ public class LoginView extends JFrame {
 	
 	public LoginView() {
 		setTitle("Login-ScaloAeroportiale.java");
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\decar\\Desktop\\aereo-150x150.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("Images/aereo_logo.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setBounds(100, 100, 808, 547);
@@ -90,12 +90,12 @@ public class LoginView extends JFrame {
 		contentPane.add(LoginLabel);
 		
 		JLabel FinestraLog = new JLabel("");
-		FinestraLog.setIcon(new ImageIcon("C:\\Users\\decar\\Desktop\\sfondo login.jpg!d"));
+		FinestraLog.setIcon(new ImageIcon("Images/login_background.jpg"));
 		FinestraLog.setBounds(530, 61, 240, 311);
 		contentPane.add(FinestraLog);
 		
 		JLabel SfondoLabel = new JLabel("");
-		SfondoLabel.setIcon(new ImageIcon("C:\\Users\\decar\\Desktop\\aereo.jpeg"));
+		SfondoLabel.setIcon(new ImageIcon("Images/sfondo_login.png"));
 		SfondoLabel.setBounds(0, 0, 792, 508);
 		contentPane.add(SfondoLabel);
 	}
