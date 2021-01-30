@@ -1,6 +1,4 @@
-import Models.*;
 import Controllers.*;
-import DAO.*;
 
 public class ScaloAeroportuale {
 

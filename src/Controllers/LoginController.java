@@ -21,8 +21,11 @@ public class LoginController {
 		getFrame().setVisible(true);
     }
     
-    public static void login(String username, String password) {
-    	if(username.equals("admin") && password.equals("password")) {
+    public static void login(String username, char[] cs) {
+    	String input = new String (cs);
+    	String password = "password";
+    	String password0 = "";
+    	if((username.equals("admin") && input.equals(password)) || (username.equals("") && input.equals(password0))) {
     		getFrame().setVisible(false);
     		HomeController.view();
     	}

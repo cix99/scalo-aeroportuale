@@ -3,6 +3,7 @@ package Views;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 
+@SuppressWarnings("serial")
 public class TratteView extends JPanel {
 
 	/**

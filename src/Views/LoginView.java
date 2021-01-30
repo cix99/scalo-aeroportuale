@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,19 +18,21 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
+@SuppressWarnings("serial")
 public class LoginView extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtEmail;
 	private JPasswordField passwordField;
-	/**
-	 * Create the frame.
-	 */
-	
+
+	/* Create the frame. */
 	public LoginView() {
 		setTitle("Login-ScaloAeroportiale.java");
-		setIconImage(Toolkit.getDefaultToolkit().getImage("Images/aereo_logo.png"));
+		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
+		setIconImage(logoImage);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setBounds(100, 100, 808, 547);
@@ -46,9 +49,7 @@ public class LoginView extends JFrame {
 		Accedi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String username = txtEmail.getText();
-				String password = passwordField.getText();
-				LoginController.login(username, password);
+				LoginController.login(txtEmail.getText(), passwordField.getPassword());
 			}
 		});
 		Accedi.setFont(new Font("Century Schoolbook", Font.PLAIN, 15));
@@ -71,6 +72,15 @@ public class LoginView extends JFrame {
 		contentPane.add(password);
 		
 		txtEmail = new JTextField();
+		txtEmail.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					LoginController.login(txtEmail.getText(), passwordField.getPassword());
+				   }
+				
+			}
+		});
 		txtEmail.setToolTipText("Inserisci e_mail");
 		txtEmail.setBounds(561, 199, 186, 28);
 		contentPane.add(txtEmail);
@@ -78,6 +88,14 @@ public class LoginView extends JFrame {
 		txtEmail.setBorder(null);
 		
 		passwordField = new JPasswordField();
+		passwordField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					LoginController.login(txtEmail.getText(), passwordField.getPassword());
+				   }
+			}
+		});
 		passwordField.setBounds(560, 263, 187, 28);
 		contentPane.add(passwordField);
 		passwordField.setBorder(null);
@@ -90,13 +108,15 @@ public class LoginView extends JFrame {
 		contentPane.add(LoginLabel);
 		
 		JLabel FinestraLog = new JLabel("");
-		FinestraLog.setIcon(new ImageIcon("Images/login_background.jpg"));
+		Image logingImage = new ImageIcon (this.getClass().getResource("/login_background.jpg")).getImage();
+		FinestraLog.setIcon(new ImageIcon(logingImage));
 		FinestraLog.setBounds(530, 61, 240, 311);
 		contentPane.add(FinestraLog);
 		
 		JLabel SfondoLabel = new JLabel("");
-		SfondoLabel.setIcon(new ImageIcon("Images/sfondo_login.png"));
-		SfondoLabel.setBounds(0, 0, 792, 508);
+		Image sfondoImage = new ImageIcon (this.getClass().getResource("/sfondo_login.png")).getImage();
+		SfondoLabel.setIcon(new ImageIcon(sfondoImage));
+		SfondoLabel.setBounds(0, 0, 804, 519);
 		contentPane.add(SfondoLabel);
 	}
 }
