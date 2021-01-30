@@ -8,9 +8,11 @@ import javax.swing.JPanel;
 import Models.Tratta;
 import Views.HomeView;
 
+
 public class HomeController {
 		
 	static HomeView frame = null;
+
     
     public static HomeView getFrame() {
     	if (frame != null)
@@ -27,9 +29,9 @@ public class HomeController {
 		getFrame().setVisible(true);
     }
     
-    public static JPanel openCreaTratta() {
-    	return TratteController.viewCreate();
-    	/*getFrame().setVisible(false);
-    	TratteController.view();*/
-    }
+//    public static JPanel openCreaTratta() {
+//    	//return TratteController.viewCreate();
+//    	/*getFrame().setVisible(false);
+//    	TratteController.view();*/
+//    }
 }

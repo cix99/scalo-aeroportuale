@@ -3,7 +3,6 @@ package Views;
 import javax.swing.JPanel;
 
 import Controllers.HomeController;
-import Controllers.TratteController;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -22,9 +21,9 @@ public class CreateTrattaView extends JPanel {
 		goToIndex.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JPanel indexTratte = TratteController.viewIndex();
-				indexTratte.setBounds(381, 65, 1045, 573);
-				HomeController.getFrame().layeredPane.add(indexTratte);
+				//JPanel indexTratte = TratteController.viewIndex();
+				//indexTratte.setBounds(381, 65, 1045, 573);
+				//HomeController.getFrame().layeredPane.add(indexTratte);
 			}
 		});
 		goToIndex.setBounds(45, 133, 77, 19);
