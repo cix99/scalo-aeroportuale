@@ -1,3 +1,4 @@
+<<<<<<< main
 package DAO;
 
 import java.sql.PreparedStatement;
@@ -46,6 +47,56 @@ public class PrenotazioneDAO extends JDBC {
         CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+=======
+package dao;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
+
+import Models.CentoKilometri;
+import Models.Coda;
+import Models.CompagniaAerea;
+import Models.Prenotazione;
+
+public class PrenotazioneDAO extends Jdbc {
+
+	protected String tableName = "prenotazione";
+	
+	public Prenotazione store(Prenotazione prenotazione){
+        String query = "INSERT INTO " + this.tableName + " (id, id_tratta, nome_passeggero, cognome_passeggero, coda, cento_kilometri, compagnia_aerea) VALUES  (?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+            UUID uuid = UUID.randomUUID();
+            statement.setString(1, uuid.toString());
+            statement.setInt(2, prenotazione.idTratta);
+            statement.setString(3, prenotazione.nomePasseggero);
+            statement.setObject(4, prenotazione.cognomePasseggero);
+            statement.setObject(5, prenotazione.coda);
+            statement.setObject(6, prenotazione.centoKilometri);
+            statement.setString(7, prenotazione.compagniaAerea.nomeCompagnia);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+
+        return prenotazione;
+    }
+
+    public List<Prenotazione> find(){
+        String query = "SELECT * FROM " + this.tableName;
+        List<Prenotazione> PrenotaioneList = new LinkedList<Prenotazione>();
+        CodaDAO codaDAO = new CodaDAO();
+        CentoKilometriDAO centoKilometriDAO = new CentoKilometriDAO();
+        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        try {
+            PreparedStatement statement = Jdbc.GetConnection().prepareStatement(query);
+>>>>>>> 198811d Cambio nomi: Dao -> DAO Jdbc -> JDBC
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Prenotazione prenotazione = new Prenotazione();

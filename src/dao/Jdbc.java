@@ -1,10 +1,10 @@
-package DAO;
+package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class JDBC {
+public class Jdbc {
 
     static Connection connection = null;
     

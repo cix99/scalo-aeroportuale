@@ -24,7 +24,6 @@ public class CreateTrattaView extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				JPanel indexTratte = TratteController.viewIndex();
 				indexTratte.setBounds(381, 65, 1045, 573);
-				HomeController.getFrame().layeredPane.removeAll();
 				HomeController.getFrame().layeredPane.add(indexTratte);
 			}
 		});
