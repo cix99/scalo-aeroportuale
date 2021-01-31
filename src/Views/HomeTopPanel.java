@@ -1,6 +1,7 @@
 package Views;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.GroupLayout;
@@ -20,6 +21,7 @@ public class HomeTopPanel extends JPanel {
 	
 	public HomeTopPanel () {
 		setPreferredSize(new Dimension (1150, 50));
+		setLayout(new FlowLayout(FlowLayout.LEFT));
 		OraLabel = new JLabel("ORA");
 		OraLabel.setEnabled(false);
 		OraLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
@@ -33,31 +35,37 @@ public class HomeTopPanel extends JPanel {
 		
 		DataCompletaLabel = new JLabel("M a r  2 6 / 0 1 / 2 0 2 0");
 		DataCompletaLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
-		gl_TimePanel = new GroupLayout(this);
-		gl_TimePanel.setHorizontalGroup(
-			gl_TimePanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_TimePanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(OraLabel)
-					.addGap(16)
-					.addComponent(OrarioLabel)
-					.addGap(18)
-					.addComponent(DataLabel)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(DataCompletaLabel)
-					.addContainerGap(633, Short.MAX_VALUE))
-		);
-		gl_TimePanel.setVerticalGroup(
-			gl_TimePanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_TimePanel.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGroup(gl_TimePanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(OraLabel)
-						.addComponent(OrarioLabel)
-						.addComponent(DataLabel)
-						.addComponent(DataCompletaLabel))
-					.addContainerGap())
-		);
-		setLayout(gl_TimePanel);
+		
+		add(OraLabel);
+		add(OrarioLabel);
+		add(DataLabel);
+		add(DataCompletaLabel);
+		
+//		gl_TimePanel = new GroupLayout(this);
+//		gl_TimePanel.setHorizontalGroup(
+//			gl_TimePanel.createParallelGroup(Alignment.LEADING)
+//				.addGroup(gl_TimePanel.createSequentialGroup()
+//					.addContainerGap()
+//					.addComponent(OraLabel)
+//					.addGap(16)
+//					.addComponent(OrarioLabel)
+//					.addGap(18)
+//					.addComponent(DataLabel)
+//					.addPreferredGap(ComponentPlacement.UNRELATED)
+//					.addComponent(DataCompletaLabel)
+//					.addContainerGap(633, Short.MAX_VALUE))
+//		);
+//		gl_TimePanel.setVerticalGroup(
+//			gl_TimePanel.createParallelGroup(Alignment.LEADING)
+//				.addGroup(Alignment.TRAILING, gl_TimePanel.createSequentialGroup()
+//					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//					.addGroup(gl_TimePanel.createParallelGroup(Alignment.BASELINE)
+//						.addComponent(OraLabel)
+//						.addComponent(OrarioLabel)
+//						.addComponent(DataLabel)
+//						.addComponent(DataCompletaLabel))
+//					.addContainerGap())
+//		);
+//		setLayout(gl_TimePanel);
 	}
 }

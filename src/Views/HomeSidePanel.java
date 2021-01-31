@@ -3,13 +3,15 @@ package Views;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.GroupLayout.Alignment;
+import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
 public class HomeSidePanel extends JPanel {
@@ -26,29 +28,26 @@ public class HomeSidePanel extends JPanel {
 	public HomeSidePanel () {
 		setPreferredSize(new Dimension (200,650));
 		setBackground(new Color(0, 153, 255));
-		setLayout(null);
-	
+		//setLayout(null);
+		setBorder(new EmptyBorder(10, 0, 0, 0));
+		setLayout(new GridLayout(5, 1, 0, 10));
+		
 		/* Imbarco option */
+		
 		ImbarcoPanel = new JPanel();
 		ImbarcoPanel.setBackground(new Color(0, 204, 255));
 		ImbarcoPanel.setBounds(0, 10, 200, 85);
+		ImbarcoPanel.setLayout(new GridBagLayout());
 		add(ImbarcoPanel);
 		ImbarcoLabel = new JLabel("Imbarco");
 		ImbarcoLabel.setForeground(Color.WHITE);
 		ImbarcoLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		ImbarcoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		GroupLayout gl_ImbarcoPanel = new GroupLayout(ImbarcoPanel);
-		gl_ImbarcoPanel.setHorizontalGroup(
-			gl_ImbarcoPanel.createParallelGroup(Alignment.LEADING)
-				.addComponent(ImbarcoLabel, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-		);
-		gl_ImbarcoPanel.setVerticalGroup(
-			gl_ImbarcoPanel.createParallelGroup(Alignment.TRAILING)
-				.addComponent(ImbarcoLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-		);
-		ImbarcoPanel.setLayout(gl_ImbarcoPanel);
+
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.anchor = GridBagConstraints.CENTER;
+		ImbarcoPanel.add(ImbarcoLabel, gc);
 		
-		ImbarcoLabel.addMouseListener(new MouseAdapter() {
+		ImbarcoPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Chiama imbarco view
@@ -77,24 +76,16 @@ public class HomeSidePanel extends JPanel {
 		AggiungiPanel = new JPanel();
 		AggiungiPanel.setBackground(new Color(0, 204, 255));
 		AggiungiPanel.setBounds(0, 105, 200, 85);
+		AggiungiPanel.setLayout(new GridBagLayout());
 		add(AggiungiPanel);
 		
 		AggiungiLabel = new JLabel("Aggiungi");
-		AggiungiLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		AggiungiLabel.setForeground(Color.WHITE);
 		AggiungiLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		GroupLayout gl_AggiungiPanel = new GroupLayout(AggiungiPanel);
-		gl_AggiungiPanel.setHorizontalGroup(
-			gl_AggiungiPanel.createParallelGroup(Alignment.LEADING)
-				.addComponent(AggiungiLabel, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-				);
-		gl_AggiungiPanel.setVerticalGroup(
-			gl_AggiungiPanel.createParallelGroup(Alignment.TRAILING)
-				.addComponent(AggiungiLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-		);
-		AggiungiPanel.setLayout(gl_AggiungiPanel);
 		
-		AggiungiLabel.addMouseListener(new MouseAdapter() {
+		AggiungiPanel.add(AggiungiLabel, gc);
+		
+		AggiungiPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Chiama aggiungi view
@@ -123,24 +114,17 @@ public class HomeSidePanel extends JPanel {
 		CercaPanel = new JPanel();
 		CercaPanel.setBackground(new Color(0, 204, 255));
 		CercaPanel.setBounds(0, 200, 200, 85);
+		CercaPanel.setLayout(new GridBagLayout());
 		add(CercaPanel);
 		
 		CercaLabel = new JLabel("Cerca");
 		CercaLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		CercaLabel.setForeground(Color.WHITE);
 		CercaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		GroupLayout gl_CercaPanel = new GroupLayout(CercaPanel);
-		gl_CercaPanel.setHorizontalGroup(
-			gl_CercaPanel.createParallelGroup(Alignment.LEADING)
-				.addComponent(CercaLabel, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-		);
-		gl_CercaPanel.setVerticalGroup(
-			gl_CercaPanel.createParallelGroup(Alignment.TRAILING)
-				.addComponent(CercaLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-		);
-		CercaPanel.setLayout(gl_CercaPanel);
 		
-		CercaLabel.addMouseListener(new MouseAdapter() {
+		CercaPanel.add(CercaLabel, gc);
+		
+		CercaPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Chiama cerca view
@@ -170,24 +154,17 @@ public class HomeSidePanel extends JPanel {
 		
 		EliminaPanel.setBackground(new Color(0, 204, 255));
 		EliminaPanel.setBounds(0, 295, 200, 85);
+		EliminaPanel.setLayout(new GridBagLayout());
 		add(EliminaPanel);
 		
 		EliminaLabel = new JLabel("Elimina");
 		EliminaLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		EliminaLabel.setForeground(Color.WHITE);
 		EliminaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		GroupLayout gl_EliminaPanel = new GroupLayout(EliminaPanel);
-		gl_EliminaPanel.setHorizontalGroup(
-			gl_EliminaPanel.createParallelGroup(Alignment.LEADING)
-				.addComponent(EliminaLabel, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-		);
-		gl_EliminaPanel.setVerticalGroup(
-			gl_EliminaPanel.createParallelGroup(Alignment.TRAILING)
-				.addComponent(EliminaLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-		);
-		EliminaPanel.setLayout(gl_EliminaPanel);
 		
-		EliminaLabel.addMouseListener(new MouseAdapter() {
+		EliminaPanel.add(EliminaLabel, gc);
+		
+		EliminaPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			//Chiama elimina view
