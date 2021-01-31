@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 
 import Models.CentoKilometri;
-import Models.CompagniaAerea;
 
 public class CentoKilometriDAO extends JDBC {
 
@@ -17,9 +16,9 @@ public class CentoKilometriDAO extends JDBC {
 
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setString(1, centoKilometri.codiceCompagnia);
-            statement.setString(2, centoKilometri.compagniaAerea.nomeCompagnia);
-            statement.setInt(3, centoKilometri.punti);
+            statement.setString(1, centoKilometri.getCodiceCompagnia());
+            statement.setString(2, centoKilometri.getCompagniaAerea().getNomeCompagnia());
+            statement.setInt(3, centoKilometri.getPunti());
             statement.executeUpdate();
             statement.close();
         }catch(SQLException e){
@@ -37,10 +36,10 @@ public class CentoKilometriDAO extends JDBC {
             statement.setString(1, codiceCompagnia);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                centoKilometri.id = resultSet.getInt("id");
-                centoKilometri.codiceCompagnia = resultSet.getString("codice_compagnia");
-                centoKilometri.compagniaAerea = (CompagniaAerea) compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea"));
-                centoKilometri.punti = resultSet.getInt("punti");
+                centoKilometri.setId(resultSet.getInt("id"));
+                centoKilometri.setCodiceCompagnia(resultSet.getString("codice_compagnia"));
+                centoKilometri.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                centoKilometri.setPunti(resultSet.getInt("punti"));
             }
             resultSet.close();
             statement.close();
@@ -59,10 +58,10 @@ public class CentoKilometriDAO extends JDBC {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 CentoKilometri centoKilometri = new CentoKilometri();
-                centoKilometri.id = resultSet.getInt("id");
-                centoKilometri.codiceCompagnia = resultSet.getString("codice_compagnia");
-                centoKilometri.compagniaAerea = (CompagniaAerea) compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea"));
-                centoKilometri.punti = resultSet.getInt("punti");
+                centoKilometri.setId(resultSet.getInt("id"));
+                centoKilometri.setCodiceCompagnia(resultSet.getString("codice_compagnia"));
+                centoKilometri.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                centoKilometri.setPunti(resultSet.getInt("punti"));
                 centoKilometriList.add(centoKilometri);
             }
             resultSet.close();

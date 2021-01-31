@@ -11,9 +11,9 @@ import java.awt.event.MouseEvent;
 @SuppressWarnings("serial")
 public class CreateTrattaView extends JPanel {
 
-	/**
-	 * Create the panel.
-	 */
+	//private HomeController homeController;
+	
+	/* Create the panel */
 	public CreateTrattaView() {
 		setLayout(null);
 		

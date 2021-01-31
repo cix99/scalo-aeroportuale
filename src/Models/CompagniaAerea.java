@@ -2,7 +2,7 @@ package Models;
 
 public class CompagniaAerea{
 
-    public String nomeCompagnia;
+    private String nomeCompagnia;
 
     public CompagniaAerea(String nomeCompagnia) {
 		super();
@@ -12,7 +12,12 @@ public class CompagniaAerea{
 	public CompagniaAerea() {
 	}
 	
-	public String getName () {
-		return this.nomeCompagnia;
+	public String getNomeCompagnia () {
+		return nomeCompagnia;
+	}
+
+	public void setNomeCompagnia(String nomeCompagnia) {
+		this.nomeCompagnia = nomeCompagnia;
 	}  
+	
 }

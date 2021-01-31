@@ -6,9 +6,6 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.UUID;
 
-import Models.CentoKilometri;
-import Models.Coda;
-import Models.CompagniaAerea;
 import Models.Prenotazione;
 
 public class PrenotazioneDAO extends JDBC {
@@ -22,12 +19,12 @@ public class PrenotazioneDAO extends JDBC {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             UUID uuid = UUID.randomUUID();
             statement.setString(1, uuid.toString());
-            statement.setInt(2, prenotazione.idTratta);
-            statement.setString(3, prenotazione.nomePasseggero);
-            statement.setObject(4, prenotazione.cognomePasseggero);
-            statement.setObject(5, prenotazione.coda);
-            statement.setObject(6, prenotazione.centoKilometri);
-            statement.setString(7, prenotazione.compagniaAerea.nomeCompagnia);
+            statement.setInt(2, prenotazione.getIdTratta());
+            statement.setString(3, prenotazione.getNomePasseggero());
+            statement.setObject(4, prenotazione.getNomePasseggero());
+            statement.setObject(5, prenotazione.getCoda());
+            statement.setObject(6, prenotazione.getCentoKilometri());
+            statement.setString(7, prenotazione.getCompagniaAerea().getNomeCompagnia());
             statement.executeUpdate();
             statement.close();
         }catch(SQLException e){
@@ -48,13 +45,13 @@ public class PrenotazioneDAO extends JDBC {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Prenotazione prenotazione = new Prenotazione();
-                prenotazione.id = resultSet.getString("id");
-                prenotazione.idTratta = resultSet.getInt("id_tratta");
-                prenotazione.nomePasseggero = resultSet.getString("nome_passeggero");
-                prenotazione.cognomePasseggero = resultSet.getString("cognome_passeggero");
-                prenotazione.coda = (Coda) codaDAO.findByName(resultSet.getString("coda"));
-                prenotazione.centoKilometri = (CentoKilometri) centoKilometriDAO.findByCode(resultSet.getString("cento_kilometri"));
-                prenotazione.compagniaAerea = (CompagniaAerea) compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea"));
+                prenotazione.setId(resultSet.getString("id"));
+                prenotazione.setIdTratta(resultSet.getInt("id_tratta"));
+                prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
+                prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
+                prenotazione.setCoda(codaDAO.findByName(resultSet.getString("coda")));
+                prenotazione.setCentoKilometri(centoKilometriDAO.findByCode(resultSet.getString("cento_kilometri")));
+                prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
                 PrenotaioneList.add(prenotazione);
             }
             resultSet.close();

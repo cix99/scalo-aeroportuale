@@ -5,7 +5,7 @@ import java.lang.String;
 
 public class Gate{
 
-    public String nomeGate;
+    private String nomeGate;
 
 	public Gate(String nomeGate) {
 		super();
@@ -15,8 +15,13 @@ public class Gate{
 	public Gate() {
 	}
 	
-	public String getName () {
-		return this.nomeGate;
+	public String getNomeGate () {
+		return nomeGate;
+	}
+
+	public void setNomeGate(String nomeGate) {
+		this.nomeGate = nomeGate;
 	}
  
+	
 }
