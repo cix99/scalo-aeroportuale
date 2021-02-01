@@ -10,7 +10,10 @@ import java.awt.Dimension;
 @SuppressWarnings("serial")
 public class HomeView extends JFrame {
 
-	private JPanel MainPanel;
+	private JPanel mainPanel;
+	private JPanel topPanel;
+	private JPanel sidePanel;
+	private JPanel centerPanel;
 	
 	public HomeView() {
 		/* Frame settings */
@@ -21,16 +24,38 @@ public class HomeView extends JFrame {
 		setMinimumSize(new Dimension (1150,700));
 		
 		/* Main Panel settings */
-		MainPanel = new JPanel();
-		MainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(MainPanel);
+		mainPanel = new JPanel();
+		mainPanel.setBorder(new EmptyBorder(0, 5, 5, 5));
+		setContentPane(mainPanel);
+		mainPanel.setLayout(new BorderLayout(0, 0));
 		
-		MainPanel.setLayout(new BorderLayout(0, 0));
-		
-		MainPanel.add(new HomeCenterPanel(), BorderLayout.CENTER);
-		MainPanel.add(new HomeSidePanel(), BorderLayout.WEST);
-		MainPanel.add(new HomeTopPanel(), BorderLayout.NORTH);
-		
+		topPanel = new HomeTopPanel();
+		sidePanel = new HomeSidePanel();
+		centerPanel = new HomeCenterPanel();
+		mainPanel.add(topPanel, BorderLayout.NORTH);
+		mainPanel.add(sidePanel, BorderLayout.WEST);
+		mainPanel.add(centerPanel, BorderLayout.CENTER);
 		
 	}
+	
+	public void ImbarcoView () {
+		JPanel panel = new ImbarcoView();
+		mainPanel.add(panel);
+	}
+	
+	public void AggiungiView () {
+		JPanel panel = new AggiungiView();
+		mainPanel.add(panel);
+	}
+	
+	public void CercaView () {
+		JPanel panel = new CercaView();
+		mainPanel.add(panel);
+	}
+	
+	public void EliminaView () {
+		JPanel panel = new EliminaView();
+		mainPanel.add(panel);
+	}
+
 }

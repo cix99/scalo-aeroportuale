@@ -1,7 +1,5 @@
 package Views;
 
-import Controllers.LoginController;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -16,6 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
+import Controllers.ViewsController;
+
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -26,16 +26,17 @@ public class LoginView extends JFrame {
 	private JPanel contentPane;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
-	private JButton Accedi;
+	private JButton accedi;
 	private JLabel username;
 	private JLabel password;
-	private JLabel LoginLabel;
-	private JLabel FinestraLog;
-	private JLabel SfondoLabel;
-	
+	private JLabel loginLabel;
+	private JLabel finestraLog;
+	private JLabel sfondoLabel;
 	
 	/* Create the frame. */
 	public LoginView() {
+
+		ViewsController homeController = new ViewsController();
 		setResizable(false);
 		setTitle("Login-ScaloAeroportiale.java");
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
@@ -47,20 +48,23 @@ public class LoginView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		Accedi = new JButton("Accedi");
-		Accedi.setForeground(new Color(51, 255, 0));
-		Accedi.setContentAreaFilled(false);
-		Accedi.setBorder(null);
-		Accedi.setIcon(null);
-		Accedi.addMouseListener(new MouseAdapter() {
+		accedi = new JButton("Accedi");
+		accedi.setForeground(new Color(51, 255, 0));
+		accedi.setContentAreaFilled(false);
+		accedi.setBorder(null);
+		accedi.setIcon(null);
+		
+		accedi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				LoginController.login(usernameField.getText(), passwordField.getPassword());
+				
+				homeController.login(usernameField.getText(), passwordField.getPassword());
+				
 			}
 		});
-		Accedi.setFont(new Font("Century Schoolbook", Font.PLAIN, 15));
-		Accedi.setBounds(607, 302, 80, 28);
-		contentPane.add(Accedi);
+		accedi.setFont(new Font("Century Schoolbook", Font.PLAIN, 15));
+		accedi.setBounds(607, 302, 80, 28);
+		contentPane.add(accedi);
 		
 		username = new JLabel("Username");
 		username.setForeground(new Color(255, 255, 255));
@@ -82,7 +86,7 @@ public class LoginView extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					LoginController.login(usernameField.getText(), passwordField.getPassword());
+					homeController.login(usernameField.getText(), passwordField.getPassword());
 				   }
 				
 			}
@@ -98,7 +102,7 @@ public class LoginView extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					LoginController.login(usernameField.getText(), passwordField.getPassword());
+					homeController.login(usernameField.getText(), passwordField.getPassword());
 				   }
 			}
 		});
@@ -106,23 +110,25 @@ public class LoginView extends JFrame {
 		contentPane.add(passwordField);
 		passwordField.setBorder(null);
 		
-		LoginLabel = new JLabel("LOGIN");
-		LoginLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		LoginLabel.setFont(new Font("Maiandra GD", Font.BOLD, 26));
-		LoginLabel.setForeground(new Color(51, 255, 0));
-		LoginLabel.setBounds(588, 100, 118, 28);
-		contentPane.add(LoginLabel);
+		loginLabel = new JLabel("LOGIN");
+		loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		loginLabel.setFont(new Font("Maiandra GD", Font.BOLD, 26));
+		loginLabel.setForeground(new Color(51, 255, 0));
+		loginLabel.setBounds(588, 100, 118, 28);
+		contentPane.add(loginLabel);
 		
-		FinestraLog = new JLabel("");
+		finestraLog = new JLabel("");
 		Image logingImage = new ImageIcon (this.getClass().getResource("/login_background.jpg")).getImage();
-		FinestraLog.setIcon(new ImageIcon(logingImage));
-		FinestraLog.setBounds(530, 61, 240, 311);
-		contentPane.add(FinestraLog);
+		finestraLog.setIcon(new ImageIcon(logingImage));
+		finestraLog.setBounds(530, 61, 240, 311);
+		contentPane.add(finestraLog);
 		
-		SfondoLabel = new JLabel("");
+		sfondoLabel = new JLabel("");
 		Image sfondoImage = new ImageIcon (this.getClass().getResource("/sfondo_login.png")).getImage();
-		SfondoLabel.setIcon(new ImageIcon(sfondoImage));
-		SfondoLabel.setBounds(0, 0, 804, 519);
-		contentPane.add(SfondoLabel);
+		sfondoLabel.setIcon(new ImageIcon(sfondoImage));
+		sfondoLabel.setBounds(0, 0, 804, 519);
+		contentPane.add(sfondoLabel);
+		
 	}
+
 }

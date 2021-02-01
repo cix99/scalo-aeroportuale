@@ -1,5 +1,6 @@
 package Views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -8,24 +9,32 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import Controllers.ViewsController;
+
 @SuppressWarnings("serial")
 public class HomeSidePanel extends JPanel {
 
-	private JPanel ImbarcoPanel;
-	private JLabel ImbarcoLabel;
-	private JPanel AggiungiPanel;
-	private JLabel AggiungiLabel;
-	private JPanel CercaPanel;
-	private JLabel CercaLabel;
-	private JPanel EliminaPanel;
-	private JLabel EliminaLabel;
+	private JPanel imbarcoPanel;
+	private JLabel imbarcoLabel;
+	private JPanel aggiungiPanel;
+	private JLabel aggiungiLabel;
+	private JPanel cercaPanel;
+	private JLabel cercaLabel;
+	private JPanel eliminaPanel;
+	private JLabel eliminaLabel;
+	private JPanel logoutPanel;
 	
 	public HomeSidePanel () {
+		
+		ViewsController homeController = new ViewsController();
+		
 		setPreferredSize(new Dimension (200,650));
 		setBackground(new Color(0, 153, 255));
 		//setLayout(null);
@@ -34,159 +43,185 @@ public class HomeSidePanel extends JPanel {
 		
 		/* Imbarco option */
 		
-		ImbarcoPanel = new JPanel();
-		ImbarcoPanel.setBackground(new Color(0, 204, 255));
-		ImbarcoPanel.setBounds(0, 10, 200, 85);
-		ImbarcoPanel.setLayout(new GridBagLayout());
-		add(ImbarcoPanel);
-		ImbarcoLabel = new JLabel("Imbarco");
-		ImbarcoLabel.setForeground(Color.WHITE);
-		ImbarcoLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		imbarcoPanel = new JPanel();
+		imbarcoPanel.setBackground(new Color(0, 204, 255));
+		imbarcoPanel.setBounds(0, 10, 200, 85);
+		imbarcoPanel.setLayout(new GridBagLayout());
+		add(imbarcoPanel);
+		imbarcoLabel = new JLabel("Imbarco");
+		imbarcoLabel.setForeground(Color.WHITE);
+		imbarcoLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.anchor = GridBagConstraints.CENTER;
-		ImbarcoPanel.add(ImbarcoLabel, gc);
+		imbarcoPanel.add(imbarcoLabel, gc);
 		
-		ImbarcoPanel.addMouseListener(new MouseAdapter() {
+		imbarcoPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Chiama imbarco view
+				//Change color for test purposes
+				homeController.imbarcoView();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				ImbarcoLabel.setForeground(new Color (220, 220, 220));
+				imbarcoLabel.setForeground(new Color (220, 220, 220));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				ImbarcoLabel.setForeground(Color.WHITE);
+				imbarcoLabel.setForeground(Color.WHITE);
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				ImbarcoLabel.setForeground(new Color (150, 150, 150));
-				ImbarcoPanel.setBackground(new Color(0, 180, 255));
+				imbarcoLabel.setForeground(new Color (150, 150, 150));
+				imbarcoPanel.setBackground(new Color(0, 180, 255));
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				ImbarcoLabel.setForeground(Color.WHITE);
-				ImbarcoPanel.setBackground(new Color(0, 204, 255));
+				imbarcoLabel.setForeground(Color.WHITE);
+				imbarcoPanel.setBackground(new Color(0, 204, 255));
 			}
 		});
 		
 		/* Aggiungi option */
-		AggiungiPanel = new JPanel();
-		AggiungiPanel.setBackground(new Color(0, 204, 255));
-		AggiungiPanel.setBounds(0, 105, 200, 85);
-		AggiungiPanel.setLayout(new GridBagLayout());
-		add(AggiungiPanel);
+		aggiungiPanel = new JPanel();
+		aggiungiPanel.setBackground(new Color(0, 204, 255));
+		aggiungiPanel.setBounds(0, 105, 200, 85);
+		aggiungiPanel.setLayout(new GridBagLayout());
+		add(aggiungiPanel);
 		
-		AggiungiLabel = new JLabel("Aggiungi");
-		AggiungiLabel.setForeground(Color.WHITE);
-		AggiungiLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		aggiungiLabel = new JLabel("Aggiungi");
+		aggiungiLabel.setForeground(Color.WHITE);
+		aggiungiLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		
-		AggiungiPanel.add(AggiungiLabel, gc);
+		aggiungiPanel.add(aggiungiLabel, gc);
 		
-		AggiungiPanel.addMouseListener(new MouseAdapter() {
+		aggiungiPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Chiama aggiungi view
+				homeController.aggiungiView();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				AggiungiLabel.setForeground(new Color (220, 220, 220));
+				aggiungiLabel.setForeground(new Color (220, 220, 220));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				AggiungiLabel.setForeground(Color.WHITE);
+				aggiungiLabel.setForeground(Color.WHITE);
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				AggiungiLabel.setForeground(new Color (150, 150, 150));
-				AggiungiPanel.setBackground(new Color(0, 180, 255));
+				aggiungiLabel.setForeground(new Color (150, 150, 150));
+				aggiungiPanel.setBackground(new Color(0, 180, 255));
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				AggiungiLabel.setForeground(Color.WHITE);
-				AggiungiPanel.setBackground(new Color(0, 204, 255));
+				aggiungiLabel.setForeground(Color.WHITE);
+				aggiungiPanel.setBackground(new Color(0, 204, 255));
 			}
 		});
 		
 		/* Cerca option */
-		CercaPanel = new JPanel();
-		CercaPanel.setBackground(new Color(0, 204, 255));
-		CercaPanel.setBounds(0, 200, 200, 85);
-		CercaPanel.setLayout(new GridBagLayout());
-		add(CercaPanel);
+		cercaPanel = new JPanel();
+		cercaPanel.setBackground(new Color(0, 204, 255));
+		cercaPanel.setBounds(0, 200, 200, 85);
+		cercaPanel.setLayout(new GridBagLayout());
+		add(cercaPanel);
 		
-		CercaLabel = new JLabel("Cerca");
-		CercaLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		CercaLabel.setForeground(Color.WHITE);
-		CercaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		cercaLabel = new JLabel("Cerca");
+		cercaLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		cercaLabel.setForeground(Color.WHITE);
+		cercaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		
-		CercaPanel.add(CercaLabel, gc);
+		cercaPanel.add(cercaLabel, gc);
 		
-		CercaPanel.addMouseListener(new MouseAdapter() {
+		cercaPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Chiama cerca view
+				homeController.cercaView();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				CercaLabel.setForeground(new Color (220, 220, 220));
+				cercaLabel.setForeground(new Color (220, 220, 220));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				CercaLabel.setForeground(Color.WHITE);
+				cercaLabel.setForeground(Color.WHITE);
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				CercaLabel.setForeground(new Color (150, 150, 150));
-				CercaPanel.setBackground(new Color(0, 180, 255));
+				cercaLabel.setForeground(new Color (150, 150, 150));
+				cercaPanel.setBackground(new Color(0, 180, 255));
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				CercaLabel.setForeground(Color.WHITE);
-				CercaPanel.setBackground(new Color(0, 204, 255));
+				cercaLabel.setForeground(Color.WHITE);
+				cercaPanel.setBackground(new Color(0, 204, 255));
 			}
 		});
 		
 		/* Elimina option */
-		EliminaPanel = new JPanel();
+		eliminaPanel = new JPanel();
 		
-		EliminaPanel.setBackground(new Color(0, 204, 255));
-		EliminaPanel.setBounds(0, 295, 200, 85);
-		EliminaPanel.setLayout(new GridBagLayout());
-		add(EliminaPanel);
+		eliminaPanel.setBackground(new Color(0, 204, 255));
+		eliminaPanel.setBounds(0, 295, 200, 85);
+		eliminaPanel.setLayout(new GridBagLayout());
+		add(eliminaPanel);
 		
-		EliminaLabel = new JLabel("Elimina");
-		EliminaLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		EliminaLabel.setForeground(Color.WHITE);
-		EliminaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		eliminaLabel = new JLabel("Elimina");
+		eliminaLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		eliminaLabel.setForeground(Color.WHITE);
+		eliminaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		
-		EliminaPanel.add(EliminaLabel, gc);
+		eliminaPanel.add(eliminaLabel, gc);
 		
-		EliminaPanel.addMouseListener(new MouseAdapter() {
+		eliminaPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			//Chiama elimina view
+				homeController.eliminaView();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				EliminaLabel.setForeground(new Color (220, 220, 220));
+				eliminaLabel.setForeground(new Color (220, 220, 220));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				EliminaLabel.setForeground(Color.WHITE);
+				eliminaLabel.setForeground(Color.WHITE);
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				EliminaLabel.setForeground(new Color (150, 150, 150));
-				EliminaPanel.setBackground(new Color(0, 180, 255));
+				eliminaLabel.setForeground(new Color (150, 150, 150));
+				eliminaPanel.setBackground(new Color(0, 180, 255));
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				EliminaLabel.setForeground(Color.WHITE);
-				EliminaPanel.setBackground(new Color(0, 204, 255));
+				eliminaLabel.setForeground(Color.WHITE);
+				eliminaPanel.setBackground(new Color(0, 204, 255));
 			}
 		});
+		
+		logoutPanel = new JPanel();
+		logoutPanel.setBackground(new Color(0, 153, 255));
+		logoutPanel.setBounds(0, 105, 200, 85);
+		logoutPanel.setLayout(new BorderLayout(0,0));
+		
+		add(logoutPanel);
+		
+		JButton logoutButton = new JButton("Logout");
+		//JButton buttonTest2 = new JButton("Test2");
+		//gc.anchor = GridBagConstraints.PAGE_END;
+		/* In questo modo bisogna creare un altro panel se si vogliono inserire altre cose all'interno */
+		logoutPanel.add(logoutButton, BorderLayout.SOUTH);
+		
+		logoutButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked (MouseEvent e) {
+				homeController.logout();
+			}
+		});
+		//gc.anchor = GridBagConstraints.CENTER;
 	}
 }
