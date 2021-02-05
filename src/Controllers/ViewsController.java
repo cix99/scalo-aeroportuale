@@ -15,8 +15,8 @@ public class ViewsController {
 	 * frameClass frame = (frameClass) cls.newInstance(); */
 	
 	//static Map<String, JFrame> frames = new HashMap<>();
-	HomeView homeFrame = null;
-	LoginView loginFrame = null;
+	static HomeView homeFrame = null;
+	static LoginView loginFrame = null;
 	static String user;
     
 //    public static JFrame getFrame(String frameName) {
@@ -47,13 +47,13 @@ public class ViewsController {
     
 	
 	
-    public void viewLoginView() {
+    public static void viewLoginView() {
     	loginFrame = new LoginView();
     	loginFrame.setVisible(true);
     	
     }
     
-    public void viewHomeView() {
+    public static void viewHomeView() {
     	homeFrame = new HomeView();
     	homeFrame.setVisible(true);
     }
@@ -67,22 +67,22 @@ public class ViewsController {
 	}
 
 	public void imbarcoView() {
-		homeFrame.ImbarcoView();
+		homeFrame.createImbarcoView();
 		homeFrame.setVisible(true);
 	}
 	
 	public void aggiungiView() {
-		homeFrame.AggiungiView();
+		homeFrame.createAggiungiView();
 		homeFrame.setVisible(true);
 	}
 	
 	public void cercaView() {
-		homeFrame.CercaView();
+		homeFrame.createCercaView();
 		homeFrame.setVisible(true);
 	}
 	
 	public void eliminaView() {
-		homeFrame.EliminaView();
+		homeFrame.createEliminaView();
 		homeFrame.setVisible(true);
 	}
 	
@@ -98,9 +98,11 @@ public class ViewsController {
     }
 	
 	public void logout(){
-    	//getFrame().setVisible(false);
-    	//LoginController loginController = new LoginController();
-		//loginController.view();
+
+		loginFrame.getUsername().setText("");
+		loginFrame.getPassword().setText("");
+    	homeFrame.setVisible(false);
+    	loginFrame.setVisible(true);
     }
     
 }

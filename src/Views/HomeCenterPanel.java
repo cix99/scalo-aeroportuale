@@ -17,7 +17,6 @@ public class HomeCenterPanel extends JPanel {
 
 	private JLabel benvenutoLabel;
 	
-	
 	public HomeCenterPanel() {
 		
 		setPreferredSize (new Dimension(800,650));
@@ -30,6 +29,7 @@ public class HomeCenterPanel extends JPanel {
 		benvenutoLabel.setForeground(Color.WHITE);
 		
 		add(benvenutoLabel);
+		
 	}
 	
 }

@@ -37,6 +37,7 @@ public class ScaloAeroportuale {
 	
 	public static void main(String[] args) {
 		ViewsController homeController = new ViewsController();
+		//homeController.viewHomeView();
 		homeController.viewLoginView();
 		//HomeController.view("LoginView");
 	}

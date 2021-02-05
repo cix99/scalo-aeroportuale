@@ -130,5 +130,14 @@ public class LoginView extends JFrame {
 		contentPane.add(sfondoLabel);
 		
 	}
+	
+	public JTextField getUsername () {
+		return usernameField;
+	}
+	
+	public JPasswordField getPassword () {
+		return passwordField;
+	}
+	
 
 }

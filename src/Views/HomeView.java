@@ -1,11 +1,13 @@
 package Views;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Toolkit;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Image;
 
 @SuppressWarnings("serial")
 public class HomeView extends JFrame {
@@ -13,11 +15,12 @@ public class HomeView extends JFrame {
 	private JPanel mainPanel;
 	private JPanel topPanel;
 	private JPanel sidePanel;
-	private JPanel centerPanel;
+	public JPanel centerPanel;
 	
 	public HomeView() {
 		/* Frame settings */
-		setIconImage(Toolkit.getDefaultToolkit().getImage("Images/aereo_logo.png"));
+		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
+		setIconImage(logoImage);
 		setTitle("Home");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(50, 50, 1150, 650);
@@ -38,24 +41,24 @@ public class HomeView extends JFrame {
 		
 	}
 	
-	public void ImbarcoView () {
-		JPanel panel = new ImbarcoView();
-		mainPanel.add(panel);
+	public void createImbarcoView () {
+		centerPanel = new ImbarcoView();
+		mainPanel.add(centerPanel, BorderLayout.CENTER);
 	}
 	
-	public void AggiungiView () {
+	public void createAggiungiView () {
 		JPanel panel = new AggiungiView();
-		mainPanel.add(panel);
+		mainPanel.add(panel, BorderLayout.CENTER);
 	}
 	
-	public void CercaView () {
+	public void createCercaView () {
 		JPanel panel = new CercaView();
-		mainPanel.add(panel);
+		mainPanel.add(panel, BorderLayout.CENTER);
 	}
 	
-	public void EliminaView () {
+	public void createEliminaView () {
 		JPanel panel = new EliminaView();
-		mainPanel.add(panel);
+		mainPanel.add(panel, BorderLayout.CENTER);
 	}
 
 }

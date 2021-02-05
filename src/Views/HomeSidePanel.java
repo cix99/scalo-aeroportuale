@@ -33,7 +33,7 @@ public class HomeSidePanel extends JPanel {
 	
 	public HomeSidePanel () {
 		
-		ViewsController homeController = new ViewsController();
+		ViewsController viewController = new ViewsController();
 		
 		setPreferredSize(new Dimension (200,650));
 		setBackground(new Color(0, 153, 255));
@@ -60,8 +60,7 @@ public class HomeSidePanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Chiama imbarco view
-				//Change color for test purposes
-				homeController.imbarcoView();
+				viewController.imbarcoView();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -100,7 +99,7 @@ public class HomeSidePanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Chiama aggiungi view
-				homeController.aggiungiView();
+				viewController.aggiungiView();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -140,7 +139,7 @@ public class HomeSidePanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Chiama cerca view
-				homeController.cercaView();
+				viewController.cercaView();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -181,7 +180,7 @@ public class HomeSidePanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			//Chiama elimina view
-				homeController.eliminaView();
+				viewController.eliminaView();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -219,7 +218,7 @@ public class HomeSidePanel extends JPanel {
 		logoutButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked (MouseEvent e) {
-				homeController.logout();
+				viewController.logout();
 			}
 		});
 		//gc.anchor = GridBagConstraints.CENTER;
