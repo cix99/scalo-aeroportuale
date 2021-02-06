@@ -61,6 +61,35 @@ public class PrenotazioneDAO extends JDBC {
         }
         return PrenotaioneList;
     }
+    
+    public LinkedList<Prenotazione> findByTrattaId(int trattaId){
+        String query = "SELECT * FROM " + tableName + " WHERE id_tratta = ?";
+        LinkedList<Prenotazione> PrenotazioneList = new LinkedList<Prenotazione>();
+        CodaDAO codaDAO = new CodaDAO();
+        CentoKilometriDAO centoKilometriDAO = new CentoKilometriDAO();
+        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setInt(1, trattaId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Prenotazione prenotazione = new Prenotazione();
+                prenotazione.setId(resultSet.getString("id"));
+                prenotazione.setIdTratta(resultSet.getInt("id_tratta"));
+                prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
+                prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
+                prenotazione.setCoda(codaDAO.findByName(resultSet.getString("coda")));
+                prenotazione.setCentoKilometri(centoKilometriDAO.findByCode(resultSet.getString("cento_kilometri")));
+                prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                PrenotazioneList.add(prenotazione);
+            }
+            resultSet.close();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return PrenotazioneList;
+    }
 
     public Prenotazione first(){
     	LinkedList<Prenotazione> PrenotaioneList = find();

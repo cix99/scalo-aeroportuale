@@ -1,7 +1,11 @@
 package Controllers;
+import java.util.LinkedList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Models.Prenotazione;
+import Models.Tratta;
 import Views.*;
 
 public class ViewsController {
@@ -10,7 +14,7 @@ public class ViewsController {
 	LoginView loginFrame = null;
 	JFrame newFrame = null;
 	
-	
+	DatabaseController dbController = new DatabaseController();
 	
     public void viewLoginView() {
     	loginFrame = new LoginView(this);
@@ -31,13 +35,13 @@ public class ViewsController {
 		homeFrame.setVisible(false);
 	}
 	
-	public void getTrattaInfoFromGate(JPanel mainPanel, String nomeGate) {
+	public void loadImbarcoCenterPanel(JPanel mainPanel, String nomeGate) {
 		//Cerca le info usando il database controller e salva tutto in una variabile di tipo Tratta
-		
-		
+		LinkedList<Tratta> tratte = dbController.getTrattaInfoFromGate(nomeGate);
+		LinkedList<Prenotazione> prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
 		//Una volta ottenuta la tratta, chiama una funzione che crea un nuovo panel in ImbarcoView
-		((ImbarcoView) newFrame).showTrattaInfoView(); //(tratta)
-		((ImbarcoView) newFrame).showListaPrenotati();
+		((ImbarcoView) newFrame).showTrattaInfoView(tratte.getFirst()); //(tratta)
+		((ImbarcoView) newFrame).showListaPrenotati(prenotati);
 	}
 	
 	public void aggiungiView() {

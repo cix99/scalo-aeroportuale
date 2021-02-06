@@ -49,6 +49,7 @@ public class TrattaDAO extends JDBC {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Tratta tratta = new Tratta();
+                tratta.setId(resultSet.getInt("id"));
                 tratta.setDestinazione(resultSet.getString("destinazione"));
                 tratta.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
                 tratta.setOraInizioImbarco(resultSet.getTimestamp("ora_inizio_imbarco").toLocalDateTime());
@@ -64,6 +65,39 @@ public class TrattaDAO extends JDBC {
         }catch(SQLException e){
             System.out.println(e);
         }
+        return TrattaList;
+    }
+    
+    public LinkedList<Tratta> findTrattaByGate(String nomeGate){
+        String query = "SELECT * FROM " + tableName + " WHERE gate = ?";
+        //String test = "'1'";
+        LinkedList<Tratta> TrattaList = new LinkedList<Tratta>();
+        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        GateDAO gateDAO = new GateDAO();
+
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, nomeGate);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Tratta tratta = new Tratta();
+                tratta.setId(resultSet.getInt("id"));
+                tratta.setDestinazione(resultSet.getString("destinazione"));
+                tratta.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                tratta.setOraInizioImbarco(resultSet.getTimestamp("ora_inizio_imbarco").toLocalDateTime());
+                tratta.setOraFineImbarcoStimato(resultSet.getTimestamp("ora_fine_imbarco_stimato").toLocalDateTime());
+                tratta.setOraFineImbarcoEffettivo(resultSet.getTimestamp("ora_fine_imbarco_effettivo").toLocalDateTime());
+                tratta.setStatoImbarco(Stato.valueOf(resultSet.getString("stato_imbarco")));
+                tratta.setRitardo(resultSet.getBoolean("ritardo"));
+                tratta.setGate(gateDAO.findByName(resultSet.getString("gate")));
+                TrattaList.add(tratta);
+            }
+            resultSet.close();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        
         return TrattaList;
     }
 
