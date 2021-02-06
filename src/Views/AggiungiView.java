@@ -1,23 +1,30 @@
 package Views;
 
-import java.awt.CardLayout;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
-public class AggiungiView extends JPanel{
+public class AggiungiView extends JFrame{
 
 private JLabel label;
 	
 	public AggiungiView () {	
-		setPreferredSize (new Dimension(800,650));
-		setBackground(new Color(0, 0, 0));
-		setLayout(new CardLayout());
+		setTitle("Aggiungi");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
+		setIconImage(logoImage);
+		setBounds(50, 50, 1150, 650);
+		setMinimumSize(new Dimension (1150,700));		
+		setLayout(new BorderLayout(0, 0));
 		
 		label = new JLabel("Hai scelto Aggiungi menu");
 		label.setHorizontalAlignment(SwingConstants.CENTER);

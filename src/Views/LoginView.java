@@ -34,15 +34,14 @@ public class LoginView extends JFrame {
 	private JLabel sfondoLabel;
 	
 	/* Create the frame. */
-	public LoginView() {
+	public LoginView(ViewsController controller) {
 
-		ViewsController homeController = new ViewsController();
 		setResizable(false);
 		setTitle("Login-ScaloAeroportiale.java");
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
 		setIconImage(logoImage);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 808, 547);
+		setBounds(0, 0, 808, 547);
 		contentPane = new JPanel();
 		contentPane.setBorder(UIManager.getBorder("Button.border"));
 		setContentPane(contentPane);
@@ -58,7 +57,7 @@ public class LoginView extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				homeController.login(usernameField.getText(), passwordField.getPassword());
+				controller.login(usernameField.getText(), passwordField.getPassword());
 				
 			}
 		});
@@ -86,9 +85,8 @@ public class LoginView extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					homeController.login(usernameField.getText(), passwordField.getPassword());
+					controller.login(usernameField.getText(), passwordField.getPassword());
 				   }
-				
 			}
 		});
 		usernameField.setToolTipText("Inserisci e_mail");
@@ -102,7 +100,7 @@ public class LoginView extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					homeController.login(usernameField.getText(), passwordField.getPassword());
+					controller.login(usernameField.getText(), passwordField.getPassword());
 				   }
 			}
 		});

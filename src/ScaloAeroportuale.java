@@ -23,22 +23,17 @@ public class ScaloAeroportuale {
 //        prenotazione.store();
 //         */
 //
-//
 //        Tratta tratta = new Tratta();
 //        TrattaDAO trattaDao = new TrattaDAO();
 //        tratta = trattaDao.first();
 //
 //        System.out.println(tratta.compagniaAerea.nomeCompagnia);
 //
-//
 //        //HomeController.view();
 //    }
 	
-	
 	public static void main(String[] args) {
 		ViewsController homeController = new ViewsController();
-		//homeController.viewHomeView();
 		homeController.viewLoginView();
-		//HomeController.view("LoginView");
 	}
 }
