@@ -1,10 +1,11 @@
 package Views;
 
+import Views.CercaView.CercaView;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.Toolkit;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -40,24 +41,33 @@ public class HomeView extends JFrame {
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
 		
 	}
+
+	public void removeCenterPanel(){
+		BorderLayout layout = (BorderLayout)mainPanel.getLayout();
+		mainPanel.remove(layout.getLayoutComponent(BorderLayout.CENTER));
+	}
 	
 	public void createImbarcoView () {
 		centerPanel = new ImbarcoView();
+		removeCenterPanel();
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
 	}
 	
 	public void createAggiungiView () {
 		JPanel panel = new AggiungiView();
+		removeCenterPanel();
 		mainPanel.add(panel, BorderLayout.CENTER);
 	}
 	
 	public void createCercaView () {
 		JPanel panel = new CercaView();
+		removeCenterPanel();
 		mainPanel.add(panel, BorderLayout.CENTER);
 	}
 	
 	public void createEliminaView () {
 		JPanel panel = new EliminaView();
+		removeCenterPanel();
 		mainPanel.add(panel, BorderLayout.CENTER);
 	}
 
