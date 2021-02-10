@@ -14,7 +14,7 @@ public class GateDAO extends JDBC {
         String query = "INSERT INTO " + tableName + " VALUES (?)";
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setString(1, gate.nomeGate);
+            statement.setString(1, gate.getNomeGate());
             statement.executeUpdate();
         }catch(SQLException e){
             System.out.println(e);
@@ -44,7 +44,7 @@ public class GateDAO extends JDBC {
             statement.setString(1, nome);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                gate.nomeGate = resultSet.getString("nome_gate");
+                gate.setNomeGate(resultSet.getString("nome_gate"));
                 break;
             }
             resultSet.close();
@@ -63,7 +63,7 @@ public class GateDAO extends JDBC {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Gate gate = new Gate();
-                gate.nomeGate = resultSet.getString("nome_gate");
+                gate.setNomeGate(resultSet.getString("nome_gate"));
                 gateList.add(gate);
             }
             resultSet.close();

@@ -15,7 +15,7 @@ public class CompagniaAereaDAO {
         String query = "INSERT INTO " + tableName + " VALUES (?)";
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setString(1, compagniaAerea.nomeCompagnia);
+            statement.setString(1, compagniaAerea.getNomeCompagnia());
             statement.executeUpdate();
             statement.close();
         }catch(SQLException e){
@@ -32,7 +32,7 @@ public class CompagniaAereaDAO {
             statement.setString(1, nome);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                compagniaAerea.nomeCompagnia = resultSet.getString("nome_compagnia");
+                compagniaAerea.setNomeCompagnia(resultSet.getString("nome_compagnia"));
                 break;
             }
             resultSet.close();
@@ -53,7 +53,7 @@ public class CompagniaAereaDAO {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 CompagniaAerea compagniaAerea = new CompagniaAerea();
-                compagniaAerea.nomeCompagnia = resultSet.getString("nome_compagnia");
+                compagniaAerea.setNomeCompagnia(resultSet.getString("nome_compagnia"));
                 compagniaAereaList.add(compagniaAerea);
             }
             resultSet.close();

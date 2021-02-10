@@ -3,7 +3,7 @@ package Models;
 
 public class Coda {
 
-    public String nomeCoda;
+    private String nomeCoda;
 
     public Coda(String nomeCoda) {
 		super();
@@ -13,8 +13,12 @@ public class Coda {
 	public Coda() {
 	}
 	
-	public String getName () {
-		return this.nomeCoda;
+	public String getNomeCoda () {
+		return nomeCoda;
+	}
+
+	public void setNomeCoda(String nomeCoda) {
+		this.nomeCoda = nomeCoda;
 	}    
 
 }

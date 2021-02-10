@@ -16,7 +16,7 @@ public class CodaDAO extends JDBC {
 
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setString(1, coda.nomeCoda);
+            statement.setString(1, coda.getNomeCoda());
             statement.executeUpdate();
             statement.close();
         }catch(SQLException e){
@@ -33,7 +33,7 @@ public class CodaDAO extends JDBC {
             statement.setString(1, nome);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                coda.nomeCoda = resultSet.getString("nome_coda");
+                coda.setNomeCoda(resultSet.getString("nome_coda"));
                 break;
             }
             resultSet.close();
@@ -54,7 +54,7 @@ public class CodaDAO extends JDBC {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Coda coda = new Coda();
-                coda.nomeCoda = resultSet.getString("nome_coda");
+                coda.setNomeCoda(resultSet.getString("nome_coda"));
                 codaList.add(coda);
             }
             resultSet.close();
