@@ -1,5 +1,8 @@
 package Views.AggiungiView;
 
+import Controllers.ViewsController;
+import Views.HomeTopPanel;
+
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,6 +20,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
 public class AggiungiView extends JFrame{
@@ -25,8 +30,11 @@ public class AggiungiView extends JFrame{
 	private JPanel topPanel;
 	private JPanel sidePanel;
 	private JPanel centerPanel;
-	
-	public AggiungiView () {	
+
+	JPanel backButtonPanel;
+	JButton backButton;
+
+	public AggiungiView (ViewsController controller) {
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
 		setIconImage(logoImage);
 		setTitle("Aggiungi");
@@ -39,9 +47,21 @@ public class AggiungiView extends JFrame{
 		mainPanel.setBorder(new EmptyBorder(0, 5, 5, 5));
 		setContentPane(mainPanel);
 		
-		topPanel = new JPanel(new FlowLayout());
-		JButton btnNewButton = new JButton("Indietro");
-		add(btnNewButton);
+		topPanel = new JPanel(new BorderLayout());
+		backButtonPanel = new JPanel();
+		backButtonPanel.setLayout(new FlowLayout());
+		backButtonPanel.setBackground(new Color (0,0,153));
+		backButtonPanel.setMinimumSize(new Dimension (50,10));
+		backButton = new JButton("back");
+		backButtonPanel.add(backButton);
+		backButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controller.backToHomeView();
+			}
+		});
+		topPanel.add(backButtonPanel, BorderLayout.EAST);
+		topPanel.add(new HomeTopPanel(), BorderLayout.WEST);
 		
 		//sidePanel		
 		sidePanel = new JPanel(new GridLayout(5, 1, 0, 10));

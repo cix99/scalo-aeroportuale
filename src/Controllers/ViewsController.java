@@ -10,6 +10,7 @@ import Models.Prenotazione;
 import Models.Tratta;
 import Models.Utente;
 import Views.*;
+import Views.AggiungiView.AggiungiView;
 import Views.CercaView.CercaView;
 
 public class ViewsController {
@@ -54,7 +55,7 @@ public class ViewsController {
 	}
 	
 	public void aggiungiView() {
-		newFrame = new AggiungiView ();
+		newFrame = new AggiungiView(this);
 		newFrame.setVisible(true);
 		homeFrame.setVisible(false);
 	}

@@ -33,9 +33,8 @@ public class LoginView extends JFrame {
 	private JLabel sfondoLabel;
 	
 	/* Create the frame. */
-	public LoginView() {
+	public LoginView(ViewsController controller) {
 
-		ViewsController homeController = new ViewsController();
 		setResizable(false);
 		setTitle("Login-ScaloAeroportiale.java");
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
@@ -57,9 +56,7 @@ public class LoginView extends JFrame {
 		accedi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
-				homeController.login(usernameField.getText(), passwordField.getPassword());
-				
+			controller.login(usernameField.getText(), passwordField.getPassword());
 			}
 		});
 		accedi.setFont(new Font("Century Schoolbook", Font.PLAIN, 18));
@@ -85,9 +82,9 @@ public class LoginView extends JFrame {
 		usernameField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					homeController.login(usernameField.getText(), passwordField.getPassword());
-				   }
+			if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+				controller.login(usernameField.getText(), passwordField.getPassword());
+			}
 				
 			}
 		});
@@ -101,9 +98,9 @@ public class LoginView extends JFrame {
 		passwordField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					homeController.login(usernameField.getText(), passwordField.getPassword());
-				   }
+			if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+				controller.login(usernameField.getText(), passwordField.getPassword());
+			}
 			}
 		});
 		passwordField.setBounds(540, 290, 207, 26);
