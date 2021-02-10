@@ -1,5 +1,8 @@
 package Views.CercaView;
 
+import Controllers.ViewsController;
+import Views.HomeTopPanel;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -7,15 +10,38 @@ import javax.swing.JPanel;
 import java.awt.event.ItemListener;
 
 @SuppressWarnings("serial")
-public class CercaView extends JPanel {
+public class CercaView extends JFrame {
 
-	public CercaView () {
-		setPreferredSize (new Dimension(800,650));
+	JPanel backButtonPanel;
+	JButton backButton;
+
+	public CercaView (ViewsController controller) {
+		setTitle("Inizia Imbarco");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
+		setIconImage(logoImage);
+		setBounds(175, 60, 1150, 650);
+		setMinimumSize(new Dimension (1150,700));
+
 		setBackground(new Color(0, 0, 0));
 		setLayout(new BorderLayout());
 
+		JPanel topPanel = new JPanel(new BorderLayout());
 		JPanel btnPanel = new JPanel();
 		JPanel contentPanel = new JPanel();
+
+		backButtonPanel = new JPanel();
+		backButtonPanel.setLayout(new FlowLayout());
+		backButtonPanel.setBackground(new Color (0,0,153));
+		backButtonPanel.setMinimumSize(new Dimension (50,10));
+		backButton = new JButton("back");
+		backButtonPanel.add(backButton);
+		backButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				controller.backToHomeView();
+			}
+		});
 
 		JPanel trattePanel = new CercaTratteView();
 		JPanel prenotazioniPanel = new CercaPrenotazioniView();
@@ -55,8 +81,13 @@ public class CercaView extends JPanel {
 		btnPanel.add(codeButton);
 		btnPanel.add(compagnieButton);
 
-		add(btnPanel, BorderLayout.NORTH);
+		topPanel.add(new HomeTopPanel(), BorderLayout.WEST);
+		topPanel.add(backButtonPanel, BorderLayout.EAST);
+		topPanel.add(btnPanel, BorderLayout.SOUTH);
+
+		add(topPanel, BorderLayout.NORTH);
 		add(contentPanel, BorderLayout.CENTER);
+
 	}
 
 

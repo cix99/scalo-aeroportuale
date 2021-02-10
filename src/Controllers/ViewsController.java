@@ -2,14 +2,15 @@ package Controllers;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Models.Prenotazione;
 import Models.Tratta;
+import Models.Utente;
 import Views.*;
+import Views.CercaView.CercaView;
 
 public class ViewsController {
 
@@ -59,8 +60,9 @@ public class ViewsController {
 	}
 	
 	public void cercaView() {
-		newFrame = new CercaView ();
+		newFrame = new CercaView(this);
 		newFrame.setVisible(true);
+		newFrame.setLocationRelativeTo(null);
 		homeFrame.setVisible(false);
 	}
 	
