@@ -25,7 +25,7 @@ public class HomeTopPanel extends JPanel {
 		
 		
 		OrarioLabel = new JLabel("1 2 : 4 5");
-		OrarioLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		OrarioLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
 		OrarioLabel.setBorder(new EmptyBorder(0, 10, 0, 0));
 		
 		DataLabel = new JLabel("DATA");
@@ -34,7 +34,7 @@ public class HomeTopPanel extends JPanel {
 		DataLabel.setBorder(new EmptyBorder(0, 10, 0, 0));
 		
 		DataCompletaLabel = new JLabel("M a r   2 6 / 0 1 / 2 0 2 0");
-		DataCompletaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		DataCompletaLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
 		DataCompletaLabel.setBorder(new EmptyBorder(0, 10, 0, 0));
 		
 		add(OraLabel);

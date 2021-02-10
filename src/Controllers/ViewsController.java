@@ -6,45 +6,15 @@ import java.util.Map;
 import javax.swing.JFrame;
 
 import Views.*;
+import Views.AggiungiView.AggiungiView;
 
 public class ViewsController {
-		
-	/*
-	 * Class cls = Class.forName(path of the class);
-	 * "Views/HomeView"
-	 * frameClass frame = (frameClass) cls.newInstance(); */
 	
-	//static Map<String, JFrame> frames = new HashMap<>();
 	static HomeView homeFrame = null;
 	static LoginView loginFrame = null;
+	static AggiungiView aggiungiFrame = null;
 	static String user;
-    
-//    public static JFrame getFrame(String frameName) {
-//    	if (frames.get(frameName) != null) {
-//    		 return frames.get(frameName);
-//    	}
-//           
-//    	return instantiateFrame (frameName);
-//    }
-//    
-//    private static JFrame instantiateFrame (String frameName) {
-//		try {
-//			Class cls = Class.forName("Views/" + frameName);
-//	    	JFrame frame = (JFrame) cls.newInstance();
-//			frames.put(frameName, frame);
-//			return frame;
-//		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//    	return null;
-//    	
-//    }
-//	
-//    public static void view(String frameName){
-//		getFrame(frameName).setVisible(true);
-//    }
-    
+	
 	
 	
     public static void viewLoginView() {
@@ -56,6 +26,13 @@ public class ViewsController {
     public static void viewHomeView() {
     	homeFrame = new HomeView();
     	homeFrame.setVisible(true);
+    }
+    
+    public static void viewAggiungiView() {
+    	aggiungiFrame = new AggiungiView();
+    	aggiungiFrame.setVisible(true);
+    	homeFrame = new HomeView();
+    	homeFrame.setVisible(false);
     }
 
 	public static void setUser(String username) {
@@ -104,5 +81,24 @@ public class ViewsController {
     	homeFrame.setVisible(false);
     	loginFrame.setVisible(true);
     }
-    
+
+//	public void nuovaTrattaView() {
+//	}
+//    
+//	public void nuovaCompagniaView() {
+//		
+//		
+//	}
+//	
+//	public void nuovoGateView() {
+//		
+//	}
+//	
+//	public void nuovoCKView() {
+//		
+//	}
+//	
+//	public void nuovaPrenotazioneView() {
+//		
+//	}
 }
