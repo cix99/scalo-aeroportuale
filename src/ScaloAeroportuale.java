@@ -1,5 +1,7 @@
 import Controllers.*;
 
+import java.util.Locale;
+
 public class ScaloAeroportuale {
 
 //    public static void main(String[] args) {
@@ -14,6 +16,7 @@ public class ScaloAeroportuale {
 //    }
 	
 	public static void main(String[] args) {
+		Locale.setDefault(new Locale("it", "IT"));
 		ViewsController homeController = new ViewsController();
 		homeController.viewLoginView();
 	}
