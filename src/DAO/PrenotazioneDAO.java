@@ -13,18 +13,19 @@ public class PrenotazioneDAO extends JDBC {
 	private String tableName = "prenotazione";
 	
 	public Prenotazione store(Prenotazione prenotazione){
-        String query = "INSERT INTO " + tableName + " (id, id_tratta, nome_passeggero, cognome_passeggero, coda, cento_kilometri, compagnia_aerea) VALUES  (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO " + tableName + " (id, id_tratta, codice_prenotazione, nome_passeggero, cognome_passeggero, coda, cento_kilometri, compagnia_aerea) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             UUID uuid = UUID.randomUUID();
             statement.setString(1, uuid.toString());
             statement.setInt(2, prenotazione.getIdTratta());
-            statement.setString(3, prenotazione.getNomePasseggero());
-            statement.setObject(4, prenotazione.getNomePasseggero());
-            statement.setObject(5, prenotazione.getCoda());
-            statement.setObject(6, prenotazione.getCentoKilometri());
-            statement.setString(7, prenotazione.getCompagniaAerea().getNomeCompagnia());
+            statement.setString(3,prenotazione.getCodicePrenotazione());
+            statement.setString(4, prenotazione.getNomePasseggero());
+            statement.setString(5, prenotazione.getCognomePasseggero());
+            statement.setObject(6, prenotazione.getCoda());
+            statement.setObject(7, prenotazione.getCentoKilometri());
+            statement.setString(8, prenotazione.getCompagniaAerea().getNomeCompagnia());
             statement.executeUpdate();
             statement.close();
         }catch(SQLException e){
@@ -47,6 +48,7 @@ public class PrenotazioneDAO extends JDBC {
                 Prenotazione prenotazione = new Prenotazione();
                 prenotazione.setId(resultSet.getString("id"));
                 prenotazione.setIdTratta(resultSet.getInt("id_tratta"));
+                prenotazione.setCodicePrenotazione(resultSet.getString("codice_prenotazione"));
                 prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
                 prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
                 prenotazione.setCoda(codaDAO.findByName(resultSet.getString("coda")));
@@ -76,6 +78,7 @@ public class PrenotazioneDAO extends JDBC {
                 Prenotazione prenotazione = new Prenotazione();
                 prenotazione.setId(resultSet.getString("id"));
                 prenotazione.setIdTratta(resultSet.getInt("id_tratta"));
+                prenotazione.setCodicePrenotazione(resultSet.getString("codice_prenotazione"));
                 prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
                 prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
                 prenotazione.setCoda(codaDAO.findByName(resultSet.getString("coda")));

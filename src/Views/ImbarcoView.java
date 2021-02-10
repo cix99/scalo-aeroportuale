@@ -6,8 +6,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -20,7 +25,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import Controllers.ViewsController;
 import Models.Prenotazione;
@@ -47,9 +54,9 @@ public class ImbarcoView extends JFrame{
 	
 	private JScrollPane scrollPane;
 	private JTable table;
-	private String[] columnNames = {"Coda", "Nome", "Cognome", "Codice", "CK", "Imbarcato"};
-	private Object[][] data;
-	// = {{"Premium", "Mario", "Rossi", "ABC303", "Si", "Si"}, {"Standard", "Luigi", "Verdi", "BDC127", "Si", "No"},
+	private TableModel tableModel;
+	//private String[] columnNames = {"Coda", "Nome", "Cognome", "Codice", "CK", "Imbarcato"};
+	//private Object[][] data = {{"Premium", "Mario", "Rossi", "ABC303", "Si", "Si"}, {"Standard", "Luigi", "Verdi", "BDC127", "Si", "No"},
 	//		{"Standard", "Wario", "Gialli", "ZBE329", "No", "No"}};
 
 	public ImbarcoView (ViewsController controller) {	
@@ -141,21 +148,40 @@ public class ImbarcoView extends JFrame{
 	}
 	
 	public void showListaPrenotati(LinkedList<Prenotazione> prenotati) { //(List prenotati) ?
-		data = new Object[100][6];
-		ListIterator<Prenotazione> cursor = prenotati.listIterator();
-		for (int i = 0; cursor.hasNext(); i ++) {
-				Prenotazione current = cursor.next();
-				data[i][0] = current.getCoda().getNomeCoda();
-				data[i][1] = current.getNomePasseggero();
-				data[i][2] = current.getCognomePasseggero();
-				data[i][3] = "AAA000";
-				data[i][4] = "no";
-				data[i][5] = "no";
-		}
-		table = new JTable(data, columnNames);
+//		data = new Object[100][6];
+//		ListIterator<Prenotazione> cursor = prenotati.listIterator();
+//		for (int i = 0; cursor.hasNext(); i ++) {
+//				Prenotazione current = cursor.next();
+//				data[i][0] = current.getCoda().getNomeCoda();
+//				data[i][1] = current.getNomePasseggero();
+//				data[i][2] = current.getCognomePasseggero();
+//				data[i][3] = current.getCentoKilometri().getCodiceCompagnia();
+//				data[i][4] = "no";
+//				data[i][5] = new Boolean (false);
+//		}
+		tableModel = new TableModel();
+		//table = new JTable(data, columnNames);
+		table = new JTable(tableModel);
+		setData(prenotati);
 		scrollPane = new JScrollPane(table);
+		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
+		tableRenderer.setHorizontalAlignment(JLabel.CENTER);
+		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer);
+		table.getColumnModel().getColumn(1).setCellRenderer(tableRenderer);
+		table.getColumnModel().getColumn(2).setCellRenderer(tableRenderer);
+		table.getColumnModel().getColumn(3).setCellRenderer(tableRenderer);
+		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer);
+		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		//table.setFillsViewportHeight(true);
 		mainPanel.add(scrollPane, BorderLayout.SOUTH);
 		mainPanel.revalidate();
+	}
+	
+	public void setData (LinkedList<Prenotazione> prenotati) {
+		tableModel.setData(prenotati);
+	}
+	
+	public void tableRefresh() {
+		tableModel.fireTableDataChanged();
 	}
 }

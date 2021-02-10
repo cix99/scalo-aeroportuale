@@ -4,6 +4,7 @@ public class Prenotazione{
 
 	private String id;
 	private int idTratta;
+	private String codicePrenotazione;
 	private String nomePasseggero;
 	private String cognomePasseggero;
 	private Coda coda;
@@ -32,6 +33,10 @@ public class Prenotazione{
 		return idTratta;
 	}
 
+	public String getCodicePrenotazione() {
+		return codicePrenotazione;
+	}
+	
 	public String getNomePasseggero() {
 		return nomePasseggero;
 	}
@@ -58,6 +63,10 @@ public class Prenotazione{
 
 	public void setIdTratta(int idTratta) {
 		this.idTratta = idTratta;
+	}
+	
+	public void setCodicePrenotazione (String codicePrenotazione) {
+		this.codicePrenotazione = codicePrenotazione;
 	}
 
 	public void setNomePasseggero(String nomePasseggero) {

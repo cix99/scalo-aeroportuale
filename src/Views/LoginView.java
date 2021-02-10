@@ -89,7 +89,6 @@ public class LoginView extends JFrame {
 				   }
 			}
 		});
-		usernameField.setToolTipText("Inserisci e_mail");
 		usernameField.setBounds(561, 199, 186, 28);
 		contentPane.add(usernameField);
 		usernameField.setColumns(10);

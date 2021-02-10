@@ -1,7 +1,10 @@
 package Controllers;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Models.Prenotazione;
@@ -16,10 +19,15 @@ public class ViewsController {
 	
 	DatabaseController dbController = new DatabaseController();
 	
+	Utente utenti;
+	private boolean logedIn = false;
+	
     public void viewLoginView() {
     	loginFrame = new LoginView(this);
     	loginFrame.setVisible(true);
     	loginFrame.setLocationRelativeTo(null);
+    	utenti = new Utente();
+		
     }
     
     public void viewHomeView(String username) {
@@ -70,12 +78,23 @@ public class ViewsController {
 	
 	public void login(String username, char[] cs) {
     	String input = new String (cs);
-    	String password = "password";
-    	String password0 = "";
-    	if((username.equals("admin") && input.equals(password)) || (username.equals("") && input.equals(password0))) {
-    		loginFrame.setVisible(false);
-    		viewHomeView(username);
-    	}
+    	
+		LinkedList<Utente> listaUtenti = utenti.getListaUtenti();
+		ListIterator<Utente> cursor = listaUtenti.listIterator();
+		while (cursor.hasNext()) {
+			Utente current = cursor.next();
+			if (current.getUtenteName().equals(username) && current.getUtentePassword().equals(input)) {
+				loginFrame.setVisible(false);
+	    		viewHomeView(username);
+	    		logedIn = true;
+	    		break;
+			}
+		}
+		if (logedIn == false) {
+			JOptionPane.showMessageDialog(loginFrame, "Username o password sbagliati", "Login error", JOptionPane.ERROR_MESSAGE);
+			loginFrame.getUsername().setText("");
+			loginFrame.getPassword().setText("");
+		}
     }
 	
 	public void logout(){
