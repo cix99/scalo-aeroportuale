@@ -27,17 +27,14 @@ public class HomeSidePanel extends JPanel {
 	private JLabel aggiungiLabel;
 	private JPanel cercaPanel;
 	private JLabel cercaLabel;
-	private JPanel eliminaPanel;
-	private JLabel eliminaLabel;
+	private JPanel statistichePanel;
+	private JLabel statisticheLabel;
 	private JPanel logoutPanel;
 	
-	public HomeSidePanel () {
-		
-		ViewsController viewController = new ViewsController();
+	public HomeSidePanel (ViewsController controller) {
 		
 		setPreferredSize(new Dimension (200,650));
 		setBackground(new Color(0, 153, 255));
-		//setLayout(null);
 		setBorder(new EmptyBorder(10, 0, 0, 0));
 		setLayout(new GridLayout(5, 1, 0, 10));
 		
@@ -60,7 +57,7 @@ public class HomeSidePanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Chiama imbarco view
-				viewController.imbarcoView();
+				controller.imbarcoView();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -99,7 +96,7 @@ public class HomeSidePanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Chiama aggiungi view
-				viewController.aggiungiView();
+				controller.aggiungiView();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -139,7 +136,7 @@ public class HomeSidePanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//Chiama cerca view
-				viewController.cercaView();
+				controller.cercaView();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -162,43 +159,43 @@ public class HomeSidePanel extends JPanel {
 		});
 		
 		/* Elimina option */
-		eliminaPanel = new JPanel();
+		statistichePanel = new JPanel();
 		
-		eliminaPanel.setBackground(new Color(0, 204, 255));
-		eliminaPanel.setBounds(0, 295, 200, 85);
-		eliminaPanel.setLayout(new GridBagLayout());
-		add(eliminaPanel);
+		statistichePanel.setBackground(new Color(0, 204, 255));
+		statistichePanel.setBounds(0, 295, 200, 85);
+		statistichePanel.setLayout(new GridBagLayout());
+		add(statistichePanel);
 		
-		eliminaLabel = new JLabel("Elimina");
-		eliminaLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		eliminaLabel.setForeground(Color.WHITE);
-		eliminaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		statisticheLabel = new JLabel("Statistiche");
+		statisticheLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		statisticheLabel.setForeground(Color.WHITE);
+		statisticheLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		
-		eliminaPanel.add(eliminaLabel, gc);
+		statistichePanel.add(statisticheLabel, gc);
 		
-		eliminaPanel.addMouseListener(new MouseAdapter() {
+		statistichePanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			//Chiama elimina view
-				viewController.eliminaView();
+				controller.statisticheView();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				eliminaLabel.setForeground(new Color (220, 220, 220));
+				statisticheLabel.setForeground(new Color (220, 220, 220));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				eliminaLabel.setForeground(Color.WHITE);
+				statisticheLabel.setForeground(Color.WHITE);
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				eliminaLabel.setForeground(new Color (150, 150, 150));
-				eliminaPanel.setBackground(new Color(0, 180, 255));
+				statisticheLabel.setForeground(new Color (150, 150, 150));
+				statistichePanel.setBackground(new Color(0, 180, 255));
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				eliminaLabel.setForeground(Color.WHITE);
-				eliminaPanel.setBackground(new Color(0, 204, 255));
+				statisticheLabel.setForeground(Color.WHITE);
+				statistichePanel.setBackground(new Color(0, 204, 255));
 			}
 		});
 		
@@ -218,7 +215,7 @@ public class HomeSidePanel extends JPanel {
 		logoutButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked (MouseEvent e) {
-				viewController.logout();
+				controller.logout();
 			}
 		});
 		//gc.anchor = GridBagConstraints.CENTER;

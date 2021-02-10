@@ -13,12 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
-public class AggiungiView extends JFrame{
+public class StatisticheView extends JFrame{
 
 private JLabel label;
 	
-	public AggiungiView () {	
-		setTitle("Aggiungi");
+	public StatisticheView () {	
+		setTitle("Statistiche");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
 		setIconImage(logoImage);
@@ -26,7 +26,7 @@ private JLabel label;
 		setMinimumSize(new Dimension (1150,700));		
 		setLayout(new BorderLayout(0, 0));
 		
-		label = new JLabel("Hai scelto Aggiungi menu");
+		label = new JLabel("Hai scelto Statistiche menu");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		label.setForeground(Color.WHITE);

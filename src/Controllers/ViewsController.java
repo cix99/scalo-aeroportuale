@@ -1,104 +1,103 @@
 package Controllers;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
+import Models.Prenotazione;
+import Models.Tratta;
 import Views.*;
 
 public class ViewsController {
-		
-	/*
-	 * Class cls = Class.forName(path of the class);
-	 * "Views/HomeView"
-	 * frameClass frame = (frameClass) cls.newInstance(); */
-	
-	//static Map<String, JFrame> frames = new HashMap<>();
-	static HomeView homeFrame = null;
-	static LoginView loginFrame = null;
-	static String user;
-    
-//    public static JFrame getFrame(String frameName) {
-//    	if (frames.get(frameName) != null) {
-//    		 return frames.get(frameName);
-//    	}
-//           
-//    	return instantiateFrame (frameName);
-//    }
-//    
-//    private static JFrame instantiateFrame (String frameName) {
-//		try {
-//			Class cls = Class.forName("Views/" + frameName);
-//	    	JFrame frame = (JFrame) cls.newInstance();
-//			frames.put(frameName, frame);
-//			return frame;
-//		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//    	return null;
-//    	
-//    }
-//	
-//    public static void view(String frameName){
-//		getFrame(frameName).setVisible(true);
-//    }
-    
-	
-	
-    public static void viewLoginView() {
-    	loginFrame = new LoginView();
-    	loginFrame.setVisible(true);
-    	
-    }
-    
-    public static void viewHomeView() {
-    	homeFrame = new HomeView();
-    	homeFrame.setVisible(true);
-    }
 
-	public static void setUser(String username) {
-		user = username;
-	}
+	HomeView homeFrame = null;
+	LoginView loginFrame = null;
+	JFrame newFrame = null;
 	
-	public static String getUser () {
-		return user;
-	}
+	DatabaseController dbController = new DatabaseController();
+	
+	Utente utenti;
+	private boolean logedIn = false;
+	
+    public void viewLoginView() {
+    	loginFrame = new LoginView(this);
+    	loginFrame.setVisible(true);
+    	loginFrame.setLocationRelativeTo(null);
+    	utenti = new Utente();
+		
+    }
+    
+    public void viewHomeView(String username) {
+    	homeFrame = new HomeView(this, username);
+    	homeFrame.setVisible(true);
+    	homeFrame.setLocationRelativeTo(null);
+    }
 
 	public void imbarcoView() {
-		homeFrame.createImbarcoView();
-		homeFrame.setVisible(true);
+		newFrame = new ImbarcoView (this);
+		newFrame.setVisible(true);
+		newFrame.setLocationRelativeTo(null);
+		homeFrame.setVisible(false);
+	}
+	
+	public void loadImbarcoCenterPanel(JPanel mainPanel, String nomeGate) {
+		//Cerca le info usando il database controller e salva tutto in una variabile di tipo Tratta
+		LinkedList<Tratta> tratte = dbController.getTrattaInfoFromGate(nomeGate);
+		LinkedList<Prenotazione> prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
+		//Una volta ottenuta la tratta, chiama una funzione che crea un nuovo panel in ImbarcoView
+		((ImbarcoView) newFrame).showTrattaInfoView(tratte.getFirst()); //(tratta)
+		((ImbarcoView) newFrame).showListaPrenotati(prenotati);
 	}
 	
 	public void aggiungiView() {
-		homeFrame.createAggiungiView();
-		homeFrame.setVisible(true);
+		newFrame = new AggiungiView ();
+		newFrame.setVisible(true);
+		homeFrame.setVisible(false);
 	}
 	
 	public void cercaView() {
-		homeFrame.createCercaView();
-		homeFrame.setVisible(true);
+		newFrame = new CercaView ();
+		newFrame.setVisible(true);
+		homeFrame.setVisible(false);
 	}
 	
-	public void eliminaView() {
-		homeFrame.createEliminaView();
-		homeFrame.setVisible(true);
+	public void statisticheView() {
+		newFrame = new StatisticheView ();
+		newFrame.setVisible(true);
+		homeFrame.setVisible(false);
 	}
+	
+	public void backToHomeView() {
+		newFrame.setVisible(false);
+    	homeFrame.setVisible(true);
+    	//homeFrame.setLocationRelativeTo(null);
+    }
 	
 	public void login(String username, char[] cs) {
     	String input = new String (cs);
-    	String password = "password";
-    	String password0 = "";
-    	if((username.equals("admin") && input.equals(password)) || (username.equals("") && input.equals(password0))) {
-    		loginFrame.setVisible(false);
-    		setUser(username);
-    		viewHomeView();
-    	}
+    	
+		LinkedList<Utente> listaUtenti = utenti.getListaUtenti();
+		ListIterator<Utente> cursor = listaUtenti.listIterator();
+		while (cursor.hasNext()) {
+			Utente current = cursor.next();
+			if (current.getUtenteName().equals(username) && current.getUtentePassword().equals(input)) {
+				loginFrame.setVisible(false);
+	    		viewHomeView(username);
+	    		logedIn = true;
+	    		break;
+			}
+		}
+		if (logedIn == false) {
+			JOptionPane.showMessageDialog(loginFrame, "Username o password sbagliati", "Login error", JOptionPane.ERROR_MESSAGE);
+			loginFrame.getUsername().setText("");
+			loginFrame.getPassword().setText("");
+		}
     }
 	
 	public void logout(){
-
 		loginFrame.getUsername().setText("");
 		loginFrame.getPassword().setText("");
     	homeFrame.setVisible(false);
