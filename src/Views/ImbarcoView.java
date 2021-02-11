@@ -10,6 +10,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -22,11 +23,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableRowSorter;
 
 import Controllers.ViewsController;
 import Models.Prenotazione;
@@ -138,7 +142,7 @@ public class ImbarcoView extends JFrame{
 		mainPanel.revalidate();
 	}
 	
-	public void showListaPrenotati(LinkedList<Prenotazione> prenotati) { //(List prenotati) ?
+	public void showListaPrenotati(LinkedList<Prenotazione> prenotati, ViewsController controller) { 
 //		data = new Object[100][6];
 //		ListIterator<Prenotazione> cursor = prenotati.listIterator();
 //		for (int i = 0; cursor.hasNext(); i ++) {
@@ -150,7 +154,7 @@ public class ImbarcoView extends JFrame{
 //				data[i][4] = "no";
 //				data[i][5] = new Boolean (false);
 //		}
-		tableModel = new TableModelPrenotazione();
+		tableModel = new TableModelPrenotazione(controller);
 		//table = new JTable(data, columnNames);
 		table = new JTable(tableModel);
 		setData(prenotati);
@@ -165,6 +169,7 @@ public class ImbarcoView extends JFrame{
 		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer);
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		//table.setFillsViewportHeight(true);
+		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
 		
 		JPanel chiudiImbarcoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));

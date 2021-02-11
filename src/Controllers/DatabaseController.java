@@ -24,5 +24,9 @@ public class DatabaseController {
     	return prenotazioni;
     }
     
+    public void updateImbarcatoInDatabase(boolean value, String id) {
+    	PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
+    	prenotazioneDao.updateImbarcato(value, id);
+    }
     
 }

@@ -87,7 +87,7 @@ public class ViewsController {
 			if (dbController.getPrenotatiFromTratta(tratte.getFirst().getId()) != null) {
 				prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
 				if (prenotati.isEmpty() == false) {
-					((ImbarcoView) subFrame).showListaPrenotati(prenotati);
+					((ImbarcoView) subFrame).showListaPrenotati(prenotati, this);
 				}
 				else {
 					JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questo volo", "Nessuna prenotazione", JOptionPane.ERROR_MESSAGE);
@@ -125,5 +125,9 @@ public class ViewsController {
     	homeFrame.setVisible(true);
     	//homeFrame.setLocationRelativeTo(null);
     }
+	
+	public void updateImbarcatoInDatabase(boolean value, String id) {
+		dbController.updateImbarcatoInDatabase(value, id);
+	}
     
 }

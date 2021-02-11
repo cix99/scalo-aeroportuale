@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 
+import Controllers.ViewsController;
 import Models.Prenotazione;
 
 @SuppressWarnings("serial")
@@ -15,7 +16,10 @@ public class TableModelPrenotazione extends AbstractTableModel {
 	private String[] columnNames = {"Coda", "Nome", "Cognome", "Codice", "Cento Kilometri", "Imbarcato"};
 	private Boolean[] imbarcato = new Boolean[100];
 	
-	public TableModelPrenotazione () {
+	private ViewsController controller;
+	
+	public TableModelPrenotazione (ViewsController controller) {
+		this.controller = controller;
 	}
 	
 	public void setData (LinkedList<Prenotazione> prenotati) {
@@ -76,7 +80,10 @@ public class TableModelPrenotazione extends AbstractTableModel {
 		Prenotazione prenotazione = prenotati.get(rowIndex);
 		switch (columnIndex) {
 			case 5:
-				imbarcato[rowIndex] = (boolean) aValue;
+				//imbarcato[rowIndex] = (boolean) aValue;
+				prenotazione.setImbarcato((boolean) aValue);
+				//TODO: chiamare una funzione di update che aggiorni il valore nel database
+				controller.updateImbarcatoInDatabase((boolean) aValue, prenotazione.getId());
 				break;
 			default:
 				return;
@@ -105,7 +112,8 @@ public class TableModelPrenotazione extends AbstractTableModel {
 			}
 			
 		case 5:
-			return imbarcato[rowIndex];
+			//return imbarcato[rowIndex];
+			return prenotazione.getImbarcato();
 		default:
 			return null;
 		}

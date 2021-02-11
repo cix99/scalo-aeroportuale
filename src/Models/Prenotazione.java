@@ -10,6 +10,7 @@ public class Prenotazione{
 	private Coda coda;
 	private CentoKilometri centoKilometri;
     private CompagniaAerea compagniaAerea;
+    private boolean imbarcato;
 
     
     public Prenotazione(int idTratta, String nomePasseggero, String cognomePasseggero, Coda coda, CentoKilometri centoKilometri, CompagniaAerea compagniaAerea) {
@@ -57,6 +58,10 @@ public class Prenotazione{
 		return compagniaAerea;
 	}
 
+	public boolean getImbarcato() {
+		return imbarcato;
+	}
+	
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -87,6 +92,10 @@ public class Prenotazione{
 
 	public void setCompagniaAerea(CompagniaAerea compagniaAerea) {
 		this.compagniaAerea = compagniaAerea;
+	}
+	
+	public void setImbarcato(boolean imbarcato) {
+		this.imbarcato = imbarcato;
 	}
 
 }
