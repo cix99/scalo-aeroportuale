@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JOptionPane;
 
 import Models.*;
@@ -20,6 +21,9 @@ public class ViewsController {
 	private Utente utenti;
 	LinkedList<Utente> listaUtenti;
 	private boolean logedIn = false;
+	
+	LinkedList<Tratta> tratte;
+	LinkedList<Prenotazione> prenotati;
 	
 	private DatabaseController dbController = new DatabaseController();
 	
@@ -44,6 +48,7 @@ public class ViewsController {
     	
 		listaUtenti = utenti.getListaUtenti();
 		ListIterator<Utente> cursor = listaUtenti.listIterator();
+		//TODO: Problema: se viene effettuato il logout e si inseriscono credenziali sbagliate non appare più il JDialog
 		while (cursor.hasNext()) {
 			Utente current = cursor.next();
 			if (current.getUtenteName().equals(username) && current.getUtentePassword().equals(password)) {
@@ -63,7 +68,6 @@ public class ViewsController {
 		loginFrame.getUsername().setText("");
 		loginFrame.getPassword().setText("");
     	homeFrame.setVisible(false);
-    	loginFrame = new LoginView(this);
     	loginFrame.setVisible(true);
     }
     
@@ -74,13 +78,25 @@ public class ViewsController {
 		homeFrame.setVisible(false);
 	}
 	
-	public void loadImbarcoCenterPanel(JPanel mainPanel, String nomeGate) {
-		
-		LinkedList<Tratta> tratte = dbController.getTrattaInfoFromGate(nomeGate);
-		LinkedList<Prenotazione> prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
-
-		((ImbarcoView) subFrame).showTrattaInfoView(tratte.getFirst()); //(tratta)
-		((ImbarcoView) subFrame).showListaPrenotati(prenotati);
+	public void loadImbarcoCenterPanel(String nomeGate) {
+		((ImbarcoView) subFrame).emptyCenterPanel();
+			
+		tratte = dbController.getTrattaInfoFromGate(nomeGate);
+		if (tratte.isEmpty() == false) {
+			((ImbarcoView) subFrame).showTrattaInfoView(tratte.getFirst()); //(tratta)
+			if (dbController.getPrenotatiFromTratta(tratte.getFirst().getId()) != null) {
+				prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
+				if (prenotati.isEmpty() == false) {
+					((ImbarcoView) subFrame).showListaPrenotati(prenotati);
+				}
+				else {
+					JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questo volo", "Nessuna prenotazione", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+		else {
+			JOptionPane.showMessageDialog(subFrame, "Non ci sono tratte per questo gate", "Nessuna tratta trovata", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public void aggiungiView() {
@@ -98,7 +114,7 @@ public class ViewsController {
 	}
 	
 	public void statisticheView() {
-		subFrame = new StatisticheView ();
+		subFrame = new StatisticheView (this);
 		subFrame.setVisible(true);
 		subFrame.setLocationRelativeTo(null);
 		homeFrame.setVisible(false);

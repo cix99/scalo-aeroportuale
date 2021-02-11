@@ -8,13 +8,14 @@ import javax.swing.table.AbstractTableModel;
 import Models.Prenotazione;
 
 @SuppressWarnings("serial")
-public class TableModel extends AbstractTableModel {
+public class TableModelPrenotazione extends AbstractTableModel {
 
 	private LinkedList<Prenotazione> prenotati;
 	private int numberOfColumns = 6;
 	private String[] columnNames = {"Coda", "Nome", "Cognome", "Codice", "Cento Kilometri", "Imbarcato"};
+	private Boolean[] imbarcato = new Boolean[100];
 	
-	public TableModel () {
+	public TableModelPrenotazione () {
 	}
 	
 	public void setData (LinkedList<Prenotazione> prenotati) {
@@ -74,10 +75,9 @@ public class TableModel extends AbstractTableModel {
 		if (prenotati == null) return;
 		Prenotazione prenotazione = prenotati.get(rowIndex);
 		switch (columnIndex) {
-			case 1:
-				break;
 			case 5:
-				//save the checkmark in Imbarcato
+				imbarcato[rowIndex] = (boolean) aValue;
+				break;
 			default:
 				return;
 		}
@@ -105,7 +105,7 @@ public class TableModel extends AbstractTableModel {
 			}
 			
 		case 5:
-			return false;
+			return imbarcato[rowIndex];
 		default:
 			return null;
 		}

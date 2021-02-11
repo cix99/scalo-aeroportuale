@@ -4,6 +4,9 @@ import Controllers.ViewsController;
 import Views.TopPanel;
 
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 import javax.swing.*;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -70,10 +73,15 @@ public class CercaView extends JFrame {
 		btnPanel.add(codeButton);
 		btnPanel.add(compagnieButton);
 
-	
 		add(topPanel, BorderLayout.NORTH);
 		add(btnPanel, BorderLayout.CENTER);
 		add(contentPanel, BorderLayout.SOUTH);
+		
+		addComponentListener(new ComponentAdapter() {
+		    public void componentResized(ComponentEvent componentEvent) {
+		        topPanel.UpdateBackButton();
+		    }
+		});
 
 	}
 

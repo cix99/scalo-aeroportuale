@@ -73,19 +73,19 @@ public class PrenotazioneDAO extends JDBC {
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setInt(1, trattaId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Prenotazione prenotazione = new Prenotazione();
-                prenotazione.setId(resultSet.getString("id"));
-                prenotazione.setIdTratta(resultSet.getInt("id_tratta"));
-                prenotazione.setCodicePrenotazione(resultSet.getString("codice_prenotazione"));
-                prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
-                prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
-                prenotazione.setCoda(codaDAO.findByName(resultSet.getString("coda")));
-                prenotazione.setCentoKilometri(centoKilometriDAO.findByCode(resultSet.getString("cento_kilometri")));
-                prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
-                PrenotazioneList.add(prenotazione);
-            }
+            ResultSet resultSet = statement.executeQuery();  
+        	 while (resultSet.next()) {
+                 Prenotazione prenotazione = new Prenotazione();
+                 prenotazione.setId(resultSet.getString("id"));
+                 prenotazione.setIdTratta(resultSet.getInt("id_tratta"));
+                 prenotazione.setCodicePrenotazione(resultSet.getString("codice_prenotazione"));
+                 prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
+                 prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
+                 prenotazione.setCoda(codaDAO.findByName(resultSet.getString("coda")));
+                 prenotazione.setCentoKilometri(centoKilometriDAO.findByCode(resultSet.getString("cento_kilometri")));
+                 prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                 PrenotazioneList.add(prenotazione);
+             }
             resultSet.close();
             statement.close();
         }catch(SQLException e){

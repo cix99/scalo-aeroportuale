@@ -5,16 +5,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import Controllers.ViewsController;
 import Views.HomePanels.HomeSidePanel;
@@ -24,11 +23,12 @@ import Views.HomePanels.HomeSidePanel;
 public class HomeView extends JFrame {
 
 	private JPanel mainPanel;
-	private JPanel topPanel;
+	private TopPanel topPanel;
 	private JPanel sidePanel;
 	public JPanel centerPanel;
 	public JFrame newCenterPanel;
 	private JLabel benvenutoLabel;
+	private JLabel menuLabel;
 	
 	public HomeView(ViewsController controller, String username) {
 		setTitle("Home");
@@ -38,22 +38,35 @@ public class HomeView extends JFrame {
 		setBounds(175, 50, 1150, 650);
 		setMinimumSize(new Dimension (1150,700));
 		
+		
+		
 		mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(0, 5, 5, 5));
-		mainPanel.setLayout(new BorderLayout(0, 0));
+		mainPanel.setLayout(new BorderLayout());
 		setContentPane(mainPanel);
 		
 //		Border border = new LineBorder(Color.WHITE, 5, true);
 //		mainPanel.setBorder(border);
 		
 		topPanel = new TopPanel(controller, true);
-		sidePanel = new HomeSidePanel(controller);
-		centerPanel = new JPanel();
+
+		sidePanel = new JPanel(new BorderLayout());
+		sidePanel.setBackground(new Color(0, 153, 255));
 		
+		menuLabel = new JLabel("Menu");
+		menuLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		menuLabel.setForeground(Color.WHITE);
+		menuLabel.setBorder(new EmptyBorder(5,0,0,0));
+		menuLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		sidePanel.add(menuLabel, BorderLayout.NORTH);
+		sidePanel.add(new HomeSidePanel(controller, username), BorderLayout.CENTER);
+		
+		centerPanel = new JPanel();
 		centerPanel.setPreferredSize (new Dimension(800,650));
 		centerPanel.setBackground(new Color(0, 0, 153));
 		centerPanel.setLayout(new CardLayout());
-		
+
 		benvenutoLabel = new JLabel("Benvenuto " + username);
 		benvenutoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		benvenutoLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
@@ -64,6 +77,12 @@ public class HomeView extends JFrame {
 		mainPanel.add(topPanel, BorderLayout.NORTH);
 		mainPanel.add(sidePanel, BorderLayout.WEST);
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
+		
+		addComponentListener(new ComponentAdapter() {
+		    public void componentResized(ComponentEvent componentEvent) {
+		        topPanel.UpdateLogoutButton();
+		    }
+		});
 	}
 
 }

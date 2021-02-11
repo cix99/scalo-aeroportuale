@@ -6,15 +6,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -29,12 +24,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import Controllers.ViewsController;
 import Models.Prenotazione;
 import Models.Tratta;
-import Views.Tables.TableModel;
+import Views.Tables.TableModelPrenotazione;
 
 @SuppressWarnings("serial")
 public class ImbarcoView extends JFrame{
@@ -55,7 +52,7 @@ public class ImbarcoView extends JFrame{
 	
 	private JScrollPane scrollPane;
 	private JTable table;
-	private TableModel tableModel;
+	private TableModelPrenotazione tableModel;
 	//private String[] columnNames = {"Coda", "Nome", "Cognome", "Codice", "CK", "Imbarcato"};
 	//private Object[][] data = {{"Premium", "Mario", "Rossi", "ABC303", "Si", "Si"}, {"Standard", "Luigi", "Verdi", "BDC127", "Si", "No"},
 	//		{"Standard", "Wario", "Gialli", "ZBE329", "No", "No"}};
@@ -76,7 +73,7 @@ public class ImbarcoView extends JFrame{
 		topPanel = new TopPanel(controller, false);
 		
 		gateSelectionPanel = new JPanel();
-		gateSelectionPanel.setBackground(new Color (0,0,153));
+		gateSelectionPanel.setBackground(new Color(0, 204, 255));
 		gateSelectionPanel.setLayout(new FlowLayout());
 		gateSelectionPanel.setMinimumSize(new Dimension(300,100));
 		
@@ -91,12 +88,18 @@ public class ImbarcoView extends JFrame{
 		okButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				controller.loadImbarcoCenterPanel(mainPanel, gateComboBox.getSelectedItem().toString());
+				controller.loadImbarcoCenterPanel(gateComboBox.getSelectedItem().toString());
 			}
 		});
 		gateSelectionPanel.add(okButton);
 		topPanel.add(gateSelectionPanel, BorderLayout.SOUTH);
 		mainPanel.add(topPanel, BorderLayout.NORTH);
+		
+		centerPanel = new JPanel();
+		centerPanel.setLayout(new BorderLayout());
+		centerPanel.setBackground(new Color (0,0,153));
+		centerPanel.setMinimumSize(new Dimension (500,100));
+		mainPanel.add(centerPanel, BorderLayout.CENTER);
 		
 		addComponentListener(new ComponentAdapter() {
 		    public void componentResized(ComponentEvent componentEvent) {
@@ -105,13 +108,7 @@ public class ImbarcoView extends JFrame{
 		});
 	}
 	
-	public void showTrattaInfoView (Tratta tratta) { //(Tratta tratta)
-		centerPanel = new JPanel();
-//		centerPanel.setLayout(new FlowLayout());
-		centerPanel.setLayout(new BorderLayout());
-		centerPanel.setBackground(new Color (0,0,153));
-		centerPanel.setMinimumSize(new Dimension (500,100));
-		
+	public void showTrattaInfoView (Tratta tratta) { //(Tratta tratta)		
 		destinazioneLabel = new JLabel("Volo per: " + tratta.getDestinazione()); //tratta.getDestinazione()
 		destinazioneLabel.setForeground(Color.WHITE);
 		destinazioneLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
@@ -126,13 +123,7 @@ public class ImbarcoView extends JFrame{
 		oraLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		
 		JPanel mainSubPanel = new JPanel (new FlowLayout());
-//		centerPanel.add(destinazioneLabel);
-//		centerPanel.add(Box.createHorizontalStrut(50));
-//		centerPanel.add(compagniaLabel);
-//		centerPanel.add(Box.createHorizontalStrut(50));
-//		centerPanel.add(dataLabel);
-//		centerPanel.add(Box.createHorizontalStrut(50));
-//		centerPanel.add(oraLabel);
+		mainSubPanel.setBackground(new Color(0, 153, 255));
 		
 		mainSubPanel.add(destinazioneLabel);
 		mainSubPanel.add(Box.createHorizontalStrut(50));
@@ -144,7 +135,6 @@ public class ImbarcoView extends JFrame{
 		
 		centerPanel.add(mainSubPanel, BorderLayout.NORTH);
 		
-		mainPanel.add(centerPanel, BorderLayout.CENTER);
 		mainPanel.revalidate();
 	}
 	
@@ -160,11 +150,12 @@ public class ImbarcoView extends JFrame{
 //				data[i][4] = "no";
 //				data[i][5] = new Boolean (false);
 //		}
-		tableModel = new TableModel();
+		tableModel = new TableModelPrenotazione();
 		//table = new JTable(data, columnNames);
 		table = new JTable(tableModel);
 		setData(prenotati);
 		scrollPane = new JScrollPane(table);
+		scrollPane.setBackground(new Color (0, 0, 153));
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
 		tableRenderer.setHorizontalAlignment(JLabel.CENTER);
 		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer);
@@ -175,14 +166,41 @@ public class ImbarcoView extends JFrame{
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		//table.setFillsViewportHeight(true);
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
+		
+		JPanel chiudiImbarcoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		chiudiImbarcoPanel.setBackground(new Color(0, 0, 153));
+		chiudiImbarcoPanel.setBorder(new EmptyBorder(0,5,5,5));
+		JButton chiudiImbarcoButton = new JButton("Chiudi Imbarco");
+		chiudiImbarcoButton.setFocusPainted(false);
+		chiudiImbarcoPanel.add(chiudiImbarcoButton);
+		centerPanel.add(chiudiImbarcoPanel, BorderLayout.SOUTH);
+		
 		mainPanel.revalidate();
+		
+//		table.getModel().addTableModelListener(new TableModelListener() {
+//
+//	            @Override
+//	            public void tableChanged(TableModelEvent e) {
+//	                System.out.println(tableModel.getValueAt(e.getFirstRow(), 0)
+//	                    + " " + tableModel.getValueAt(e.getFirstRow(), 1));
+//	                tableModel.fireTableCellUpdated(e.getFirstRow(), e.getFirstRow());
+//	                //tableRefresh();
+//	            }
+//	        });
 	}
 	
 	public void setData (LinkedList<Prenotazione> prenotati) {
 		tableModel.setData(prenotati);
 	}
 	
-	public void tableRefresh() {
-		tableModel.fireTableDataChanged();
+//	public void tableRefresh() {
+//		tableModel.fireTableDataChanged();
+//	}
+	
+	public void emptyCenterPanel () {
+		if (centerPanel != null) {
+			centerPanel.removeAll();
+			centerPanel.repaint();
+		}
 	}
 }
