@@ -5,7 +5,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -14,6 +17,7 @@ import java.awt.Font;
 import java.awt.Image;
 
 import Controllers.ViewsController;
+import Views.HomePanels.HomeSidePanel;
 
 
 @SuppressWarnings("serial")
@@ -39,7 +43,10 @@ public class HomeView extends JFrame {
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		setContentPane(mainPanel);
 		
-		topPanel = new HomeTopPanel();
+//		Border border = new LineBorder(Color.WHITE, 5, true);
+//		mainPanel.setBorder(border);
+		
+		topPanel = new TopPanel(controller, true);
 		sidePanel = new HomeSidePanel(controller);
 		centerPanel = new JPanel();
 		

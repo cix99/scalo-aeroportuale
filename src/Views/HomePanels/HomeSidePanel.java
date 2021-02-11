@@ -1,4 +1,4 @@
-package Views;
+package Views.HomePanels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

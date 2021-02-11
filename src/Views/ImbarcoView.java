@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -32,14 +34,13 @@ import javax.swing.table.DefaultTableCellRenderer;
 import Controllers.ViewsController;
 import Models.Prenotazione;
 import Models.Tratta;
+import Views.Tables.TableModel;
 
 @SuppressWarnings("serial")
 public class ImbarcoView extends JFrame{
 
 	private JPanel mainPanel;
-	private JPanel topPanel;
-	private JPanel backButtonPanel;
-	private JButton backButton;
+	private TopPanel topPanel;
 	private JPanel gateSelectionPanel;
 	private JLabel gateLabel;
 	private JComboBox<String> gateComboBox;
@@ -72,22 +73,7 @@ public class ImbarcoView extends JFrame{
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		setContentPane(mainPanel);
 		
-		topPanel = new JPanel();
-		topPanel.setLayout(new BorderLayout(0,0));
-		
-		backButtonPanel = new JPanel();
-		backButtonPanel.setLayout(new FlowLayout());
-		backButtonPanel.setBackground(new Color (0,0,153));
-		backButtonPanel.setMinimumSize(new Dimension (50,10));
-		backButton = new JButton("back");
-		backButtonPanel.add(backButton);
-		backButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				controller.backToHomeView();
-			}
-		});
-		topPanel.add(backButtonPanel, BorderLayout.WEST);
+		topPanel = new TopPanel(controller, false);
 		
 		gateSelectionPanel = new JPanel();
 		gateSelectionPanel.setBackground(new Color (0,0,153));
@@ -106,19 +92,23 @@ public class ImbarcoView extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				controller.loadImbarcoCenterPanel(mainPanel, gateComboBox.getSelectedItem().toString());
-
 			}
 		});
 		gateSelectionPanel.add(okButton);
-		topPanel.add(gateSelectionPanel, BorderLayout.CENTER);
-		
+		topPanel.add(gateSelectionPanel, BorderLayout.SOUTH);
 		mainPanel.add(topPanel, BorderLayout.NORTH);
-		//mainPanel.add(okButton, BorderLayout.CENTER);
+		
+		addComponentListener(new ComponentAdapter() {
+		    public void componentResized(ComponentEvent componentEvent) {
+		        topPanel.UpdateBackButton();
+		    }
+		});
 	}
 	
 	public void showTrattaInfoView (Tratta tratta) { //(Tratta tratta)
 		centerPanel = new JPanel();
-		centerPanel.setLayout(new FlowLayout());
+//		centerPanel.setLayout(new FlowLayout());
+		centerPanel.setLayout(new BorderLayout());
 		centerPanel.setBackground(new Color (0,0,153));
 		centerPanel.setMinimumSize(new Dimension (500,100));
 		
@@ -135,13 +125,24 @@ public class ImbarcoView extends JFrame{
 		oraLabel.setForeground(Color.WHITE);
 		oraLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		
-		centerPanel.add(destinazioneLabel);
-		centerPanel.add(Box.createHorizontalStrut(50));
-		centerPanel.add(compagniaLabel);
-		centerPanel.add(Box.createHorizontalStrut(50));
-		centerPanel.add(dataLabel);
-		centerPanel.add(Box.createHorizontalStrut(50));
-		centerPanel.add(oraLabel);
+		JPanel mainSubPanel = new JPanel (new FlowLayout());
+//		centerPanel.add(destinazioneLabel);
+//		centerPanel.add(Box.createHorizontalStrut(50));
+//		centerPanel.add(compagniaLabel);
+//		centerPanel.add(Box.createHorizontalStrut(50));
+//		centerPanel.add(dataLabel);
+//		centerPanel.add(Box.createHorizontalStrut(50));
+//		centerPanel.add(oraLabel);
+		
+		mainSubPanel.add(destinazioneLabel);
+		mainSubPanel.add(Box.createHorizontalStrut(50));
+		mainSubPanel.add(compagniaLabel);
+		mainSubPanel.add(Box.createHorizontalStrut(50));
+		mainSubPanel.add(dataLabel);
+		mainSubPanel.add(Box.createHorizontalStrut(50));
+		mainSubPanel.add(oraLabel);
+		
+		centerPanel.add(mainSubPanel, BorderLayout.NORTH);
 		
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
 		mainPanel.revalidate();
@@ -173,7 +174,7 @@ public class ImbarcoView extends JFrame{
 		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer);
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		//table.setFillsViewportHeight(true);
-		mainPanel.add(scrollPane, BorderLayout.SOUTH);
+		centerPanel.add(scrollPane, BorderLayout.CENTER);
 		mainPanel.revalidate();
 	}
 	

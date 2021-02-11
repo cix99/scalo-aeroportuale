@@ -31,8 +31,7 @@ public class LoginView extends JFrame {
 	private JLabel password;
 	private JLabel loginLabel;
 	private JLabel sfondoLabel;
-	
-	/* Create the frame. */
+
 	public LoginView(ViewsController controller) {
 
 		setResizable(false);
@@ -82,10 +81,9 @@ public class LoginView extends JFrame {
 		usernameField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-				controller.login(usernameField.getText(), passwordField.getPassword());
-			}
-				
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					controller.login(usernameField.getText(), passwordField.getPassword());
+				}
 			}
 		});
 		usernameField.setBounds(540, 226, 207, 26);
@@ -118,7 +116,6 @@ public class LoginView extends JFrame {
 		sfondoLabel.setIcon(new ImageIcon(sfondoImage));
 		sfondoLabel.setBounds(0, 0, 804, 519);
 		contentPane.add(sfondoLabel);
-		
 	}
 	
 	public JTextField getUsername () {
@@ -128,6 +125,5 @@ public class LoginView extends JFrame {
 	public JPasswordField getPassword () {
 		return passwordField;
 	}
-	
 
 }

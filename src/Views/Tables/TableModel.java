@@ -1,4 +1,4 @@
-package Views;
+package Views.Tables;
 
 import java.util.LinkedList;
 
@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 import Models.Prenotazione;
 
+@SuppressWarnings("serial")
 public class TableModel extends AbstractTableModel {
 
 	private LinkedList<Prenotazione> prenotati;

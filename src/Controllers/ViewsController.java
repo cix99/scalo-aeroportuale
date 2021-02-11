@@ -1,94 +1,53 @@
 package Controllers;
+
 import java.util.LinkedList;
 import java.util.ListIterator;
-
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 
-import Models.Prenotazione;
-import Models.Tratta;
-import Models.Utente;
+import Models.*;
 import Views.*;
 import Views.AggiungiView.AggiungiView;
 import Views.CercaView.CercaView;
 
 public class ViewsController {
 
-	HomeView homeFrame = null;
-	LoginView loginFrame = null;
-	JFrame newFrame = null;
+	private HomeView homeFrame = null;
+	private LoginView loginFrame = null;
+	private JFrame subFrame = null;
 	
-	DatabaseController dbController = new DatabaseController();
-	
-	Utente utenti;
+	private Utente utenti;
+	LinkedList<Utente> listaUtenti;
 	private boolean logedIn = false;
 	
-    public void viewLoginView() {
+	private DatabaseController dbController = new DatabaseController();
+	
+    public void openLoginView() {
     	loginFrame = new LoginView(this);
     	loginFrame.setVisible(true);
     	loginFrame.setLocationRelativeTo(null);
     	utenti = new Utente();
+    	utenti.loadUtenti();
 		
     }
     
-    public void viewHomeView(String username) {
+    public void openHomeView(String username) {
     	homeFrame = new HomeView(this, username);
     	homeFrame.setVisible(true);
     	homeFrame.setLocationRelativeTo(null);
+    	loginFrame.setVisible(false);
     }
 
-	public void imbarcoView() {
-		newFrame = new ImbarcoView (this);
-		newFrame.setVisible(true);
-		newFrame.setLocationRelativeTo(null);
-		homeFrame.setVisible(false);
-	}
-	
-	public void loadImbarcoCenterPanel(JPanel mainPanel, String nomeGate) {
-		//Cerca le info usando il database controller e salva tutto in una variabile di tipo Tratta
-		LinkedList<Tratta> tratte = dbController.getTrattaInfoFromGate(nomeGate);
-		LinkedList<Prenotazione> prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
-		//Una volta ottenuta la tratta, chiama una funzione che crea un nuovo panel in ImbarcoView
-		((ImbarcoView) newFrame).showTrattaInfoView(tratte.getFirst()); //(tratta)
-		((ImbarcoView) newFrame).showListaPrenotati(prenotati);
-	}
-	
-	public void aggiungiView() {
-		newFrame = new AggiungiView(this);
-		newFrame.setVisible(true);
-		homeFrame.setVisible(false);
-	}
-	
-	public void cercaView() {
-		newFrame = new CercaView(this);
-		newFrame.setVisible(true);
-		newFrame.setLocationRelativeTo(null);
-		homeFrame.setVisible(false);
-	}
-	
-	public void statisticheView() {
-		newFrame = new StatisticheView ();
-		newFrame.setVisible(true);
-		homeFrame.setVisible(false);
-	}
-	
-	public void backToHomeView() {
-		newFrame.setVisible(false);
-    	homeFrame.setVisible(true);
-    	//homeFrame.setLocationRelativeTo(null);
-    }
-	
-	public void login(String username, char[] cs) {
-    	String input = new String (cs);
+    public void login(String username, char[] passwordChar) {
+    	String password = new String (passwordChar);
     	
-		LinkedList<Utente> listaUtenti = utenti.getListaUtenti();
+		listaUtenti = utenti.getListaUtenti();
 		ListIterator<Utente> cursor = listaUtenti.listIterator();
 		while (cursor.hasNext()) {
 			Utente current = cursor.next();
-			if (current.getUtenteName().equals(username) && current.getUtentePassword().equals(input)) {
-				loginFrame.setVisible(false);
-	    		viewHomeView(username);
+			if (current.getUtenteName().equals(username) && current.getUtentePassword().equals(password)) {
+	    		openHomeView(username);
 	    		logedIn = true;
 	    		break;
 			}
@@ -104,7 +63,51 @@ public class ViewsController {
 		loginFrame.getUsername().setText("");
 		loginFrame.getPassword().setText("");
     	homeFrame.setVisible(false);
+    	loginFrame = new LoginView(this);
     	loginFrame.setVisible(true);
+    }
+    
+	public void imbarcoView() {
+		subFrame = new ImbarcoView (this);
+		subFrame.setVisible(true);
+		subFrame.setLocationRelativeTo(null);
+		homeFrame.setVisible(false);
+	}
+	
+	public void loadImbarcoCenterPanel(JPanel mainPanel, String nomeGate) {
+		
+		LinkedList<Tratta> tratte = dbController.getTrattaInfoFromGate(nomeGate);
+		LinkedList<Prenotazione> prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
+
+		((ImbarcoView) subFrame).showTrattaInfoView(tratte.getFirst()); //(tratta)
+		((ImbarcoView) subFrame).showListaPrenotati(prenotati);
+	}
+	
+	public void aggiungiView() {
+		subFrame = new AggiungiView(this);
+		subFrame.setVisible(true);
+		subFrame.setLocationRelativeTo(null);
+		homeFrame.setVisible(false);
+	}
+	
+	public void cercaView() {
+		subFrame = new CercaView(this);
+		subFrame.setVisible(true);
+		subFrame.setLocationRelativeTo(null);
+		homeFrame.setVisible(false);
+	}
+	
+	public void statisticheView() {
+		subFrame = new StatisticheView ();
+		subFrame.setVisible(true);
+		subFrame.setLocationRelativeTo(null);
+		homeFrame.setVisible(false);
+	}
+	
+	public void backToHomeView() {
+		subFrame.setVisible(false);
+    	homeFrame.setVisible(true);
+    	//homeFrame.setLocationRelativeTo(null);
     }
     
 }

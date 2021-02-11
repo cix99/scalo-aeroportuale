@@ -1,19 +1,19 @@
 package Views.CercaView;
 
 import Controllers.ViewsController;
-import Views.HomeTopPanel;
+import Views.TopPanel;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
-import java.awt.event.ItemListener;
+import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
 public class CercaView extends JFrame {
 
-	JPanel backButtonPanel;
-	JButton backButton;
+	private TopPanel topPanel;
+	private JPanel btnPanel;
+	private JPanel contentPanel;
 
 	public CercaView (ViewsController controller) {
 		setTitle("Inizia Imbarco");
@@ -25,23 +25,12 @@ public class CercaView extends JFrame {
 
 		setBackground(new Color(0, 0, 0));
 		setLayout(new BorderLayout());
-
-		JPanel topPanel = new JPanel(new BorderLayout());
-		JPanel btnPanel = new JPanel();
-		JPanel contentPanel = new JPanel();
-
-		backButtonPanel = new JPanel();
-		backButtonPanel.setLayout(new FlowLayout());
-		backButtonPanel.setBackground(new Color (0,0,153));
-		backButtonPanel.setMinimumSize(new Dimension (50,10));
-		backButton = new JButton("back");
-		backButtonPanel.add(backButton);
-		backButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				controller.backToHomeView();
-			}
-		});
+		
+		topPanel = new TopPanel(controller, false);
+		btnPanel = new JPanel();
+		contentPanel = new JPanel();
+		
+		contentPanel.setBorder(new EmptyBorder(0, 5, 5, 5));
 
 		JPanel trattePanel = new CercaTratteView();
 		JPanel prenotazioniPanel = new CercaPrenotazioniView();
@@ -81,12 +70,10 @@ public class CercaView extends JFrame {
 		btnPanel.add(codeButton);
 		btnPanel.add(compagnieButton);
 
-		topPanel.add(new HomeTopPanel(), BorderLayout.WEST);
-		topPanel.add(backButtonPanel, BorderLayout.EAST);
-		topPanel.add(btnPanel, BorderLayout.SOUTH);
-
+	
 		add(topPanel, BorderLayout.NORTH);
-		add(contentPanel, BorderLayout.CENTER);
+		add(btnPanel, BorderLayout.CENTER);
+		add(contentPanel, BorderLayout.SOUTH);
 
 	}
 
