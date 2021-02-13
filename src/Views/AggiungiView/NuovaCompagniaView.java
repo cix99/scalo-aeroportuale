@@ -40,7 +40,7 @@ public class NuovaCompagniaView extends JPanel {
 		nuovaTrattaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		Panel.add(nuovaTrattaLabel);*/
 		
-		this.setBackground(Color.blue);
+		setBackground(new Color(0, 0, 100));
 	
 		
 //		centerPanel = new JPanel();

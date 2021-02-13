@@ -31,12 +31,12 @@ public class StatisticheView extends JFrame{
 		setBounds(50, 50, 1150, 650);
 		setMinimumSize(new Dimension (1150,700));		
 		setLayout(new BorderLayout(0, 0));
+		setBackground(new Color(0, 0, 153));		
 		
-		
-		label = new JLabel("Hai scelto Statistiche menu");
+		label = new JLabel("Hai scelto il menu Statistiche");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		label.setForeground(Color.BLACK);
+		label.setForeground(Color.WHITE);
 		
 		topPanel = new TopPanel(controller, false);
 		

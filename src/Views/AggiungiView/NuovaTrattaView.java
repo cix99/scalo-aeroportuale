@@ -45,13 +45,14 @@ public class NuovaTrattaView extends JPanel {
 		
 	public NuovaTrattaView () {	
 		
-		this.setBackground(Color.LIGHT_GRAY);
+		setBackground(new Color(0, 0, 153));
 		
 		destinazioneText = new JTextField();
 		destinazioneText.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		destinazioneText.setColumns(10);
 		
 		JLabel destinazioneLabel = new JLabel("Destinazione");
+		destinazioneLabel.setForeground(Color.WHITE);
 		destinazioneLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
 		
 		compagniaText = new JTextField();
@@ -59,6 +60,7 @@ public class NuovaTrattaView extends JPanel {
 		compagniaText.setColumns(10);
 		
 		compagniaLabel = new JLabel("Compagnia");
+		compagniaLabel.setForeground(Color.WHITE);
 		compagniaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
 		
 		JButton salvaButton = new JButton("Salva");
@@ -67,14 +69,16 @@ public class NuovaTrattaView extends JPanel {
 		JButton annullaButton = new JButton("Annulla");
 		annullaButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		
-		JLabel cosaLabel = new JLabel("Coda");
-		cosaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		JLabel codaLabel = new JLabel("Coda");
+		codaLabel.setForeground(Color.WHITE);
+		codaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
 		
-		JComboBox codaComboBox = new JComboBox();
+		JComboBox<String> codaComboBox = new JComboBox<String>();
 		codaComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		codaComboBox.setEditable(true);
 		
 		JLabel nomeLabel = new JLabel("Nome");
+		nomeLabel.setForeground(Color.WHITE);
 		nomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
 		
 		nomeText = new JTextField();
@@ -85,9 +89,11 @@ public class NuovaTrattaView extends JPanel {
 		dataText.setColumns(10);
 		
 		JLabel dataLabel = new JLabel("Data");
+		dataLabel.setForeground(Color.WHITE);
 		dataLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
 		
 		JLabel oraLabel = new JLabel("Ora");
+		oraLabel.setForeground(Color.WHITE);
 		oraLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
 		
 		oraText = new JTextField();
@@ -103,7 +109,7 @@ public class NuovaTrattaView extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(codaComboBox, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-								.addComponent(cosaLabel, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE))
+								.addComponent(codaLabel, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE))
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -150,7 +156,7 @@ public class NuovaTrattaView extends JPanel {
 					.addComponent(compagniaText, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 					.addGap(19)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(cosaLabel)
+						.addComponent(codaLabel)
 						.addComponent(nomeLabel))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)

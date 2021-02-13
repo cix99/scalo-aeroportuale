@@ -3,6 +3,7 @@ package Views.CercaView;
 import javax.swing.*;
 import java.awt.*;
 
+@SuppressWarnings("serial")
 public class CercaTratteView extends JPanel {
 
     public CercaTratteView() {

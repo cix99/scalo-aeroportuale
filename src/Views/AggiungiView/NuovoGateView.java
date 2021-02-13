@@ -40,7 +40,7 @@ public class NuovoGateView extends JPanel {
 		nuovaTrattaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		Panel.add(nuovaTrattaLabel);*/
 		
-		this.setBackground(Color.gray);
+		setBackground(new Color(0, 100, 0));
 	
 		
 //		centerPanel = new JPanel();

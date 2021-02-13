@@ -14,7 +14,6 @@ public class TableModelPrenotazione extends AbstractTableModel {
 	private LinkedList<Prenotazione> prenotati;
 	private int numberOfColumns = 6;
 	private String[] columnNames = {"Coda", "Nome", "Cognome", "Codice", "Cento Kilometri", "Imbarcato"};
-	private Boolean[] imbarcato = new Boolean[100];
 	
 	private ViewsController controller;
 	
@@ -80,9 +79,7 @@ public class TableModelPrenotazione extends AbstractTableModel {
 		Prenotazione prenotazione = prenotati.get(rowIndex);
 		switch (columnIndex) {
 			case 5:
-				//imbarcato[rowIndex] = (boolean) aValue;
 				prenotazione.setImbarcato((boolean) aValue);
-				//TODO: chiamare una funzione di update che aggiorni il valore nel database
 				controller.updateImbarcatoInDatabase((boolean) aValue, prenotazione.getId());
 				break;
 			default:
@@ -110,9 +107,7 @@ public class TableModelPrenotazione extends AbstractTableModel {
 				else
 					return "-";
 			}
-			
-		case 5:
-			//return imbarcato[rowIndex];
+		case 5:;
 			return prenotazione.getImbarcato();
 		default:
 			return null;

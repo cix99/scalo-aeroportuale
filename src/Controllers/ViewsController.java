@@ -3,8 +3,6 @@ package Controllers;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JOptionPane;
 
 import Models.*;

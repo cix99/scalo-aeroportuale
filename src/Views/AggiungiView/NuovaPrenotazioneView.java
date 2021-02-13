@@ -1,105 +1,104 @@
 package Views.AggiungiView;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
 
+@SuppressWarnings("serial")
 public class NuovaPrenotazioneView extends JPanel {
 	
-
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JLabel nomeLabel;
+	private JLabel cognomeLabel;
+	private JLabel compagniaLabel;
+	private JTextField nomeTextField;
+	private JTextField cognomeTextField;
 
 
 	public NuovaPrenotazioneView () {
 		
-		JLabel lblNewLabel = new JLabel("Nome");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		setBorder(new EmptyBorder(10, 5, 10, 10));
+		setLayout(new GridBagLayout());
+		setBackground(new Color(0, 0, 153));
 		
-		JLabel lblNewLabel_1 = new JLabel("Cognome");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_1.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeLabel = new JLabel("Nome");
+		nomeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		nomeLabel.setForeground(Color.WHITE);
+		nomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		textField_1.setColumns(10);
+		nomeTextField = new JTextField();
+		nomeTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeTextField.setColumns(10);
 		
-		JButton btnNewButton_1 = new JButton("Annulla");
-		btnNewButton_1.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		cognomeLabel = new JLabel("Cognome");
+		cognomeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		cognomeLabel.setForeground(Color.WHITE);
+		cognomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		
-		JButton btnNewButton = new JButton("Salva");
-		btnNewButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		compagniaLabel = new JLabel("Compagnia");
+		compagniaLabel.setForeground(Color.WHITE);
+		compagniaLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		compagniaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
+		cognomeTextField = new JTextField();
+		cognomeTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		cognomeTextField.setColumns(10);
 		
-		JLabel lblNewLabel_2 = new JLabel("Compagnia");
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_2.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		JButton annullaButton = new JButton("Annulla");
+		annullaButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		
-		JComboBox comboBox = new JComboBox();
+		JButton salvaButton = new JButton("Salva");
+		salvaButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		
+		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setEditable(true);
 		comboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(10, Short.MAX_VALUE)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(439)
-							.addComponent(btnNewButton_1)
-							.addGap(6)
-							.addComponent(btnNewButton))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 349, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblNewLabel_1)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(textField_2, 349, 349, 349))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 349, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)))))
-					.addGap(210))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(105, Short.MAX_VALUE)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(35)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(textField_2, GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
-					.addGap(31)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_2)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(200)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnNewButton_1)
-						.addComponent(btnNewButton))
-					.addGap(30))
-		);
-		setLayout(groupLayout);
 		
+		GridBagConstraints gc = new GridBagConstraints();
+		
+		gc.gridx = 0;  
+		gc.gridy = 0;
+		gc.gridwidth = 1;
+		gc.anchor = GridBagConstraints.LINE_END;
+		add(nomeLabel, gc);
+		gc.gridx = 1;      
+		gc.gridy = 0;
+		gc.gridwidth = 2;
+		gc.anchor = GridBagConstraints.CENTER;
+		add(nomeTextField, gc);
+		
+		gc.gridx = 0;      
+		gc.gridy = 1;
+		gc.gridwidth = 1;
+		gc.insets = new Insets(10,0,0,0);
+		gc.anchor = GridBagConstraints.LINE_END;
+		add(cognomeLabel, gc);
+		gc.gridx = 1;   
+		gc.gridy = 1;
+		gc.gridwidth = 2;
+		gc.anchor = GridBagConstraints.CENTER;
+		add(cognomeTextField, gc);
+		
+		gc.gridx = 0;  
+		gc.gridy = 2;
+		gc.gridwidth = 1;
+		gc.insets = new Insets(10,0,0,0);
+		gc.anchor = GridBagConstraints.LINE_END;
+		add(compagniaLabel, gc);
+		gc.gridx = 1;     
+		gc.gridy = 2;
+		gc.gridwidth = 1;
+		gc.anchor = GridBagConstraints.CENTER;
+		gc.insets = new Insets(10,20,0,0);
+		add(comboBox, gc);
 	
 	}
 

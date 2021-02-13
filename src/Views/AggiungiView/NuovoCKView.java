@@ -20,8 +20,7 @@ public class NuovoCKView extends JPanel {
 		
 	public NuovoCKView () {	
 		
-		
-		this.setBackground(Color.black);
+		setBackground(new Color(100, 0, 0));
 	}
 
 }
