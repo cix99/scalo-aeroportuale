@@ -31,7 +31,7 @@ public class HomeView extends JFrame {
 	private JLabel menuLabel;
 	
 	public HomeView(ViewsController controller, String username) {
-		setTitle("Home");
+		setTitle("Scalo Aeroportuale - Home");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
 		setIconImage(logoImage);

@@ -35,7 +35,7 @@ public class LoginView extends JFrame {
 	public LoginView(ViewsController controller) {
 
 		setResizable(false);
-		setTitle("Login-ScaloAeroportiale.java");
+		setTitle("Scalo Aeroportuale - Login");
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
 		setIconImage(logoImage);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

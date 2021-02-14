@@ -53,7 +53,7 @@ public class PrenotazioneDAO extends JDBC {
                 prenotazione.setCodicePrenotazione(resultSet.getString("codice_prenotazione"));
                 prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
                 prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
-                prenotazione.setCoda(codaDAO.findByName(resultSet.getString("coda")));
+                prenotazione.setCoda(codaDAO.findByName(resultSet.getInt("coda"), resultSet.getInt("id_tratta")));
                 prenotazione.setCentoKilometri(centoKilometriDAO.findByCode(resultSet.getString("cento_kilometri")));
                 prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
                 prenotazione.setImbarcato(resultSet.getBoolean("imbarcato"));
@@ -84,7 +84,7 @@ public class PrenotazioneDAO extends JDBC {
                  prenotazione.setCodicePrenotazione(resultSet.getString("codice_prenotazione"));
                  prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
                  prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
-                 prenotazione.setCoda(codaDAO.findByName(resultSet.getString("coda")));
+                 prenotazione.setCoda(codaDAO.findByName(resultSet.getInt("coda"), resultSet.getInt("id_tratta")));  //da sistemare
                  prenotazione.setCentoKilometri(centoKilometriDAO.findByCode(resultSet.getString("cento_kilometri")));
                  prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
                  prenotazione.setImbarcato(resultSet.getBoolean("imbarcato"));
@@ -99,15 +99,11 @@ public class PrenotazioneDAO extends JDBC {
     }
     
     public void updateImbarcato (boolean value, String id) {
-    	//esegui update query
     	String query = "UPDATE " + tableName + " SET imbarcato = ? WHERE id = ?";
-
 		try {
 			PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-			
 			statement.setBoolean(1, value); 
 			statement.setString(2, id);
-
 			statement.executeUpdate();
 			statement.close();
 		}catch(SQLException e){

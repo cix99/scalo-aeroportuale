@@ -24,7 +24,7 @@ public class StatisticheView extends JFrame{
 	private JLabel label;
 	
 	public StatisticheView (ViewsController controller) {	
-		setTitle("Statistiche");
+		setTitle("Scalo Aeroportuale - Statistiche");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
 		setIconImage(logoImage);

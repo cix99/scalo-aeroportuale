@@ -1,7 +1,9 @@
 package Models;
 
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Tratta{
 
@@ -14,6 +16,7 @@ public class Tratta{
     private Gate gate;
     private Stato statoImbarco;
     private Boolean ritardo;
+    private ArrayList<Coda> code;
     
     
     public Tratta(String destinazione, CompagniaAerea compagniaAerea, LocalDateTime oraInizioImbarco) {
@@ -61,6 +64,10 @@ public class Tratta{
 	public Boolean getRitardo() {
 		return ritardo;
 	}
+	
+	public ArrayList<Coda> getCode() {		
+		return code;
+	}
 
 	public void setId(int id) {
 		this.id = id;
@@ -98,4 +105,11 @@ public class Tratta{
 		this.ritardo = ritardo;
 	}
     
+	public void setCode(Coda coda) {
+		if (code == null) {
+			this.code = new ArrayList<Coda>();
+		}
+		this.code.add(coda);
+	}
+	
 }

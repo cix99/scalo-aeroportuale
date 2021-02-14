@@ -99,6 +99,39 @@ public class TrattaDAO extends JDBC {
         
         return TrattaList;
     }
+    
+    
+    public LinkedList<Tratta> findTrattaByCompagnia(String nomeCompagnia){
+        String query = "SELECT * FROM " + tableName + " WHERE compagnia_aerea = ?";
+        LinkedList<Tratta> TrattaList = new LinkedList<Tratta>();
+        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        GateDAO gateDAO = new GateDAO();
+
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, nomeCompagnia);
+            ResultSet resultSet = statement.executeQuery();
+        	while (resultSet.next()) {
+                Tratta tratta = new Tratta();
+                tratta.setId(resultSet.getInt("id"));
+                tratta.setDestinazione(resultSet.getString("destinazione"));
+                tratta.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                tratta.setOraInizioImbarco(resultSet.getTimestamp("ora_inizio_imbarco").toLocalDateTime());
+                tratta.setOraFineImbarcoStimato(resultSet.getTimestamp("ora_fine_imbarco_stimato").toLocalDateTime());
+                tratta.setOraFineImbarcoEffettivo(resultSet.getTimestamp("ora_fine_imbarco_effettivo").toLocalDateTime());
+                tratta.setStatoImbarco(Stato.valueOf(resultSet.getString("stato_imbarco")));
+                tratta.setRitardo(resultSet.getBoolean("ritardo"));
+                tratta.setGate(gateDAO.findByName(resultSet.getString("gate")));
+                TrattaList.add(tratta);
+            }            
+            resultSet.close();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        
+        return TrattaList;
+    }
 
     public Tratta first(){
     	LinkedList<Tratta> TrattaList = find();

@@ -29,7 +29,7 @@ public class AggiungiView extends JFrame{
 	public AggiungiView (ViewsController controller) {
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
 		setIconImage(logoImage);
-		setTitle("Aggiungi");
+		setTitle("Scalo Aeroportuale - Aggiungi");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(50, 50, 1150, 650);
 		setMinimumSize(new Dimension (1150,700));
@@ -39,25 +39,6 @@ public class AggiungiView extends JFrame{
 		setContentPane(mainPanel);
 		
 		topPanel = new TopPanel(controller, false);
-		
-		
-//		sidePanel = new JPanel(new GridLayout(5, 1, 0, 10));
-//		JButton nuovaTrattaButton = new JButton("Nuova Tratta");
-//		JButton nuovaCompagniaButton = new JButton("Nuova Compagnia");
-//		JButton nuovaPrenotazioneButton = new JButton("Nuova Prenotazione");
-//		JButton nuovoCKButton = new JButton("Nuovo CK");
-//		JButton nuovoGateButton = new JButton("Nuovo Gate");
-//		sidePanel.add(nuovaTrattaButton);
-//		sidePanel.add(nuovaCompagniaButton);
-//		sidePanel.add(nuovaPrenotazioneButton);
-//		sidePanel.add(nuovoCKButton);
-//		sidePanel.add(nuovoGateButton);
-		
-//		nuovaTrattaButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-//		nuovaCompagniaButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-//		nuovaPrenotazioneButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-//		nuovoCKButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
-//		nuovoGateButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		
 		CardLayout cardLayout = new CardLayout();
 		centerPanel = new JPanel();
@@ -79,13 +60,11 @@ public class AggiungiView extends JFrame{
 		mainPanel.add(sidePanel, BorderLayout.WEST);
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
 		
-		
-		// Start Center Panel
+		JPanel prenotazionePanel = new NuovaPrenotazioneView(controller);
 		JPanel trattaPanel = new NuovaTrattaView();
-		JPanel compagniaPanel = new NuovaCompagniaView();
-		JPanel prenotazionePanel = new NuovaPrenotazioneView();
-		JPanel ckPanel = new NuovoCKView();
-		JPanel gatePanel = new NuovoGateView();
+		JPanel ckPanel = new NuovoCKView(controller);
+		JPanel compagniaPanel = new NuovaCompagniaView(controller);
+		JPanel gatePanel = new NuovoGateView(controller);
 		
 		centerPanel.add(trattaPanel, "trattaPanel");
 		centerPanel.add(compagniaPanel, "compagniaPanel");
@@ -94,12 +73,6 @@ public class AggiungiView extends JFrame{
 		centerPanel.add(gatePanel, "gatePanel");
 
 		cardLayout.show(centerPanel, "prenotazionePanel");
-//		nuovaTrattaButton.addActionListener(e -> cardLayout.show(centerPanel, "trattaPanel"));
-//		nuovaCompagniaButton.addActionListener(e -> cardLayout.show(centerPanel, "compagniaPanel"));
-//		nuovaPrenotazioneButton.addActionListener(e -> cardLayout.show(centerPanel, "prenotazionePanel"));
-//		nuovoCKButton.addActionListener(e -> cardLayout.show(centerPanel, "ckPanel"));
-//		nuovoGateButton.addActionListener(e -> cardLayout.show(centerPanel, "gatePanel"));
-		// End Center Panel
 		
 		addComponentListener(new ComponentAdapter() {
 		    public void componentResized(ComponentEvent componentEvent) {

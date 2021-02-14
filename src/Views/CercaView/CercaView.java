@@ -19,7 +19,7 @@ public class CercaView extends JFrame {
 	private JPanel contentPanel;
 
 	public CercaView (ViewsController controller) {
-		setTitle("Inizia Imbarco");
+		setTitle("Scalo Aeroportuale - Cerca");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
 		setIconImage(logoImage);

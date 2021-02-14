@@ -14,7 +14,6 @@ public class DatabaseController {
     public LinkedList<Tratta> getTrattaInfoFromGate(String nomeGate) {
     	TrattaDAO trattaDao = new TrattaDAO();
     	LinkedList<Tratta> tratte = trattaDao.findTrattaByGate(nomeGate);
-  
     	return tratte;
     }
     
@@ -28,5 +27,23 @@ public class DatabaseController {
     	PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
     	prenotazioneDao.updateImbarcato(value, id);
     }
+    
+    public LinkedList<CompagniaAerea> getCompagnieAeree() {
+    	CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
+    	return compagniaAereaDao.get();
+    }
+    
+    public LinkedList<Tratta> getTratteFromCompagnia(String nomeCompagnia) {
+    	TrattaDAO trattaDao = new TrattaDAO();
+    	LinkedList<Tratta> tratte = trattaDao.findTrattaByCompagnia(nomeCompagnia);
+    	return tratte;
+    }
+    
+    public LinkedList<Coda> getCodaByIdTratta(int idTratta) {
+    	CodaDAO codaDao = new CodaDAO();
+    	LinkedList<Coda> code = codaDao.findCodaByIdTratta(idTratta);
+    	return code;
+    }
+    
     
 }

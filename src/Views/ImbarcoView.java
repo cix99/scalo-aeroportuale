@@ -6,11 +6,16 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
+import java.util.ListIterator;
+
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -24,6 +29,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import Controllers.ViewsController;
+import Models.Coda;
 import Models.Prenotazione;
 import Models.Tratta;
 import Views.Tables.TableModelPrenotazione;
@@ -45,15 +51,15 @@ public class ImbarcoView extends JFrame{
 	private JLabel dataLabel;
 	private JLabel oraLabel;
 	
+	private JComboBox<String> codaComboBox;
+	
 	private JScrollPane scrollPane;
 	private JTable table;
 	private TableModelPrenotazione tableModel;
-	//private String[] columnNames = {"Coda", "Nome", "Cognome", "Codice", "CK", "Imbarcato"};
-	//private Object[][] data = {{"Premium", "Mario", "Rossi", "ABC303", "Si", "Si"}, {"Standard", "Luigi", "Verdi", "BDC127", "Si", "No"},
-	//		{"Standard", "Wario", "Gialli", "ZBE329", "No", "No"}};
+
 
 	public ImbarcoView (ViewsController controller) {	
-		setTitle("Inizia Imbarco");
+		setTitle("Scalo Aeroportuale - Inizia Imbarco");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
 		setIconImage(logoImage);
@@ -84,6 +90,7 @@ public class ImbarcoView extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				controller.loadImbarcoCenterPanel(gateComboBox.getSelectedItem().toString());
+				
 			}
 		});
 		gateSelectionPanel.add(okButton);
@@ -95,7 +102,7 @@ public class ImbarcoView extends JFrame{
 		centerPanel.setBackground(new Color (0,0,153));
 		centerPanel.setMinimumSize(new Dimension (500,100));
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
-		
+				
 		addComponentListener(new ComponentAdapter() {
 		    public void componentResized(ComponentEvent componentEvent) {
 		        topPanel.UpdateBackButton();
@@ -103,17 +110,19 @@ public class ImbarcoView extends JFrame{
 		});
 	}
 	
-	public void showTrattaInfoView (Tratta tratta) { //(Tratta tratta)		
-		destinazioneLabel = new JLabel("Volo per: " + tratta.getDestinazione()); //tratta.getDestinazione()
+	public void showTrattaInfoView (Tratta tratta, ViewsController controller) { 	
+		destinazioneLabel = new JLabel("Volo per: " + tratta.getDestinazione()); 
 		destinazioneLabel.setForeground(Color.WHITE);
 		destinazioneLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		compagniaLabel = new JLabel("Compagnia: " + tratta.getCompagniaAerea().getNomeCompagnia()); //tratta.getNomeCompagnia()
+		compagniaLabel = new JLabel("Compagnia: " + tratta.getCompagniaAerea().getNomeCompagnia());
 		compagniaLabel.setForeground(Color.WHITE);
 		compagniaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		dataLabel = new JLabel("Data: " + tratta.getOraInizioImbarco().getDayOfMonth() + "/" + tratta.getOraInizioImbarco().getMonthValue() + "/" + tratta.getOraInizioImbarco().getYear()); //tratta.getData().toString()
+		String date = tratta.getOraInizioImbarco().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		String hour = tratta.getOraInizioImbarco().format(DateTimeFormatter.ofPattern("HH:mm"));
+		dataLabel = new JLabel("Data: " + date);
 		dataLabel.setForeground(Color.WHITE);
 		dataLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		oraLabel = new JLabel("Ora: " + tratta.getOraInizioImbarco().getHour() + ":" + tratta.getOraInizioImbarco().getMinute()); //tratta.getOraImbarco().toString()
+		oraLabel = new JLabel("Ora: " + hour);
 		oraLabel.setForeground(Color.WHITE);
 		oraLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		
@@ -130,23 +139,45 @@ public class ImbarcoView extends JFrame{
 		
 		centerPanel.add(mainSubPanel, BorderLayout.NORTH);
 		
+		String[] codaArray = controller.getCodaFromIdTratta(tratta.getId());
+		codaComboBox = new JComboBox<String>(codaArray);
+		codaComboBox.setEditable(false);
+		codaComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		
+		codaComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//LinkedList<Prenotazione> prenotatiList = controller.getPrenotatiByCoda(codaComboBox.getSelectedItem().toString(), tratta.getId());
+				
+				//Ottieni la lista di prenotati e aggiorna la tabella di conseguenza
+				
+//				String [] tratteArray = new String[codaList.size()];
+//				ListIterator<Coda> cursor = codaList.listIterator();
+//				int i = 0;
+//				while (cursor.hasNext()) {
+//					Coda current = cursor.next();
+//					String time = current.getOraInizioImbarco().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+//					tratteArray[i] = current.getDestinazione() + " - " + time;
+//					i++;
+//				}
+//				UpdateTrattaComboBox(tratteArray);
+			}
+		});
+		
+		JPanel codaPanel = new JPanel();
+		codaPanel.setBackground(new Color(0,0,153));
+		codaPanel.setBorder(new EmptyBorder(5,5,0,0));
+		codaPanel.add(codaComboBox);
+		
+		centerPanel.add(codaPanel, BorderLayout.WEST);
+
+		
 		mainPanel.revalidate();
 	}
 	
 	public void showListaPrenotati(LinkedList<Prenotazione> prenotati, ViewsController controller) { 
-//		data = new Object[100][6];
-//		ListIterator<Prenotazione> cursor = prenotati.listIterator();
-//		for (int i = 0; cursor.hasNext(); i ++) {
-//				Prenotazione current = cursor.next();
-//				data[i][0] = current.getCoda().getNomeCoda();
-//				data[i][1] = current.getNomePasseggero();
-//				data[i][2] = current.getCognomePasseggero();
-//				data[i][3] = current.getCentoKilometri().getCodiceCompagnia();
-//				data[i][4] = "no";
-//				data[i][5] = new Boolean (false);
-//		}
+
 		tableModel = new TableModelPrenotazione(controller);
-		//table = new JTable(data, columnNames);
 		table = new JTable(tableModel);
 		setData(prenotati);
 		scrollPane = new JScrollPane(table);
@@ -187,6 +218,7 @@ public class ImbarcoView extends JFrame{
 	
 	public void setData (LinkedList<Prenotazione> prenotati) {
 		tableModel.setData(prenotati);
+		
 	}
 	
 //	public void tableRefresh() {
@@ -199,4 +231,5 @@ public class ImbarcoView extends JFrame{
 			centerPanel.repaint();
 		}
 	}
+	
 }

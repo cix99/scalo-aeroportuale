@@ -90,7 +90,6 @@ public class TableModelPrenotazione extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Prenotazione prenotazione = prenotati.get(rowIndex);
-		
 		switch (columnIndex) {
 		case 0:
 			return prenotazione.getCoda().getNomeCoda();

@@ -81,7 +81,7 @@ public class ViewsController {
 			
 		tratte = dbController.getTrattaInfoFromGate(nomeGate);
 		if (tratte.isEmpty() == false) {
-			((ImbarcoView) subFrame).showTrattaInfoView(tratte.getFirst()); //(tratta)
+			((ImbarcoView) subFrame).showTrattaInfoView(tratte.getFirst(), this); //(tratta)
 			if (dbController.getPrenotatiFromTratta(tratte.getFirst().getId()) != null) {
 				prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
 				if (prenotati.isEmpty() == false) {
@@ -97,11 +97,63 @@ public class ViewsController {
 		}
 	}
 	
+	public String[] getCodaFromIdTratta(int idTratta) {
+		LinkedList<Coda> list = dbController.getCodaByIdTratta(idTratta);
+		
+		String [] stringArray = new String[list.size()];
+		ListIterator<Coda> cursor = list.listIterator();
+		int i = 0;
+		while (cursor.hasNext()) {
+			Coda current = cursor.next();
+			stringArray[i] = current.getNomeCoda();
+			i++;
+		}
+		return stringArray;
+	}
+	
 	public void aggiungiView() {
 		subFrame = new AggiungiView(this);
 		subFrame.setVisible(true);
 		subFrame.setLocationRelativeTo(null);
 		homeFrame.setVisible(false);
+	}
+	
+	public String[] getCompagnieAeree() {
+		LinkedList<CompagniaAerea> list = dbController.getCompagnieAeree();
+		
+		String [] stringArray = new String[list.size()];
+		ListIterator<CompagniaAerea> cursor = list.listIterator();
+		int i = 0;
+		while (cursor.hasNext()) {
+			CompagniaAerea current = cursor.next();
+			stringArray[i] = current.getNomeCompagnia();
+			i++;
+		}
+		return stringArray;
+	}
+	
+	public void salvaNuovoGate(String nomeGate) {
+	
+		//Inserisci nuovo gate nel database
+		if (true) {
+			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore gate", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+	
+	public void salvaNuovaCompagniaAerea(String nomeCompagnia) {
+		
+		//Inserisci nuovo gate nel database
+		if (true) {
+			JOptionPane.showMessageDialog(subFrame, "Impossibile aggiungere la compagnia", "Errore compagnia", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+	
+	public LinkedList<Tratta> getTratteFromCompagnie(String nomeCompagnia) {
+		LinkedList<Tratta> trattaList = new LinkedList<Tratta>();
+		trattaList = dbController.getTratteFromCompagnia(nomeCompagnia);
+		return trattaList;
 	}
 	
 	public void cercaView() {
@@ -127,5 +179,5 @@ public class ViewsController {
 	public void updateImbarcatoInDatabase(boolean value, String id) {
 		dbController.updateImbarcatoInDatabase(value, id);
 	}
-    
+	
 }
