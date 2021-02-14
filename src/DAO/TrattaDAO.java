@@ -39,7 +39,7 @@ public class TrattaDAO extends JDBC {
     }
 
     public LinkedList<Tratta> find(){
-        String query = "SELECT * FROM " + tableName;
+        String query = "SELECT * FROM " + tableName + " ORDER BY id";
         LinkedList<Tratta> TrattaList = new LinkedList<Tratta>();
         CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
         GateDAO gateDAO = new GateDAO();
@@ -54,7 +54,8 @@ public class TrattaDAO extends JDBC {
                 tratta.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
                 tratta.setOraInizioImbarco(resultSet.getTimestamp("ora_inizio_imbarco").toLocalDateTime());
                 tratta.setOraFineImbarcoStimato(resultSet.getTimestamp("ora_fine_imbarco_stimato").toLocalDateTime());
-                tratta.setOraFineImbarcoEffettivo(resultSet.getTimestamp("ora_fine_imbarco_effettivo").toLocalDateTime());
+                if (resultSet.getTimestamp("ora_fine_imbarco_effettivo").toLocalDateTime() != null)
+                	tratta.setOraFineImbarcoEffettivo(resultSet.getTimestamp("ora_fine_imbarco_effettivo").toLocalDateTime());
                 tratta.setStatoImbarco(Stato.valueOf(resultSet.getString("stato_imbarco")));
                 tratta.setRitardo(resultSet.getBoolean("ritardo"));
                 tratta.setGate(gateDAO.findByName(resultSet.getString("gate")));

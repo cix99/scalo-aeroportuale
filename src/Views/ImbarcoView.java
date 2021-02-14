@@ -32,7 +32,7 @@ import Controllers.ViewsController;
 import Models.Coda;
 import Models.Prenotazione;
 import Models.Tratta;
-import Views.Tables.TableModelPrenotazione;
+import Views.Tables.TableModelImbarco;
 
 @SuppressWarnings("serial")
 public class ImbarcoView extends JFrame{
@@ -55,7 +55,7 @@ public class ImbarcoView extends JFrame{
 	
 	private JScrollPane scrollPane;
 	private JTable table;
-	private TableModelPrenotazione tableModel;
+	private TableModelImbarco tableModel;
 
 
 	public ImbarcoView (ViewsController controller) {	
@@ -177,7 +177,7 @@ public class ImbarcoView extends JFrame{
 	
 	public void showListaPrenotati(LinkedList<Prenotazione> prenotati, ViewsController controller) { 
 
-		tableModel = new TableModelPrenotazione(controller);
+		tableModel = new TableModelImbarco(controller);
 		table = new JTable(tableModel);
 		setData(prenotati);
 		scrollPane = new JScrollPane(table);

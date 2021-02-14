@@ -45,5 +45,25 @@ public class DatabaseController {
     	return code;
     }
     
+    public LinkedList<Tratta> getTratte () {
+    	TrattaDAO trattaDao = new TrattaDAO();
+    	return trattaDao.find();
+    }
+    
+    public LinkedList<Prenotazione> getPrenotazioni() {
+    	PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
+    	return prenotazioneDao.find();
+    }
+    
+    public LinkedList<CompagniaAerea> getCompagnie() {
+    	CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
+    	return compagniaAereaDao.get();
+    }
+    
+    public LinkedList<Gate> getGates() {
+    	GateDAO gateDao = new GateDAO();
+    	return gateDao.get();
+    }
+    
     
 }

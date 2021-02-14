@@ -20,8 +20,12 @@ public class ViewsController {
 	LinkedList<Utente> listaUtenti;
 	private boolean logedIn = false;
 	
-	LinkedList<Tratta> tratte;
 	LinkedList<Prenotazione> prenotati;
+	
+	LinkedList<Tratta> tratte;
+	LinkedList<Prenotazione> prenotazioni;
+	LinkedList<CompagniaAerea> compagnie;
+	LinkedList<Gate> gates;
 	
 	private DatabaseController dbController = new DatabaseController();
 	
@@ -161,6 +165,62 @@ public class ViewsController {
 		subFrame.setVisible(true);
 		subFrame.setLocationRelativeTo(null);
 		homeFrame.setVisible(false);
+	}
+	
+	public void loadCercaCenterPanel(String scelta) {
+		((CercaView) subFrame).emptyCenterPanel();
+			
+		switch (scelta) {
+			case "Tratte":
+			{
+				tratte = dbController.getTratte();
+				if (tratte.isEmpty() == false) {
+					//((CercaView) subFrame).showTrattaInfoView(tratte.getFirst(), this); //(tratta)
+					if (dbController.getPrenotatiFromTratta(tratte.getFirst().getId()) != null) {
+						prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
+						if (prenotati.isEmpty() == false) {
+							((CercaView) subFrame).showListaTratte(tratte, this);
+						}
+						else {
+							JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questo volo", "Nessuna prenotazione", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(subFrame, "Non ci sono tratte per questo gate", "Nessuna tratta trovata", JOptionPane.ERROR_MESSAGE);
+				}
+				break;
+			}
+			case "Prenotazioni":
+			{
+				prenotazioni = dbController.getPrenotazioni();
+				((CercaView) subFrame).showListaPrenotazioni(prenotazioni, this);
+				break;
+			}
+			case "Cento Kilometri":
+			{
+				break;
+			}
+			case "Compagnie":
+			{
+				compagnie = dbController.getCompagnie();
+				((CercaView) subFrame).showListaCompagnie(compagnie, this);
+				break;
+			}
+			case "Code":
+			{
+				break;
+			}
+			case "Gate":
+			{
+				gates = dbController.getGates();
+				((CercaView) subFrame).showListaGates(gates, this);
+				break;
+			}
+			default:
+				break;
+		}
+		
 	}
 	
 	public void statisticheView() {

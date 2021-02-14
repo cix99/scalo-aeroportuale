@@ -1,28 +1,31 @@
 package Views.Tables;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 
 import Controllers.ViewsController;
-import Models.Prenotazione;
+import Models.Stato;
+import Models.Tratta;
 
 @SuppressWarnings("serial")
-public class TableModelPrenotazione extends AbstractTableModel {
+public class TableModelTratta extends AbstractTableModel {
 
-	private LinkedList<Prenotazione> prenotazioni;
+	private LinkedList<Tratta> tratte;
 	private int numberOfColumns = 9;
-	private String[] columnNames = {"ID", "ID Tratta", "Nome", "Cognome", "Compagnia Aerea", "Codice", "Cento Kilometri", "Coda", "Imbarcato"};
+	private String[] columnNames = {"ID", "Destinazione", "Compagnia Aerea", "Inizio Imbarco", "Fine Imbarco Stimato", "Fine Imbarco Effettivo", "Gate", "Stato Imbarco", "Ritardo"};
 	
 	private ViewsController controller;
 	
-	public TableModelPrenotazione (ViewsController controller) {
+	public TableModelTratta (ViewsController controller) {
 		this.controller = controller;
 	}
 	
-	public void setData (LinkedList<Prenotazione> prenotati) {
-		this.prenotazioni = prenotati;
+	public void setData (LinkedList<Tratta> tratte) {
+		this.tratte = tratte;
 	}
 	
 	@Override
@@ -32,7 +35,7 @@ public class TableModelPrenotazione extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return prenotazioni.size();
+		return tratte.size();
 	}
 
 	@Override
@@ -55,21 +58,21 @@ public class TableModelPrenotazione extends AbstractTableModel {
 	public Class<?> getColumnClass(int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return String.class;
-		case 1:
 			return Integer.class;
+		case 1:
+			return String.class;
 		case 2:
 			return String.class;
 		case 3:
-			return String.class;
+			return LocalDateTime.class;
 		case 4:
-			return String.class;
+			return LocalDateTime.class;
 		case 5:
-			return String.class;
+			return LocalDateTime.class;
 		case 6:
 			return String.class;
 		case 7:
-			return String.class;
+			return Stato.class;
 		case 8:
 			return Boolean.class;
 		default:
@@ -79,8 +82,8 @@ public class TableModelPrenotazione extends AbstractTableModel {
 
 //	@Override
 //	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-//		if (prenotazioni == null) return;
-//		Prenotazione prenotazione = prenotazioni.get(rowIndex);
+//		if (tratte == null) return;
+//		Prenotazione prenotazione = tratte.get(rowIndex);
 //		switch (columnIndex) {
 //			case 5:
 //				prenotazione.setImbarcato((boolean) aValue);
@@ -93,31 +96,36 @@ public class TableModelPrenotazione extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Prenotazione prenotazione = prenotazioni.get(rowIndex);
+		Tratta tratta = tratte.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			return prenotazione.getId();
+			return tratta.getId();
 		case 1:
-			return prenotazione.getIdTratta();
+			return tratta.getDestinazione();
 		case 2:
-			return prenotazione.getNomePasseggero();
+			return tratta.getCompagniaAerea().getNomeCompagnia();
 		case 3:
-			return prenotazione.getCognomePasseggero();
+			return tratta.getOraInizioImbarco().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		case 4:
-			return prenotazione.getCompagniaAerea().getNomeCompagnia();
+			return tratta.getOraFineImbarcoStimato().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		case 5:
-			return prenotazione.getCodicePrenotazione();
+			{
+				if (tratta.getOraFineImbarcoEffettivo() != null)
+					return tratta.getOraFineImbarcoEffettivo().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+				else
+					return "-";
+			}
 		case 6:
-		{
-			if (prenotazione.getCentoKilometri().getCodiceCompagnia() != null)
-				return prenotazione.getCentoKilometri().getCodiceCompagnia();
-			else
-				return "-";
-		}
+			{
+				if (tratta.getGate().getNomeGate() != null)
+					return tratta.getGate().getNomeGate();
+				else
+					return "-";
+			}
 		case 7:
-			return prenotazione.getCoda().getNomeCoda();
+			return tratta.getStatoImbarco();
 		case 8:
-			return prenotazione.getImbarcato();
+			return tratta.getRitardo();
 		default:
 			return null;
 		}
