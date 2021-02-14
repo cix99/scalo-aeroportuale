@@ -56,6 +56,7 @@ public class CodaDAO extends JDBC {
             while (resultSet.next()) {
                 Coda coda = new Coda();
                 coda.setNomeCoda(resultSet.getString("nome_coda"));
+                coda.setPriority(resultSet.getInt("priority"));
                 codaList.add(coda);
             }
             resultSet.close();
@@ -78,6 +79,7 @@ public class CodaDAO extends JDBC {
             while (resultSet.next()) {
                 Coda coda = new Coda();
                 coda.setNomeCoda(resultSet.getString("nome_coda"));
+                coda.setPriority(resultSet.getInt("priority"));
                 codaList.add(coda);
             }
             resultSet.close();

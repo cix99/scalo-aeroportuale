@@ -14,7 +14,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
-import java.util.ListIterator;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -117,8 +116,8 @@ public class ImbarcoView extends JFrame{
 		compagniaLabel = new JLabel("Compagnia: " + tratta.getCompagniaAerea().getNomeCompagnia());
 		compagniaLabel.setForeground(Color.WHITE);
 		compagniaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		String date = tratta.getOraInizioImbarco().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-		String hour = tratta.getOraInizioImbarco().format(DateTimeFormatter.ofPattern("HH:mm"));
+		String date = tratta.getOraInizioImbarcoStimato().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		String hour = tratta.getOraInizioImbarcoStimato().format(DateTimeFormatter.ofPattern("HH:mm"));
 		dataLabel = new JLabel("Data: " + date);
 		dataLabel.setForeground(Color.WHITE);
 		dataLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
@@ -147,20 +146,7 @@ public class ImbarcoView extends JFrame{
 		codaComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//LinkedList<Prenotazione> prenotatiList = controller.getPrenotatiByCoda(codaComboBox.getSelectedItem().toString(), tratta.getId());
-				
-				//Ottieni la lista di prenotati e aggiorna la tabella di conseguenza
-				
-//				String [] tratteArray = new String[codaList.size()];
-//				ListIterator<Coda> cursor = codaList.listIterator();
-//				int i = 0;
-//				while (cursor.hasNext()) {
-//					Coda current = cursor.next();
-//					String time = current.getOraInizioImbarco().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-//					tratteArray[i] = current.getDestinazione() + " - " + time;
-//					i++;
-//				}
-//				UpdateTrattaComboBox(tratteArray);
+				controller.loadImbarcoCenterPanelCoda(codaComboBox.getSelectedItem().toString(), tratta.getId());
 			}
 		});
 		
@@ -175,15 +161,23 @@ public class ImbarcoView extends JFrame{
 		mainPanel.revalidate();
 	}
 	
-	public void showListaPrenotati(LinkedList<Prenotazione> prenotati, ViewsController controller) { 
-
+	public void showListaPrenotati(ViewsController controller, LinkedList<Prenotazione> prenotati, int codaPriority) { 
+		
 		tableModel = new TableModelImbarco(controller);
 		table = new JTable(tableModel);
+		
+		//TODO: carica solo i prenotati per la coda con priority più alta
 		setData(prenotati);
+		
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBackground(new Color (0, 0, 153));
+		scrollPane.setBackground(new Color (0, 0, 153));		
+		
+		table.getColumnModel().getColumn(1).setMinWidth(150);
+		table.getColumnModel().getColumn(2).setMinWidth(200);
+		
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
 		tableRenderer.setHorizontalAlignment(JLabel.CENTER);
+		//tableRenderer.setBackground(new Color(0,204,255));
 		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer);
 		table.getColumnModel().getColumn(1).setCellRenderer(tableRenderer);
 		table.getColumnModel().getColumn(2).setCellRenderer(tableRenderer);
@@ -202,7 +196,7 @@ public class ImbarcoView extends JFrame{
 		chiudiImbarcoPanel.add(chiudiImbarcoButton);
 		centerPanel.add(chiudiImbarcoPanel, BorderLayout.SOUTH);
 		
-		mainPanel.revalidate();
+		//mainPanel.revalidate();
 		
 //		table.getModel().addTableModelListener(new TableModelListener() {
 //
@@ -214,6 +208,9 @@ public class ImbarcoView extends JFrame{
 //	                //tableRefresh();
 //	            }
 //	        });
+		
+		//CodaComboBox non si sta aggiornando nella gui quando cambi selezione
+		//repaint();
 	}
 	
 	public void setData (LinkedList<Prenotazione> prenotati) {
@@ -229,6 +226,13 @@ public class ImbarcoView extends JFrame{
 		if (centerPanel != null) {
 			centerPanel.removeAll();
 			centerPanel.repaint();
+		}
+	}
+	
+	public void emptyTable () {
+		if (scrollPane != null) {
+			scrollPane.removeAll();
+			
 		}
 	}
 	

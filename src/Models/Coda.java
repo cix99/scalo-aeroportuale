@@ -9,6 +9,7 @@ public class Coda {
     private String nomeCoda;
     private LocalDateTime inizioImbarcoCoda;
     private LocalDateTime fineImbarcoCoda;
+    private int priority;
 
     public Coda(String nomeCoda) {
 		super();
@@ -58,4 +59,11 @@ public class Coda {
 		this.fineImbarcoCoda = fineImbarcoCoda;
 	}    
 
+	public int getPriority() {
+		return priority;
+	}
+	
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
 }

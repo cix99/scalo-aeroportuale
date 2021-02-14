@@ -1,7 +1,6 @@
 package Views.AggiungiView;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -10,18 +9,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import Controllers.ViewsController;
-
-import java.awt.Component;
-import javax.swing.Box;
-import javax.swing.JButton;
 
 @SuppressWarnings("serial")
 public class NuovaCompagniaView extends JPanel {

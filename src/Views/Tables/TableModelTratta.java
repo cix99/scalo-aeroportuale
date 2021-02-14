@@ -15,8 +15,8 @@ import Models.Tratta;
 public class TableModelTratta extends AbstractTableModel {
 
 	private LinkedList<Tratta> tratte;
-	private int numberOfColumns = 9;
-	private String[] columnNames = {"ID", "Destinazione", "Compagnia Aerea", "Inizio Imbarco", "Fine Imbarco Stimato", "Fine Imbarco Effettivo", "Gate", "Stato Imbarco", "Ritardo"};
+	private int numberOfColumns = 10;
+	private String[] columnNames = {"ID", "Destinazione", "Compagnia Aerea", "Inizio Imbarco Stimato", "Inizio Imbarco Effettivo", "Fine Imbarco Stimato", "Fine Imbarco Effettivo", "Gate", "Stato Imbarco", "Ritardo"};
 	
 	private ViewsController controller;
 	
@@ -70,10 +70,12 @@ public class TableModelTratta extends AbstractTableModel {
 		case 5:
 			return LocalDateTime.class;
 		case 6:
-			return String.class;
+			return LocalDateTime.class;
 		case 7:
-			return Stato.class;
+			return String.class;
 		case 8:
+			return Stato.class;
+		case 9:
 			return Boolean.class;
 		default:
 			return null;
@@ -105,26 +107,28 @@ public class TableModelTratta extends AbstractTableModel {
 		case 2:
 			return tratta.getCompagniaAerea().getNomeCompagnia();
 		case 3:
-			return tratta.getOraInizioImbarco().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			return tratta.getOraInizioImbarcoStimato().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		case 4:
-			return tratta.getOraFineImbarcoStimato().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			return tratta.getOraInizioImbarcoEffettivo().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 		case 5:
+			return tratta.getOraFineImbarcoStimato().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+		case 6:
 			{
 				if (tratta.getOraFineImbarcoEffettivo() != null)
 					return tratta.getOraFineImbarcoEffettivo().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 				else
 					return "-";
 			}
-		case 6:
+		case 7:
 			{
 				if (tratta.getGate().getNomeGate() != null)
 					return tratta.getGate().getNomeGate();
 				else
 					return "-";
 			}
-		case 7:
-			return tratta.getStatoImbarco();
 		case 8:
+			return tratta.getStatoImbarco();
+		case 9:
 			return tratta.getRitardo();
 		default:
 			return null;

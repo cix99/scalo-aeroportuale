@@ -357,7 +357,7 @@ public class NuovaPrenotazioneView extends JPanel {
 				while (tratteCursor.hasNext()) {
 					Tratta current = tratteCursor.next();
 					idList[i] = current.getId();
-					String time = current.getOraInizioImbarco().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+					String time = current.getOraInizioImbarcoStimato().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 					tratteArray[i] = current.getDestinazione() + " - " + time;
 					i++;
 				}

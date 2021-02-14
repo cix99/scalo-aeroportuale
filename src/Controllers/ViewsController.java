@@ -21,11 +21,13 @@ public class ViewsController {
 	private boolean logedIn = false;
 	
 	LinkedList<Prenotazione> prenotati;
+	LinkedList<Coda> codeVolo;
 	
 	LinkedList<Tratta> tratte;
 	LinkedList<Prenotazione> prenotazioni;
 	LinkedList<CompagniaAerea> compagnie;
 	LinkedList<Gate> gates;
+	
 	
 	private DatabaseController dbController = new DatabaseController();
 	
@@ -80,22 +82,60 @@ public class ViewsController {
 		homeFrame.setVisible(false);
 	}
 	
-	public void loadImbarcoCenterPanel(String nomeGate) {
+	public void loadImbarcoCenterPanel(String nomeGate) { 
+														
 		((ImbarcoView) subFrame).emptyCenterPanel();
-			
 		tratte = dbController.getTrattaInfoFromGate(nomeGate);
 		if (tratte.isEmpty() == false) {
 			((ImbarcoView) subFrame).showTrattaInfoView(tratte.getFirst(), this); //(tratta)
 			if (dbController.getPrenotatiFromTratta(tratte.getFirst().getId()) != null) {
 				prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
 				if (prenotati.isEmpty() == false) {
-					((ImbarcoView) subFrame).showListaPrenotati(prenotati, this);
+					//listCodaPriority = getCodaPrioritiesForTratta(tratte.getFirst().getId());  [return i valori int delle code presenti per la tratta]
+					((ImbarcoView) subFrame).showListaPrenotati(this, prenotati, 5);  
 				}
 				else {
 					JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questo volo", "Nessuna prenotazione", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
+		else {
+			JOptionPane.showMessageDialog(subFrame, "Non ci sono tratte per questo gate", "Nessuna tratta trovata", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void loadImbarcoCenterPanelCoda(String nomeCoda, int idTratta) { 
+		
+		//((ImbarcoView) subFrame).emptyCenterPanel();
+		
+		((ImbarcoView) subFrame).emptyTable();
+		codeVolo = dbController.getCodaByIdTratta(idTratta);
+		
+		if (tratte.isEmpty() == false) {
+			//((ImbarcoView) subFrame).showTrattaInfoView(tratte.getFirst(), this); //(tratta)
+			//if (dbController.getPrenotatiFromTratta(tratte.getFirst().getId()) != null) {
+				//prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
+				if (prenotati.isEmpty() == false) {
+					//listCodaPriority = getCodaPrioritiesForTratta(tratte.getFirst().getId());  [return i valori int delle code presenti per la tratta]
+					LinkedList<Prenotazione> prenotatiCoda = new LinkedList<Prenotazione>();
+					
+					ListIterator<Prenotazione> cursor = prenotati.listIterator();
+					while (cursor.hasNext()) {
+						Prenotazione current = (Prenotazione) cursor.next();
+						if (current.getCoda().getNomeCoda().equals(nomeCoda)) {
+							prenotatiCoda.add(current);
+						}
+					}
+					if (prenotatiCoda.isEmpty() == false)
+						((ImbarcoView) subFrame).showListaPrenotati(this, prenotatiCoda, prenotatiCoda.getFirst().getCoda().getPriority());
+					else
+						JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questa coda", "Nessuno in coda", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questo volo", "Nessuna prenotazione", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		//}
 		else {
 			JOptionPane.showMessageDialog(subFrame, "Non ci sono tratte per questo gate", "Nessuna tratta trovata", JOptionPane.ERROR_MESSAGE);
 		}

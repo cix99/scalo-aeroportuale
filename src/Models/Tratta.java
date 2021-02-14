@@ -2,15 +2,14 @@ package Models;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.ListIterator;
 
 public class Tratta{
 
     private int id;
     private String destinazione;
     private CompagniaAerea compagniaAerea;
-    private LocalDateTime oraInizioImbarco;
+    private LocalDateTime oraInizioImbarcoStimato;
+    private LocalDateTime oraInizioImbarcoEffettivo;
     private LocalDateTime oraFineImbarcoStimato;
     private LocalDateTime oraFineImbarcoEffettivo;
     private Gate gate;
@@ -19,11 +18,11 @@ public class Tratta{
     private ArrayList<Coda> code;
     
     
-    public Tratta(String destinazione, CompagniaAerea compagniaAerea, LocalDateTime oraInizioImbarco) {
+    public Tratta(String destinazione, CompagniaAerea compagniaAerea, LocalDateTime oraInizioImbarcoStimato) {
 		super();
 		this.destinazione = destinazione;
 		this.compagniaAerea = compagniaAerea;
-		this.oraInizioImbarco = oraInizioImbarco;
+		this.oraInizioImbarcoStimato = oraInizioImbarcoStimato;
 	}
 
 	public Tratta() {
@@ -41,8 +40,12 @@ public class Tratta{
 		return compagniaAerea;
 	}
 
-	public LocalDateTime getOraInizioImbarco() {
-		return oraInizioImbarco;
+	public LocalDateTime getOraInizioImbarcoStimato() {
+		return oraInizioImbarcoStimato;
+	}
+	
+	public LocalDateTime getOraInizioImbarcoEffettivo() {
+		return oraInizioImbarcoEffettivo;
 	}
 	
 	public LocalDateTime getOraFineImbarcoStimato() {
@@ -81,8 +84,12 @@ public class Tratta{
 		this.compagniaAerea = compagniaAerea;
 	}
 
-	public void setOraInizioImbarco(LocalDateTime oraInizioImbarco) {
-		this.oraInizioImbarco = oraInizioImbarco;
+	public void setOraInizioImbarcoStimato(LocalDateTime oraInizioImbarcoStimato) {
+		this.oraInizioImbarcoStimato = oraInizioImbarcoStimato;
+	}
+	
+	public void setOraInizioImbarcoEffettivo(LocalDateTime oraInizioImbarcoEffettivo) {
+		this.oraInizioImbarcoEffettivo = oraInizioImbarcoEffettivo;
 	}
 
 	public void setOraFineImbarcoStimato(LocalDateTime oraFineImbarcoStimato) {
