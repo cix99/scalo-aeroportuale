@@ -7,9 +7,8 @@ public class CentoKilometri{
     private CompagniaAerea compagniaAerea;
     private int punti;
 	
-    public CentoKilometri (int id, String codiceCompagnia, CompagniaAerea compagniaAerea, int punti) {
+    public CentoKilometri (String codiceCompagnia, CompagniaAerea compagniaAerea, int punti) {
     	super();
-    	//this.id = id;
     	this.codiceCompagnia = codiceCompagnia;
     	this.compagniaAerea = compagniaAerea;
     	this.punti = punti;

@@ -65,5 +65,38 @@ public class DatabaseController {
     	return gateDao.get();
     }
     
+    public boolean salvaNuovoGate (String nomeGate) {
+    	GateDAO gateDao = new GateDAO();
+    	Gate gate = new Gate(nomeGate);
+    	if (gateDao.store(gate))
+    		return true;
+    	return false;
+    }
+    
+    public boolean salvaNuovoCompagniaAerea (String nomeCompagnia) {
+    	CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
+    	CompagniaAerea compagniaAerea = new CompagniaAerea(nomeCompagnia);
+    	if (compagniaAereaDao.store(compagniaAerea))
+    		return true;
+    	return false;
+    }
+    
+    public boolean salvaNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
+    	CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
+    	int puntiValore;
+    	try {
+    	   puntiValore = Integer.parseInt(punti);
+    	}
+    	catch (NumberFormatException e)
+    	{
+    	   puntiValore = 0;
+    	}
+    	CompagniaAerea compagniaAerea = new CompagniaAerea(nomeCompagnia);
+    	CentoKilometri centoKilometri = new CentoKilometri(codice, compagniaAerea, puntiValore);
+    	if (centoKilometriDao.store(centoKilometri))
+    		return true;
+    	return false;
+    }
+    
     
 }

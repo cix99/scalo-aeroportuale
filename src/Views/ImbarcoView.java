@@ -28,7 +28,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import Controllers.ViewsController;
-import Models.Coda;
 import Models.Prenotazione;
 import Models.Tratta;
 import Views.Tables.TableModelImbarco;

@@ -54,7 +54,7 @@ public class PrenotazioneDAO extends JDBC {
                 prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
                 prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
                 prenotazione.setCoda(codaDAO.findByName(resultSet.getInt("coda"), resultSet.getInt("id_tratta")));
-                prenotazione.setCentoKilometri(centoKilometriDAO.findByCode(resultSet.getString("cento_kilometri")));
+                prenotazione.setCentoKilometri(centoKilometriDAO.findById(resultSet.getInt("cento_kilometri")));
                 prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
                 prenotazione.setImbarcato(resultSet.getBoolean("imbarcato"));
                 PrenotaioneList.add(prenotazione);
@@ -85,7 +85,7 @@ public class PrenotazioneDAO extends JDBC {
                  prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
                  prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
                  prenotazione.setCoda(codaDAO.findByName(resultSet.getInt("coda"), resultSet.getInt("id_tratta")));  //da sistemare
-                 prenotazione.setCentoKilometri(centoKilometriDAO.findByCode(resultSet.getString("cento_kilometri")));
+                 prenotazione.setCentoKilometri(centoKilometriDAO.findById(resultSet.getInt("cento_kilometri")));
                  prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
                  prenotazione.setImbarcato(resultSet.getBoolean("imbarcato"));
                  PrenotazioneList.add(prenotazione);

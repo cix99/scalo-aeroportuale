@@ -11,7 +11,7 @@ public class CompagniaAereaDAO {
 
 	private String tableName = "compagnia_aerea";
 	
-	public CompagniaAerea store(CompagniaAerea compagniaAerea){
+	public boolean store(CompagniaAerea compagniaAerea){
         String query = "INSERT INTO " + tableName + " VALUES (?)";
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -20,8 +20,9 @@ public class CompagniaAereaDAO {
             statement.close();
         }catch(SQLException e){
             System.out.println(e);
+            return false;
         }
-        return compagniaAerea;
+        return true;
     }
 
     public CompagniaAerea findByName(String nome){

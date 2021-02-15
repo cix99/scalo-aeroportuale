@@ -9,7 +9,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
@@ -21,15 +20,17 @@ import javax.swing.border.EmptyBorder;
 import Controllers.ViewsController;
 
 @SuppressWarnings("serial")
-public class NuovoCKView extends JPanel {
+public class NuovoCentoKilometriView extends JPanel {
 
 	private JPanel mainPanel;
 	private JLabel compagniaLabel;
 	private JTextField compagniaTextField;
 	private JLabel codiceLabel;
 	private JTextField codiceTextField;
-
-	public NuovoCKView (ViewsController controller) {			
+	private JLabel puntiLabel;
+	private JTextField puntiTextField;
+	
+	public NuovoCentoKilometriView (ViewsController controller) {			
 		setBorder(new EmptyBorder(10, 5, 10, 10));
 		setLayout(new BorderLayout());
 		setBackground(new Color(0, 0, 153));
@@ -68,6 +69,25 @@ public class NuovoCKView extends JPanel {
 			}
 		});
 		
+		puntiLabel = new JLabel("Punti");
+		puntiLabel.setForeground(Color.WHITE);
+		puntiLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		puntiLabel.setMinimumSize(new Dimension(100, 30));
+		puntiTextField = new JTextField();
+		puntiTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		puntiTextField.setColumns(5);
+		puntiTextField.setMinimumSize(new Dimension(50,30));
+		
+		puntiTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!Character.isDigit(c)) {
+					e.consume();
+				}
+			}
+		});
+		
 		JPanel centerPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
 		centerPanel.setBackground(new Color (0, 0, 153));
 		JPanel compagniaPanel = new JPanel(new BorderLayout());
@@ -79,9 +99,15 @@ public class NuovoCKView extends JPanel {
 		codicePanel.setBorder(new EmptyBorder(0, 10, 0, 0));
 		codicePanel.add(codiceLabel, BorderLayout.WEST);
 		codicePanel.add(codiceTextField, BorderLayout.SOUTH);
+		JPanel puntiPanel = new JPanel(new BorderLayout());
+		puntiPanel.setBackground(new Color(0, 0, 153));
+		puntiPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
+		puntiPanel.add(puntiLabel, BorderLayout.WEST);
+		puntiPanel.add(puntiTextField, BorderLayout.SOUTH);
 		
 		centerPanel.add(compagniaPanel);
 		centerPanel.add(codicePanel);
+		centerPanel.add(puntiPanel);
 		
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.gridx = 0;  
@@ -107,7 +133,7 @@ public class NuovoCKView extends JPanel {
 		salvaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				controller.salvaNuovaCompagniaAerea(compagniaTextField.getText());
+				controller.salvaNuovoCentoKilometri(codiceTextField.getText(), compagniaTextField.getText(), puntiTextField.getText());
 			}
 		});
 	}

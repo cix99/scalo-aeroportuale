@@ -2,7 +2,6 @@ package Views.AggiungiView;
 
 import Controllers.ViewsController;
 import Views.TopPanel;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,11 +19,12 @@ import java.awt.event.ComponentEvent;
 @SuppressWarnings("serial")
 public class AggiungiView extends JFrame{
 	
-	private JPanel mainPanel;
 	private TopPanel topPanel;
+	private JPanel mainPanel;
 	private JPanel sidePanel;
 	private JPanel centerPanel;
 	private JLabel aggiungiLabel;
+
 	
 	public AggiungiView (ViewsController controller) {
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
@@ -40,9 +40,8 @@ public class AggiungiView extends JFrame{
 		
 		topPanel = new TopPanel(controller, false);
 		
-		CardLayout cardLayout = new CardLayout();
-		centerPanel = new JPanel();
-		centerPanel.setLayout(cardLayout);
+		centerPanel = new JPanel(new BorderLayout(0,0));
+		centerPanel.setBackground(new Color(0, 0, 153));
 		
 		sidePanel = new JPanel(new BorderLayout());
 		sidePanel.setBackground(new Color (0, 153, 255));
@@ -54,25 +53,12 @@ public class AggiungiView extends JFrame{
 		aggiungiLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		sidePanel.add(aggiungiLabel, BorderLayout.NORTH);
-		sidePanel.add(new AggiungiSidePanel(controller, centerPanel, cardLayout), BorderLayout.CENTER);
+		sidePanel.add(new AggiungiSidePanel(controller, centerPanel, AggiungiView.this), BorderLayout.CENTER);
 		
 		mainPanel.add(topPanel, BorderLayout.NORTH);
 		mainPanel.add(sidePanel, BorderLayout.WEST);
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
-		
-		JPanel prenotazionePanel = new NuovaPrenotazioneView(controller);
-		JPanel trattaPanel = new NuovaTrattaView();
-		JPanel ckPanel = new NuovoCKView(controller);
-		JPanel compagniaPanel = new NuovaCompagniaView(controller);
-		JPanel gatePanel = new NuovoGateView(controller);
-		
-		centerPanel.add(trattaPanel, "trattaPanel");
-		centerPanel.add(compagniaPanel, "compagniaPanel");
-		centerPanel.add(prenotazionePanel, "prenotazionePanel");
-		centerPanel.add(ckPanel, "ckPanel");
-		centerPanel.add(gatePanel, "gatePanel");
 
-		cardLayout.show(centerPanel, "prenotazionePanel");
 		
 		addComponentListener(new ComponentAdapter() {
 		    public void componentResized(ComponentEvent componentEvent) {
@@ -80,6 +66,5 @@ public class AggiungiView extends JFrame{
 		    }
 		});
 	}
-	
 
 }

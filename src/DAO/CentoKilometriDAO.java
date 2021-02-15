@@ -11,7 +11,7 @@ public class CentoKilometriDAO extends JDBC {
 
 	private String tableName = "cento_kilometri";
 	
-	public CentoKilometri store(CentoKilometri centoKilometri){
+	public boolean store(CentoKilometri centoKilometri){
         String query = "INSERT INTO " + tableName + " (codice_compagnia, compagnia_aerea, punti) VALUES  (?, ?, ?)";
 
         try {
@@ -23,8 +23,9 @@ public class CentoKilometriDAO extends JDBC {
             statement.close();
         }catch(SQLException e){
             System.out.println(e);
+            return false;
         }
-        return centoKilometri;
+        return true;
     }
 
     public CentoKilometri findByCode(String codiceCompagnia){
@@ -34,6 +35,29 @@ public class CentoKilometriDAO extends JDBC {
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, codiceCompagnia);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                centoKilometri.setId(resultSet.getInt("id"));
+                centoKilometri.setCodiceCompagnia(resultSet.getString("codice_compagnia"));
+                centoKilometri.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                centoKilometri.setPunti(resultSet.getInt("punti"));
+            }
+            resultSet.close();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return centoKilometri;
+    }
+    
+    
+    public CentoKilometri findById(int id){
+        String query = "SELECT * FROM " + tableName + " WHERE id = ?";
+        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        CentoKilometri centoKilometri = new CentoKilometri();
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 centoKilometri.setId(resultSet.getInt("id"));

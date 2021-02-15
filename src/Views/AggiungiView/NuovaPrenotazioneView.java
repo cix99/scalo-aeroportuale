@@ -10,14 +10,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -26,17 +21,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 
 import Controllers.ViewsController;
-import Models.CentoKilometri;
-import Models.Coda;
-import Models.CompagniaAerea;
 import Models.Tratta;
 
 @SuppressWarnings("serial")
 public class NuovaPrenotazioneView extends JPanel {
-	
-	private int idTratta;
-	private Coda coda;
-    
+	   
 	int[] idList;
 	
 	private JPanel mainPanel;
@@ -112,7 +101,6 @@ public class NuovaPrenotazioneView extends JPanel {
 		trattaLabel = new JLabel("Tratte");
 		trattaLabel.setForeground(Color.WHITE);
 		trattaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-//		trattaComboBox = new JComboBox<String>(controller.getCompagnieAeree());
 		trattaComboBox = new JComboBox<String>();
 		trattaComboBox.setEditable(false);
 		trattaComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
@@ -120,142 +108,11 @@ public class NuovaPrenotazioneView extends JPanel {
 		codaLabel = new JLabel("Coda");
 		codaLabel.setForeground(Color.WHITE);
 		codaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-//		codaComboBox = new JComboBox<String>(controller.getCompagnieAeree());
 		codaComboBox = new JComboBox<String>();
 		codaComboBox.setEditable(false);
 		codaComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		
 		GridBagConstraints gc = new GridBagConstraints();
-		
-//		gc.gridx = 0;  
-//		gc.gridy = 0;
-//		gc.gridwidth = 1;
-//		gc.insets = new Insets(0,20,0,0);
-//		gc.anchor = GridBagConstraints.WEST;
-//		mainPanel.add(nomeLabel, gc);
-//		gc.gridx = 1;      
-//		gc.gridy = 0;
-//		gc.gridwidth = 2;
-//		gc.insets = new Insets(0,20,0,0);
-//		gc.anchor = GridBagConstraints.CENTER;
-//		mainPanel.add(nomeTextField, gc);
-//		
-//		gc.gridx = 0;      
-//		gc.gridy = 1;
-//		gc.gridwidth = 1;
-//		gc.insets = new Insets(10,20,0,0);
-//		gc.anchor = GridBagConstraints.LINE_START;
-//		mainPanel.add(cognomeLabel, gc);
-//		gc.gridx = 1;   
-//		gc.gridy = 1;
-//		gc.gridwidth = 2;
-//		gc.insets = new Insets(10,20,0,0);
-//		gc.anchor = GridBagConstraints.CENTER;
-//		mainPanel.add(cognomeTextField, gc);
-//		
-//		gc.gridx = 0;  
-//		gc.gridy = 2;
-//		gc.gridwidth = 1;
-//		gc.insets = new Insets(10,20,0,0);
-//		gc.anchor = GridBagConstraints.LINE_START;
-//		mainPanel.add(codicePrenotazioneLabel, gc);
-//		gc.gridx = 1;     
-//		gc.gridy = 2;
-//		gc.gridwidth = 1;
-//		gc.anchor = GridBagConstraints.CENTER;
-//		gc.insets = new Insets(10,20,0,0);
-//		mainPanel.add(codicePrenotazioneTextField, gc);
-//		
-//		gc.gridx = 0;  
-//		gc.gridy = 3;
-//		gc.gridwidth = 1;
-//		gc.insets = new Insets(10,20,0,0);
-//		gc.anchor = GridBagConstraints.LINE_START;
-//		mainPanel.add(centoKilometriLabel, gc);
-//		gc.gridx = 1;     
-//		gc.gridy = 3;
-//		gc.gridwidth = 1;
-//		gc.anchor = GridBagConstraints.CENTER;
-//		gc.insets = new Insets(10,20,0,0);
-//		mainPanel.add(centoKilometriTextField, gc);
-//		
-//		gc.gridx = 0;  
-//		gc.gridy = 4;
-//		gc.gridwidth = 1;
-//		gc.insets = new Insets(10,20,0,0);
-//		gc.anchor = GridBagConstraints.LINE_START;
-//		mainPanel.add(compagniaLabel, gc);
-//		gc.gridx = 1;     
-//		gc.gridy = 4;
-//		gc.gridwidth = 1;
-//		gc.anchor = GridBagConstraints.CENTER;
-//		gc.insets = new Insets(10,20,0,0);
-//		mainPanel.add(compagnieComboBox, gc);
-//----------------------------------------------------------------		
-//		gc.gridx = 0;  
-//		gc.gridy = 0;
-//		gc.gridwidth = 1;
-//		gc.insets = new Insets(10,20,0,0);
-//		gc.anchor = GridBagConstraints.WEST;
-//		mainPanel.add(nomeLabel, gc);
-//		gc.gridx = 0;      
-//		gc.gridy = 1;
-//		gc.gridwidth = 1;
-//		gc.insets = new Insets(10,20,0,0);
-//		gc.anchor = GridBagConstraints.WEST;
-//		mainPanel.add(nomeTextField, gc);
-//		
-//		gc.gridx = 1;      
-//		gc.gridy = 0;
-//		gc.gridwidth = 1;
-//		gc.insets = new Insets(10,20,0,0);
-//		gc.anchor = GridBagConstraints.WEST;
-//		mainPanel.add(cognomeLabel, gc);
-//		gc.gridx = 1;   
-//		gc.gridy = 1;
-//		gc.gridwidth = 1;
-//		gc.insets = new Insets(10,20,0,0);
-//		gc.anchor = GridBagConstraints.WEST;
-//		mainPanel.add(cognomeTextField, gc);
-//		
-//		gc.gridx = 0;  
-//		gc.gridy = 2;
-//		gc.gridwidth = 1;
-//		gc.insets = new Insets(10,20,0,0);
-//		gc.anchor = GridBagConstraints.WEST;
-//		mainPanel.add(codicePrenotazioneLabel, gc);
-//		gc.gridx = 0;     
-//		gc.gridy = 3;
-//		gc.gridwidth = 1;
-//		gc.anchor = GridBagConstraints.WEST;
-//		gc.insets = new Insets(10,20,0,0);
-//		mainPanel.add(codicePrenotazioneTextField, gc);
-//		
-//		gc.gridx = 1;  
-//		gc.gridy = 2;
-//		gc.gridwidth = 1;
-//		gc.insets = new Insets(10,20,0,0);
-//		gc.anchor = GridBagConstraints.WEST;
-//		mainPanel.add(centoKilometriLabel, gc);
-//		gc.gridx = 1;     
-//		gc.gridy = 3;
-//		gc.gridwidth = 1;
-//		gc.anchor = GridBagConstraints.WEST;
-//		gc.insets = new Insets(10,20,0,0);
-//		mainPanel.add(centoKilometriTextField, gc);
-//		
-//		gc.gridx = 2;  
-//		gc.gridy = 2;
-//		gc.gridwidth = 1;
-//		gc.insets = new Insets(10,20,0,0);
-//		gc.anchor = GridBagConstraints.WEST;
-//		mainPanel.add(compagniaLabel, gc);
-//		gc.gridx = 2;     
-//		gc.gridy = 3;
-//		gc.gridwidth = 1;
-//		gc.anchor = GridBagConstraints.WEST;
-//		gc.insets = new Insets(10,20,0,0);
-//		mainPanel.add(compagnieComboBox, gc);
 	
 		JPanel midTopPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
 		midTopPanel.setBackground(new Color (0, 0, 153));
@@ -309,35 +166,25 @@ public class NuovaPrenotazioneView extends JPanel {
 		
 		gc.gridx = 0;  
 		gc.gridy = 0;
-		//gc.gridwidth = 1;
-		//gc.insets = new Insets(10,20,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(midTopPanel, gc);
 		gc.gridx = 0;     
 		gc.gridy = 1;
-		//gc.gridwidth = 1;
 		gc.anchor = GridBagConstraints.WEST;
 		gc.insets = new Insets(20,0,0,0);
 		mainPanel.add(midCenterPanel, gc);
 		gc.gridx = 0;     
 		gc.gridy = 2;
-		//gc.gridwidth = 1;
 		gc.anchor = GridBagConstraints.WEST;
-		//gc.insets = new Insets(10,20,0,0);
 		mainPanel.add(midBottomPanel, gc);
 		
 		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		bottomPanel.setBackground(new Color(0, 0, 153));
 		
-		JButton annullaButton = new JButton("Annulla");
-		annullaButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		annullaButton.setFocusPainted(false);
-		
 		JButton salvaButton = new JButton("Salva");
 		salvaButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		salvaButton.setFocusPainted(false);
-		
-		bottomPanel.add(annullaButton);
+
 		bottomPanel.add(salvaButton);
 		
 		add(menuLabel, BorderLayout.NORTH);
@@ -347,9 +194,8 @@ public class NuovaPrenotazioneView extends JPanel {
 		compagniaComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//JComboBox<String> combo = (JComboBox<String>) e.getSource();
 				LinkedList<Tratta> tratteList = controller.getTratteFromCompagnie(compagniaComboBox.getSelectedItem().toString());
-				
+
 				String [] tratteArray = new String[tratteList.size()];
 				ListIterator<Tratta> tratteCursor = tratteList.listIterator();
 				int i = 0;
@@ -368,8 +214,6 @@ public class NuovaPrenotazioneView extends JPanel {
 		trattaComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//JComboBox<String> combo = (JComboBox<String>) e.getSource();
-				
 				String [] codaArray = controller.getCodaFromIdTratta(idList[trattaComboBox.getSelectedIndex()]);
 				UpdateCodaComboBox(codaArray);
 			}
@@ -377,25 +221,18 @@ public class NuovaPrenotazioneView extends JPanel {
 	}
 	
 	public void UpdateTrattaComboBox (String[] trattaArray) {
-		
 		trattaComboBox.removeAllItems();
-		
 		for (int i = 0; i < trattaArray.length; i++) {
-			trattaComboBox.addItem(trattaArray[i]);
-			
+			trattaComboBox.addItem(trattaArray[i]);	
 		}
-		
 		mainPanel.repaint();
 	}
 	
 	public void UpdateCodaComboBox (String[] codaArray) {
-		
 		codaComboBox.removeAllItems();
-		
 		for (int i = 0; i < codaArray.length; i++) {
 			codaComboBox.addItem(codaArray[i]);
 		}
-		
 		mainPanel.repaint();
 	}
 

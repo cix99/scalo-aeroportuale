@@ -1,218 +1,301 @@
 package Views.AggiungiView;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Properties;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import java.awt.Component;
-import javax.swing.Box;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JTextPane;
+import javax.swing.border.EmptyBorder;
 
+import Controllers.ViewsController;
+import Models.Tratta;
+
+import org.jdatepicker.impl.*;
+import org.jdatepicker.util.*;
+import org.jdatepicker.*;
+
+@SuppressWarnings("serial")
 public class NuovaTrattaView extends JPanel {
+		
+	int[] idList;
 	
-//	private JLabel destinazioneLabel;
-//	private JLabel nuovaTrattaLabel;
-//	private JLabel dataLabel;
-//	private JLabel oraLabel;
-//	private JLabel codaLabel;
-//	private JLabel nomeLabel;
-//	private JLabel compagniaLabel;
-//	private JTextField destinazioneText;
-//	private JTextField compagniaText;
-//	private JTextField dataText;
-//	private JTextField oraText;
-//	private JTextField codaText;
-//	private JTextField nomeText;
-//	private JPanel panel;
-	private JTextField destinazioneText;
-	private JTextField compagniaText;
+	private JPanel mainPanel;
+	private JLabel destinazioneLabel;
+	private JTextField destinazioneTextField;
 	private JLabel compagniaLabel;
-	private JTextField nomeText;
-	private JTextField dataText;
-	private JTextField oraText;
-		
-	public NuovaTrattaView () {	
-		
+	private JTextField compagniaTextField;
+	private JLabel dataLabel;
+	private JLabel oraInizioLabel;
+	private JLabel oraFineLabel;
+	private JComboBox<String> hourStartComboBox;
+	private JComboBox<String> minuteStartComboBox;
+	private JComboBox<String> hourEndComboBox;
+	private JComboBox<String> minuteEndComboBox;
+	private String[] hours = {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", 
+								"12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
+	private String[] minutes = {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", 
+								"15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", 
+								"30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", 
+								"45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", };
+	private JLabel codeLabel;
+	private JComboBox<String> numeroCodeComboBox;
+	private String[] numeroCode = {"1", "2", "3", "4", "5"};
+	
+	private JDialog codaDialog;
+	
+	public NuovaTrattaView (ViewsController controller, JFrame aggiungiFrame) {	
+	
+		setBorder(new EmptyBorder(10, 5, 10, 10));
+		setLayout(new BorderLayout());
 		setBackground(new Color(0, 0, 153));
 		
-		destinazioneText = new JTextField();
-		destinazioneText.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		destinazioneText.setColumns(10);
+		JLabel menuLabel = new JLabel("   Nuova Tratta");
+		menuLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
+		menuLabel.setForeground(Color.WHITE);
 		
-		JLabel destinazioneLabel = new JLabel("Destinazione");
+		mainPanel = new JPanel(new GridBagLayout());
+		mainPanel.setBackground(new Color(0, 0, 153));
+		
+		destinazioneLabel = new JLabel("Destinazione");
 		destinazioneLabel.setForeground(Color.WHITE);
-		destinazioneLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		destinazioneLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		destinazioneLabel.setMinimumSize(new Dimension(100, 30));
+		destinazioneTextField = new JTextField();
+		destinazioneTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		destinazioneTextField.setColumns(15);
+		destinazioneTextField.setMinimumSize(new Dimension(290,30));
 		
-		compagniaText = new JTextField();
-		compagniaText.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		compagniaText.setColumns(10);
+		
 		
 		compagniaLabel = new JLabel("Compagnia");
 		compagniaLabel.setForeground(Color.WHITE);
-		compagniaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		compagniaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		compagniaTextField = new JTextField();
+		compagniaTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		compagniaTextField.setColumns(15);
+		compagniaTextField.setMinimumSize(new Dimension(290,30));
+		
+		dataLabel = new JLabel("Data");
+		dataLabel.setForeground(Color.WHITE);
+		dataLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+
+		UtilDateModel model = new UtilDateModel();
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+		
+		oraInizioLabel = new JLabel("Ora Inizio Imbarco");
+		oraInizioLabel.setForeground(Color.WHITE);
+		oraInizioLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		hourStartComboBox = new JComboBox<String>(hours);
+		hourStartComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		minuteStartComboBox = new JComboBox<String>(minutes);
+		minuteStartComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		
+		oraFineLabel = new JLabel("Ora Fine Imbarco");
+		oraFineLabel.setForeground(Color.WHITE);
+		oraFineLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		hourEndComboBox = new JComboBox<String>(hours);
+		hourEndComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		minuteEndComboBox = new JComboBox<String>(minutes);
+		minuteEndComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		
+		codeLabel = new JLabel("Numero Code");
+		codeLabel.setForeground(Color.WHITE);
+		codeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		numeroCodeComboBox = new JComboBox<String>(numeroCode);
+		numeroCodeComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		
+		numeroCodeComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int code;
+		    	try {
+		    	   code = Integer.parseInt(numeroCodeComboBox.getSelectedItem().toString());
+		    	}
+		    	catch (NumberFormatException en)
+		    	{
+		    	   code = 1;
+		    	}
+		    	//ottieni una lista di code una volta chiuso
+		    	showCodaDialog(aggiungiFrame, code);
+			}
+		});
+		
+		GridBagConstraints gc = new GridBagConstraints();
+		
+		JPanel midTopPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
+		midTopPanel.setBackground(new Color (0, 0, 153));
+		JPanel destinazionePanel = new JPanel(new BorderLayout());
+		destinazionePanel.setBackground(new Color(0, 0, 153));
+		destinazionePanel.add(destinazioneLabel, BorderLayout.WEST);
+		destinazionePanel.add(destinazioneTextField, BorderLayout.SOUTH);
+		JPanel compagniaPanel = new JPanel(new BorderLayout());
+		compagniaPanel.setBorder(new EmptyBorder(0, 20, 0, 0));
+		compagniaPanel.setBackground(new Color(0, 0, 153));
+		compagniaPanel.add(compagniaLabel, BorderLayout.WEST);
+		compagniaPanel.add(compagniaTextField, BorderLayout.SOUTH);
+		midTopPanel.add(destinazionePanel);
+		midTopPanel.add(compagniaPanel);
+		
+		JPanel midCenterPanel = new JPanel();
+		midCenterPanel.setBackground(new Color(0, 0, 153));
+		JPanel dataPanel = new JPanel(new BorderLayout());
+		dataPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		dataPanel.setBackground(new Color(0, 0, 153));
+		dataPanel.add(dataLabel, BorderLayout.WEST);
+		dataPanel.add(datePicker, BorderLayout.SOUTH);
+		JPanel oraInizioPanel = new JPanel(new BorderLayout());
+		oraInizioPanel.setBorder(new EmptyBorder(0, 20, 0, 0));
+		oraInizioPanel.setBackground(new Color(0, 0, 153));
+		oraInizioPanel.add(oraInizioLabel, BorderLayout.NORTH);
+		JPanel startPanel = new JPanel(new FlowLayout());
+		startPanel.setBackground(new Color(0, 0, 153));
+		startPanel.add(hourStartComboBox);
+		startPanel.add(minuteStartComboBox);
+		oraInizioPanel.add(startPanel, BorderLayout.CENTER);
+		JPanel oraFinePanel = new JPanel(new BorderLayout());
+		oraFinePanel.setBorder(new EmptyBorder(0, 20, 0, 0));
+		oraFinePanel.setBackground(new Color(0, 0, 153));
+		oraFinePanel.add(oraFineLabel, BorderLayout.NORTH);
+		JPanel endPanel = new JPanel(new FlowLayout());
+		endPanel.setBackground(new Color(0, 0, 153));
+		endPanel.add(hourEndComboBox);
+		endPanel.add(minuteEndComboBox);
+		oraFinePanel.add(endPanel, BorderLayout.CENTER);
+		
+		midCenterPanel.add(dataPanel);
+		midCenterPanel.add(oraInizioPanel);
+		midCenterPanel.add(oraFinePanel);
+		
+		JPanel midBottomPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
+		midBottomPanel.setBackground(new Color (0, 0, 153));
+		JPanel codePanel = new JPanel(new BorderLayout());
+		codePanel.setBackground(new Color(0, 0, 153));
+		codePanel.add(codeLabel, BorderLayout.WEST);
+		codePanel.add(numeroCodeComboBox, BorderLayout.SOUTH);
+		midBottomPanel.add(codePanel);
+		
+		gc.gridx = 0;  
+		gc.gridy = 0;
+		gc.anchor = GridBagConstraints.WEST;
+		mainPanel.add(midTopPanel, gc);
+		gc.gridx = 0;     
+		gc.gridy = 1;
+		gc.insets = new Insets(20,0,0,0);
+		gc.anchor = GridBagConstraints.WEST;
+		mainPanel.add(midCenterPanel, gc);
+		gc.gridx = 0;     
+		gc.gridy = 2;
+		gc.insets = new Insets(20,0,0,0);
+		gc.anchor = GridBagConstraints.WEST;
+		mainPanel.add(midBottomPanel, gc);
+		
+		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		bottomPanel.setBackground(new Color(0, 0, 153));
 		
 		JButton salvaButton = new JButton("Salva");
-		salvaButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+		salvaButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		salvaButton.setFocusPainted(false);
+
+		bottomPanel.add(salvaButton);
 		
-		JButton annullaButton = new JButton("Annulla");
-		annullaButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+		add(menuLabel, BorderLayout.NORTH);
+		add(mainPanel, BorderLayout.CENTER);
+		add(bottomPanel, BorderLayout.SOUTH);
 		
-		JLabel codaLabel = new JLabel("Coda");
-		codaLabel.setForeground(Color.WHITE);
-		codaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-		
-		JComboBox<String> codaComboBox = new JComboBox<String>();
-		codaComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		codaComboBox.setEditable(true);
-		
-		JLabel nomeLabel = new JLabel("Nome");
-		nomeLabel.setForeground(Color.WHITE);
-		nomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-		
-		nomeText = new JTextField();
-		nomeText.setColumns(10);
-		
-		dataText = new JTextField();
-		dataText.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		dataText.setColumns(10);
-		
-		JLabel dataLabel = new JLabel("Data");
-		dataLabel.setForeground(Color.WHITE);
-		dataLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-		
-		JLabel oraLabel = new JLabel("Ora");
-		oraLabel.setForeground(Color.WHITE);
-		oraLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-		
-		oraText = new JTextField();
-		oraText.setColumns(10);
-		
-		
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(codaComboBox, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-								.addComponent(codaLabel, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE))
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-										.addGroup(groupLayout.createSequentialGroup()
-											.addGap(24)
-											.addComponent(nomeText, GroupLayout.PREFERRED_SIZE, 328, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED, 242, Short.MAX_VALUE))
-										.addGroup(groupLayout.createSequentialGroup()
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(annullaButton, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-											.addGap(18)))
-									.addComponent(salvaButton, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-									.addGap(77))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(33)
-									.addComponent(nomeLabel, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
-									.addContainerGap(664, Short.MAX_VALUE))))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(dataLabel, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
-										.addComponent(dataText, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
-									.addGap(39)
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(oraText, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
-										.addComponent(oraLabel, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)))
-								.addComponent(compagniaText, GroupLayout.PREFERRED_SIZE, 444, GroupLayout.PREFERRED_SIZE)
-								.addComponent(compagniaLabel, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
-								.addComponent(destinazioneText, 444, 444, 444)
-								.addComponent(destinazioneLabel, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
-							.addContainerGap(419, Short.MAX_VALUE))))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(73, Short.MAX_VALUE)
-					.addComponent(destinazioneLabel)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(destinazioneText, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(compagniaLabel)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(compagniaText, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-					.addGap(19)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(codaLabel)
-						.addComponent(nomeLabel))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(nomeText, GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
-						.addComponent(codaComboBox, GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE))
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(dataLabel)
-						.addComponent(oraLabel, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(oraText)
-						.addComponent(dataText))
-					.addGap(124)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(salvaButton, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
-						.addComponent(annullaButton, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
-					.addGap(56))
-		);
-		setLayout(groupLayout);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		//panel = new JPanel(new GroupLayout(panel));
-		
-//		GroupLayout layout = new GroupLayout(panel);
-//		 panel.setLayout(layout);
-//		 
-//		 layout.setAutoCreateGaps(true);
-//		 layout.setAutoCreateContainerGaps(true);
-//		 
-//		 layout.setHorizontalGroup(
-//				   layout.createSequentialGroup()
-//				      .addComponent(destinazioneLabel)
-//				      .addComponent(destinazioneText)
-//				      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//				           .addComponent(compagniaLabel)
-//				           .addComponent(compagniaText))
-//				);
-//				layout.setVerticalGroup(
-//				   layout.createSequentialGroup()
-//				      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-//				           .addComponent(destinazioneLabel)
-//				           .addComponent(destinazioneText)
-//				           .addComponent(compagniaLabel))
-//				      .addComponent(compagniaText)
-//				);
-	
-			
 	}
+
+	public void showCodaDialog (JFrame aggiungiFrame, int numeroCode) {
+		codaDialog = new JDialog(aggiungiFrame, "Code", true);
+    	codaDialog.setMinimumSize(new Dimension(650,450));
+    	codaDialog.setLayout(new BorderLayout());
+    	
+    	JPanel mainPanelCD = new JPanel(new GridBagLayout());
+    	mainPanelCD.setBackground(new Color(0, 0, 153));
+    	
+    	GridBagConstraints gc = new GridBagConstraints();
+    
+    	JPanel topPanel = new JPanel();
+    	topPanel.setLayout(new FlowLayout());
+    	JLabel nomeCodaLabel = new JLabel("Nome coda");
+    	nomeCodaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+    	nomeCodaLabel.setForeground(Color.WHITE);
+    	JLabel priorityLabel = new JLabel("Priority");
+    	priorityLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+    	priorityLabel.setForeground(Color.WHITE);
+    	priorityLabel.setToolTipText("5 è la priorità più alta");
+    	
+       	gc.gridx = 0;  
+		gc.gridy = 0;
+		gc.anchor = GridBagConstraints.WEST;
+		mainPanelCD.add(nomeCodaLabel, gc);
+		gc.gridx = 1;     
+		gc.gridy = 0;
+		gc.insets = new Insets(0,20,0,0);
+		gc.anchor = GridBagConstraints.WEST;
+		mainPanelCD.add(priorityLabel, gc);
+		
+		gc.gridx = 0;     
+		gc.gridy = 1;
+    	
+		//change into a switch case, so that you can access the different textfield and combobox values
+		
+		for (int i = 1; i <= numeroCode; i++) {
+    		gc.gridy++;	
+    		UpdateCodaDialog(mainPanelCD, gc, gc.gridy);
+    	}
+    	
+    	codaDialog.add(mainPanelCD, BorderLayout.CENTER);
+    	
+    	JPanel buttonPanel = new JPanel();
+    	buttonPanel.setBackground(new Color(0, 204, 255));
+    	JButton button = new JButton("Aggiungi");
+    	buttonPanel.add(button);
+    	codaDialog.add(buttonPanel, BorderLayout.SOUTH);
+    	
+    	codaDialog.setLocationRelativeTo(null);
+    	codaDialog.setVisible(true);
+	}
+	
+	public void UpdateCodaDialog (JPanel mainPanelCD, GridBagConstraints gc, int y) {
+		
+		JTextField nomeCodaTextField = new JTextField();
+		String[] priorities = {"0", "1", "2", "3", "4", "5"};
+		JComboBox<String> priorityComboBox = new JComboBox<String>(priorities);
+		
+		priorityComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		
+		nomeCodaTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeCodaTextField.setColumns(10);
+		nomeCodaTextField.setMinimumSize(new Dimension(250,30));
+			
+		gc.gridx = 0;
+		gc.insets = new Insets(5,0,0,0);
+		gc.anchor = GridBagConstraints.WEST;
+		mainPanelCD.add(nomeCodaTextField, gc);
+		gc.gridx = 1;
+		gc.insets = new Insets(5,20,0,0);
+		gc.anchor = GridBagConstraints.CENTER;
+		mainPanelCD.add(priorityComboBox, gc);
+	}
+	
 }

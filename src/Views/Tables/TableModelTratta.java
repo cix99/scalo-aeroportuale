@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
-import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 
 import Controllers.ViewsController;

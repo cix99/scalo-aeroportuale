@@ -2,7 +2,6 @@ package Views.Tables;
 
 import java.util.LinkedList;
 
-import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 
 import Controllers.ViewsController;
@@ -65,7 +64,7 @@ public class TableModelPrenotazione extends AbstractTableModel {
 		case 4:
 			return String.class;
 		case 5:
-			return String.class;
+			return Integer.class;
 		case 6:
 			return String.class;
 		case 7:

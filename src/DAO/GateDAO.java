@@ -10,7 +10,7 @@ public class GateDAO extends JDBC {
 
     private String tableName = "gate";
 
-    public Gate store(Gate gate){
+    public boolean store(Gate gate){
         String query = "INSERT INTO " + tableName + " VALUES (?)";
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -18,8 +18,9 @@ public class GateDAO extends JDBC {
             statement.executeUpdate();
         }catch(SQLException e){
             System.out.println(e);
+            return false;
         }
-        return gate;
+        return true;
     }
     
     public boolean delete (String nomeGate) {

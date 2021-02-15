@@ -2,8 +2,11 @@ package Controllers;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import Models.*;
 import Views.*;
@@ -162,6 +165,30 @@ public class ViewsController {
 		homeFrame.setVisible(false);
 	}
 	
+	public void loadAggiungiCenterPanel(JPanel panel) { 
+		
+		//((AggiungiView) subFrame).emptyCenterPanel();
+		
+//		((ImbarcoView) subFrame).emptyCenterPanel();
+//		tratte = dbController.getTrattaInfoFromGate(nomeGate);
+//		if (tratte.isEmpty() == false) {
+//			((ImbarcoView) subFrame).showTrattaInfoView(tratte.getFirst(), this); //(tratta)
+//			if (dbController.getPrenotatiFromTratta(tratte.getFirst().getId()) != null) {
+//				prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
+//				if (prenotati.isEmpty() == false) {
+//					//listCodaPriority = getCodaPrioritiesForTratta(tratte.getFirst().getId());  [return i valori int delle code presenti per la tratta]
+//					((ImbarcoView) subFrame).showListaPrenotati(this, prenotati, 5);  
+//				}
+//				else {
+//					JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questo volo", "Nessuna prenotazione", JOptionPane.ERROR_MESSAGE);
+//				}
+//			}
+//		}
+//		else {
+//			JOptionPane.showMessageDialog(subFrame, "Non ci sono tratte per questo gate", "Nessuna tratta trovata", JOptionPane.ERROR_MESSAGE);
+//		}
+	}
+	
 	public String[] getCompagnieAeree() {
 		LinkedList<CompagniaAerea> list = dbController.getCompagnieAeree();
 		
@@ -177,21 +204,30 @@ public class ViewsController {
 	}
 	
 	public void salvaNuovoGate(String nomeGate) {
-	
-		//Inserisci nuovo gate nel database
-		if (true) {
-			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore gate", JOptionPane.ERROR_MESSAGE);
+		if (dbController.salvaNuovoGate(nomeGate)) {
+			JOptionPane.showMessageDialog(subFrame, "Gate " + nomeGate + " inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		}
-		
+		else {
+			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento gate", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public void salvaNuovaCompagniaAerea(String nomeCompagnia) {
-		
-		//Inserisci nuovo gate nel database
-		if (true) {
-			JOptionPane.showMessageDialog(subFrame, "Impossibile aggiungere la compagnia", "Errore compagnia", JOptionPane.ERROR_MESSAGE);
+		if (dbController.salvaNuovoCompagniaAerea(nomeCompagnia)) {
+			JOptionPane.showMessageDialog(subFrame, "Compagnia " + nomeCompagnia + " inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		}
-		
+		else {
+			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento compagnia", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void salvaNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
+		if (dbController.salvaNuovoCentoKilometri(codice, nomeCompagnia, punti)) {
+			JOptionPane.showMessageDialog(subFrame, "Cliente (" + codice + ") cento kilometri inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+		}
+		else {
+			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public LinkedList<Tratta> getTratteFromCompagnie(String nomeCompagnia) {
