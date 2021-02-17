@@ -1,4 +1,4 @@
-package Views;
+package Views.StatisticheView;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -11,10 +11,10 @@ import java.awt.event.ComponentEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import Controllers.ViewsController;
+import Views.TopPanel;
 
 @SuppressWarnings("serial")
 public class StatisticheView extends JFrame{

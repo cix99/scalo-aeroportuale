@@ -25,16 +25,18 @@ public class CodaDAO extends JDBC {
         return coda;
     }
 
-    public Coda findByName(int idCoda, int idTratta){
-        String query = "SELECT * FROM " + tableName + " WHERE id = ? AND id_tratta = ?";
+    public Coda findById(int idCoda){
+        String query = "SELECT * FROM " + tableName + " WHERE id = ?";
         Coda coda = new Coda();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setInt(1, idCoda);
-            statement.setInt(2, idTratta);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
+            	coda.setId(resultSet.getInt("id"));
+            	coda.setIdTratta(resultSet.getInt("id_tratta"));
                 coda.setNomeCoda(resultSet.getString("nome_coda"));
+                coda.setPriority(resultSet.getInt("priority"));
                 break;
             }
             resultSet.close();
@@ -46,15 +48,43 @@ public class CodaDAO extends JDBC {
 
         return coda;
     }
+    
+    public Coda findByNameAndTratta(String nomeCoda, int idTratta){
+        String query = "SELECT * FROM " + tableName + " WHERE nome_coda = ? AND id_tratta = ?";
+        Coda coda = new Coda();
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, nomeCoda);
+            statement.setInt(2, idTratta);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+            	coda.setId(resultSet.getInt("id"));
+            	coda.setIdTratta(resultSet.getInt("id_tratta"));
+                coda.setNomeCoda(resultSet.getString("nome_coda"));
+                coda.setPriority(resultSet.getInt("priority"));
+                break;
+            }
+            resultSet.close();
+            statement.close();
 
-    public LinkedList<Coda> find(){
-        String query = "SELECT * FROM " + tableName;
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+
+        return coda;
+    }
+    
+    public LinkedList<Coda> findCodaByIdTratta(int idTratta){
+        String query = "SELECT * FROM " + tableName + " WHERE id_tratta = ?";
         LinkedList<Coda> codaList = new LinkedList<Coda>();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setInt(1, idTratta);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Coda coda = new Coda();
+                coda.setId(resultSet.getInt("id"));
+            	coda.setIdTratta(resultSet.getInt("id_tratta"));
                 coda.setNomeCoda(resultSet.getString("nome_coda"));
                 coda.setPriority(resultSet.getInt("priority"));
                 codaList.add(coda);
@@ -69,15 +99,16 @@ public class CodaDAO extends JDBC {
         return codaList;
     }
     
-    public LinkedList<Coda> findCodaByIdTratta(int idTratta){
-        String query = "SELECT * FROM " + tableName + " WHERE id_tratta = ?";
+    public LinkedList<Coda> find(){
+        String query = "SELECT * FROM " + tableName;
         LinkedList<Coda> codaList = new LinkedList<Coda>();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setInt(1, idTratta);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Coda coda = new Coda();
+                coda.setId(resultSet.getInt("id"));
+            	coda.setIdTratta(resultSet.getInt("id_tratta"));
                 coda.setNomeCoda(resultSet.getString("nome_coda"));
                 coda.setPriority(resultSet.getInt("priority"));
                 codaList.add(coda);

@@ -27,7 +27,29 @@ public class CentoKilometriDAO extends JDBC {
         }
         return true;
     }
-
+    
+    public CentoKilometri findById(int id){
+        String query = "SELECT * FROM " + tableName + " WHERE id = ?";
+        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        CentoKilometri centoKilometri = new CentoKilometri();
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                centoKilometri.setId(resultSet.getInt("id"));
+                centoKilometri.setCodiceCompagnia(resultSet.getString("codice_compagnia"));
+                centoKilometri.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                centoKilometri.setPunti(resultSet.getInt("punti"));
+            }
+            resultSet.close();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return centoKilometri;
+    }
+    
     public CentoKilometri findByCode(String codiceCompagnia){
         String query = "SELECT * FROM " + tableName + " WHERE codice_compagnia = ?";
         CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
@@ -50,14 +72,14 @@ public class CentoKilometriDAO extends JDBC {
         return centoKilometri;
     }
     
-    
-    public CentoKilometri findById(int id){
-        String query = "SELECT * FROM " + tableName + " WHERE id = ?";
+    public CentoKilometri findByCodeAndCompany(String codiceCompagnia, String nomeCompagnia){
+        String query = "SELECT * FROM " + tableName + " WHERE codice_compagnia = ? AND compagnia_aerea = ?";
         CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
         CentoKilometri centoKilometri = new CentoKilometri();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setInt(1, id);
+            statement.setString(1, codiceCompagnia);
+            statement.setString(2, nomeCompagnia);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 centoKilometri.setId(resultSet.getInt("id"));

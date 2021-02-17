@@ -1,11 +1,13 @@
 package Views.CercaView;
 
 import Controllers.ViewsController;
+import Models.CentoKilometri;
 import Models.CompagniaAerea;
 import Models.Gate;
 import Models.Prenotazione;
 import Models.Tratta;
 import Views.TopPanel;
+import Views.Tables.TableModelCentoKilometri;
 import Views.Tables.TableModelCompagnia;
 import Views.Tables.TableModelGate;
 import Views.Tables.TableModelPrenotazione;
@@ -29,7 +31,7 @@ public class CercaView extends JFrame {
 	private TopPanel topPanel;
 	private JPanel selectionPanel;
 	private JLabel cercaLabel;
-	private String[] items = {"Tratte", "Prenotazioni", "Cento Kilometri", "Compagnie", "Code", "Gate"};
+	private String[] items = {"Tratte", "Prenotazioni", "Cento Kilometri", "Compagnie", "Gate"};
 	private JComboBox<String> cercaComboBox;
 	private JButton okButton;
 	private JPanel centerPanel;
@@ -38,8 +40,10 @@ public class CercaView extends JFrame {
 	private JTable table;
 	private TableModelTratta tableModel;
 	private TableModelPrenotazione tableModelPrenotazione;
+	private TableModelCentoKilometri tableModelCentoKilometri;
 	private TableModelCompagnia tableModelCompagnia;
 	private TableModelGate tableModelGate;
+
 	
 
 	public CercaView (ViewsController controller) {
@@ -99,7 +103,7 @@ public class CercaView extends JFrame {
 
 		tableModel = new TableModelTratta(controller);
 		table = new JTable(tableModel);
-		setTratteData(tratte);
+		tableModel.setData(tratte);
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBackground(new Color (0, 0, 153));
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
@@ -117,29 +121,15 @@ public class CercaView extends JFrame {
 		//table.setFillsViewportHeight(true);
 		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
-		
-//		JPanel chiudiImbarcoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-//		chiudiImbarcoPanel.setBackground(new Color(0, 0, 153));
-//		chiudiImbarcoPanel.setBorder(new EmptyBorder(0,5,5,5));
-//		JButton chiudiImbarcoButton = new JButton("Chiudi Imbarco");
-//		chiudiImbarcoButton.setFocusPainted(false);
-//		chiudiImbarcoPanel.add(chiudiImbarcoButton);
-//		centerPanel.add(chiudiImbarcoPanel, BorderLayout.SOUTH);
-		
 		mainPanel.revalidate();
 	
-	}
-	
-	public void setTratteData (LinkedList<Tratta> tratte) {
-		tableModel.setData(tratte);
-		
 	}
 	
 	public void showListaPrenotazioni(LinkedList<Prenotazione> prenotazioni, ViewsController controller) { 
 
 		tableModelPrenotazione = new TableModelPrenotazione(controller);
 		table = new JTable(tableModelPrenotazione);
-		setPrenotazioniData(prenotazioni);
+		tableModelPrenotazione.setData(prenotazioni);
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBackground(new Color (0, 0, 153));
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
@@ -157,21 +147,15 @@ public class CercaView extends JFrame {
 		//table.setFillsViewportHeight(true);
 		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
-		
 		mainPanel.revalidate();
 	
-	}
-	
-	public void setPrenotazioniData (LinkedList<Prenotazione> prenotazioni) {
-		tableModelPrenotazione.setData(prenotazioni);
-		
 	}
 	
 	public void showListaCompagnie(LinkedList<CompagniaAerea> compagnie, ViewsController controller) { 
 
 		tableModelCompagnia = new TableModelCompagnia(controller);
 		table = new JTable(tableModelCompagnia);
-		setCompagnieData(compagnie);
+		tableModelCompagnia.setData(compagnie);
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBackground(new Color (0, 0, 153));
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
@@ -181,21 +165,15 @@ public class CercaView extends JFrame {
 		//table.setFillsViewportHeight(true);
 		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
-		
 		mainPanel.revalidate();
 	
-	}
-	
-	public void setCompagnieData (LinkedList<CompagniaAerea> compagnie) {
-		tableModelCompagnia.setData(compagnie);
-		
 	}
 	
 	public void showListaGates(LinkedList<Gate> gates, ViewsController controller) { 
 
 		tableModelGate = new TableModelGate(controller);
 		table = new JTable(tableModelGate);
-		setGateData(gates);
+		tableModelGate.setData(gates);
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBackground(new Color (0, 0, 153));
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
@@ -205,16 +183,30 @@ public class CercaView extends JFrame {
 		//table.setFillsViewportHeight(true);
 		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
-		
 		mainPanel.revalidate();
 	
 	}
-	
-	public void setGateData (LinkedList<Gate> gates) {
-		tableModelGate.setData(gates);
+
+	public void showListaCentoKilometri(LinkedList<CentoKilometri> centoKilometri, ViewsController viewsController) {
+		tableModelCentoKilometri = new TableModelCentoKilometri(viewsController);
+		table = new JTable(tableModelCentoKilometri);
+		tableModelCentoKilometri.setData(centoKilometri);
+		scrollPane = new JScrollPane(table);
+		scrollPane.setBackground(new Color (0, 0, 153));
+		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
+		tableRenderer.setHorizontalAlignment(JLabel.CENTER);
+		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer);
+		table.getColumnModel().getColumn(1).setCellRenderer(tableRenderer);
+		table.getColumnModel().getColumn(2).setCellRenderer(tableRenderer);
+		table.getColumnModel().getColumn(3).setCellRenderer(tableRenderer);
+		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+		//table.setFillsViewportHeight(true);
+		
+		centerPanel.add(scrollPane, BorderLayout.CENTER);
+		mainPanel.revalidate();
 		
 	}
-		
+
 	public void emptyCenterPanel () {
 		if (centerPanel != null) {
 			centerPanel.removeAll();

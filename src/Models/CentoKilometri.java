@@ -14,6 +14,12 @@ public class CentoKilometri{
     	this.punti = punti;
     }
     
+    public CentoKilometri (String codiceCompagnia, CompagniaAerea compagniaAerea) {
+    	super();
+    	this.codiceCompagnia = codiceCompagnia;
+    	this.compagniaAerea = compagniaAerea;
+    }
+    
 	public CentoKilometri() {
 	}
 

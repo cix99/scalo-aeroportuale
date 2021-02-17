@@ -7,17 +7,13 @@ import Models.*;
 
 public class DatabaseController {
 		    
-    public void Function() {
-    	
-    }
-    
     public LinkedList<Tratta> getTrattaInfoFromGate(String nomeGate) {
     	TrattaDAO trattaDao = new TrattaDAO();
     	LinkedList<Tratta> tratte = trattaDao.findTrattaByGate(nomeGate);
     	return tratte;
     }
     
-    public LinkedList<Prenotazione> getPrenotatiFromTratta (int trattaId) {
+    public LinkedList<Prenotazione> getPrenotatiFromTratta(int trattaId) {
     	PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
     	LinkedList<Prenotazione> prenotazioni = prenotazioneDao.findByTrattaId(trattaId);
     	return prenotazioni;
@@ -26,11 +22,6 @@ public class DatabaseController {
     public void updateImbarcatoInDatabase(boolean value, String id) {
     	PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
     	prenotazioneDao.updateImbarcato(value, id);
-    }
-    
-    public LinkedList<CompagniaAerea> getCompagnieAeree() {
-    	CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
-    	return compagniaAereaDao.get();
     }
     
     public LinkedList<Tratta> getTratteFromCompagnia(String nomeCompagnia) {
@@ -45,41 +36,49 @@ public class DatabaseController {
     	return code;
     }
     
-    public LinkedList<Tratta> getTratte () {
-    	TrattaDAO trattaDao = new TrattaDAO();
-    	return trattaDao.find();
-    }
-    
     public LinkedList<Prenotazione> getPrenotazioni() {
     	PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
     	return prenotazioneDao.find();
     }
     
-    public LinkedList<CompagniaAerea> getCompagnie() {
+    public LinkedList<Tratta> getTratte() {
+    	TrattaDAO trattaDao = new TrattaDAO();
+    	return trattaDao.find();
+    }
+    
+	public LinkedList<CentoKilometri> getCentoKilometri() {
+		CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
+    	return centoKilometriDao.find();
+	}
+
+    public LinkedList<CompagniaAerea> getCompagnieAeree() {
     	CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
-    	return compagniaAereaDao.get();
+    	return compagniaAereaDao.find();
     }
     
     public LinkedList<Gate> getGates() {
     	GateDAO gateDao = new GateDAO();
-    	return gateDao.get();
+    	return gateDao.find();
     }
     
-    public boolean salvaNuovoGate (String nomeGate) {
-    	GateDAO gateDao = new GateDAO();
-    	Gate gate = new Gate(nomeGate);
-    	if (gateDao.store(gate))
-    		return true;
-    	return false;
-    }
-    
-    public boolean salvaNuovoCompagniaAerea (String nomeCompagnia) {
-    	CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
-    	CompagniaAerea compagniaAerea = new CompagniaAerea(nomeCompagnia);
-    	if (compagniaAereaDao.store(compagniaAerea))
-    		return true;
-    	return false;
-    }
+   public boolean salvaNuovaPrenotazione(String nome, String cognome, String codicePrenotazione, String centoKilometri, String compagniaCentoKilometri, String compagniaVolo, int idTratta, String coda) {
+	   PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
+	   Prenotazione prenotazione;
+	   CodaDAO codaDao = new CodaDAO();
+	   CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
+	   if (!centoKilometri.isBlank())
+	   {
+		   prenotazione = new Prenotazione(idTratta, nome, cognome, codicePrenotazione, codaDao.findByNameAndTratta(coda, idTratta), centoKilometriDao.findByCodeAndCompany(centoKilometri, compagniaCentoKilometri), new CompagniaAerea(compagniaVolo));
+		   if (prenotazioneDao.store(prenotazione))
+			   return true;
+	   }
+	   else {
+		   prenotazione = new Prenotazione(idTratta, nome, cognome, codicePrenotazione, codaDao.findByNameAndTratta(coda, idTratta), new CompagniaAerea(compagniaVolo));
+		   if (prenotazioneDao.storeWithoutCK(prenotazione))
+			   return true;
+	   }
+	   return false;
+   }
     
     public boolean salvaNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
     	CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
@@ -98,5 +97,20 @@ public class DatabaseController {
     	return false;
     }
     
+    public boolean salvaNuovoCompagniaAerea(String nomeCompagnia) {
+    	CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
+    	CompagniaAerea compagniaAerea = new CompagniaAerea(nomeCompagnia);
+    	if (compagniaAereaDao.store(compagniaAerea))
+    		return true;
+    	return false;
+    }
+    
+    public boolean salvaNuovoGate(String nomeGate) {
+    	GateDAO gateDao = new GateDAO();
+    	Gate gate = new Gate(nomeGate);
+    	if (gateDao.store(gate))
+    		return true;
+    	return false;
+    }    
     
 }

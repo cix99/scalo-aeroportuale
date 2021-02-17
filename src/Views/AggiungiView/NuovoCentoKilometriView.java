@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -35,11 +36,11 @@ public class NuovoCentoKilometriView extends JPanel {
 		setLayout(new BorderLayout());
 		setBackground(new Color(0, 0, 153));
 		
-		JLabel menuLabel = new JLabel("   Nuova Compagnia Aerea");
+		JLabel menuLabel = new JLabel("   Nuova Cento Kilometri");
 		menuLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
 		menuLabel.setForeground(Color.WHITE);
 		
-		mainPanel = new JPanel(new GridBagLayout());
+		mainPanel = new JPanel(new BorderLayout());
 		mainPanel.setBackground(new Color(0, 0, 153));
 		
 		compagniaLabel = new JLabel("Nome Compagnia");
@@ -88,7 +89,7 @@ public class NuovoCentoKilometriView extends JPanel {
 			}
 		});
 		
-		JPanel centerPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
+		JPanel centerPanel = new JPanel (new GridBagLayout());
 		centerPanel.setBackground(new Color (0, 0, 153));
 		JPanel compagniaPanel = new JPanel(new BorderLayout());
 		compagniaPanel.setBackground(new Color(0, 0, 153));
@@ -96,18 +97,14 @@ public class NuovoCentoKilometriView extends JPanel {
 		compagniaPanel.add(compagniaTextField, BorderLayout.SOUTH);
 		JPanel codicePanel = new JPanel(new BorderLayout());
 		codicePanel.setBackground(new Color(0, 0, 153));
-		codicePanel.setBorder(new EmptyBorder(0, 10, 0, 0));
+		codicePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		codicePanel.add(codiceLabel, BorderLayout.WEST);
 		codicePanel.add(codiceTextField, BorderLayout.SOUTH);
 		JPanel puntiPanel = new JPanel(new BorderLayout());
 		puntiPanel.setBackground(new Color(0, 0, 153));
-		puntiPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
+		puntiPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		puntiPanel.add(puntiLabel, BorderLayout.WEST);
 		puntiPanel.add(puntiTextField, BorderLayout.SOUTH);
-		
-		centerPanel.add(compagniaPanel);
-		centerPanel.add(codicePanel);
-		centerPanel.add(puntiPanel);
 		
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.gridx = 0;  
@@ -115,7 +112,17 @@ public class NuovoCentoKilometriView extends JPanel {
 		//gc.gridwidth = 1;
 		//gc.insets = new Insets(10,20,0,0);
 		gc.anchor = GridBagConstraints.WEST;
-		mainPanel.add(centerPanel, gc);
+		centerPanel.add(compagniaPanel, gc);
+		gc.gridx = 0;  
+		gc.gridy = 1;
+		gc.insets = new Insets(10,0,0,0);
+		centerPanel.add(codicePanel, gc);
+		gc.gridx = 0;  
+		gc.gridy = 2;
+		gc.insets = new Insets(10,0,0,0);
+		centerPanel.add(puntiPanel, gc);
+		
+		mainPanel.add(centerPanel, BorderLayout.CENTER);
 
 		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		bottomPanel.setBackground(new Color(0, 0, 153));

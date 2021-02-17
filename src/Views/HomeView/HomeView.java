@@ -1,4 +1,4 @@
-package Views;
+package Views.HomeView;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -16,7 +16,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import Controllers.ViewsController;
-import Views.HomePanels.HomeSidePanel;
+import Views.TopPanel;
+
 import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;

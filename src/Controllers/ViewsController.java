@@ -12,6 +12,9 @@ import Models.*;
 import Views.*;
 import Views.AggiungiView.AggiungiView;
 import Views.CercaView.CercaView;
+import Views.HomeView.HomeView;
+import Views.ImbarcoView.ImbarcoView;
+import Views.StatisticheView.StatisticheView;
 
 public class ViewsController {
 
@@ -28,6 +31,7 @@ public class ViewsController {
 	
 	LinkedList<Tratta> tratte;
 	LinkedList<Prenotazione> prenotazioni;
+	LinkedList<CentoKilometri> centoKilometri;
 	LinkedList<CompagniaAerea> compagnie;
 	LinkedList<Gate> gates;
 	
@@ -203,12 +207,21 @@ public class ViewsController {
 		return stringArray;
 	}
 	
-	public void salvaNuovoGate(String nomeGate) {
-		if (dbController.salvaNuovoGate(nomeGate)) {
-			JOptionPane.showMessageDialog(subFrame, "Gate " + nomeGate + " inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+	public void salvaNuovaPrenotazione(String nome, String cognome, String codicePrenotazione, String centoKilometri, String compagniaCentoKilometri, String compagniaVolo, int idTratta, String coda) {
+		if (dbController.salvaNuovaPrenotazione(nome, cognome, codicePrenotazione, centoKilometri, compagniaCentoKilometri, compagniaVolo, idTratta, coda)) {
+			JOptionPane.showMessageDialog(subFrame, "Prenotazione (" + codicePrenotazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		}
 		else {
-			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento gate", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void salvaNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
+		if (dbController.salvaNuovoCentoKilometri(codice, nomeCompagnia, punti)) {
+			JOptionPane.showMessageDialog(subFrame, "Cliente (" + codice + ") cento kilometri inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+		}
+		else {
+			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -221,12 +234,12 @@ public class ViewsController {
 		}
 	}
 	
-	public void salvaNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
-		if (dbController.salvaNuovoCentoKilometri(codice, nomeCompagnia, punti)) {
-			JOptionPane.showMessageDialog(subFrame, "Cliente (" + codice + ") cento kilometri inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+	public void salvaNuovoGate(String nomeGate) {
+		if (dbController.salvaNuovoGate(nomeGate)) {
+			JOptionPane.showMessageDialog(subFrame, "Gate " + nomeGate + " inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		}
 		else {
-			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento gate", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -275,16 +288,14 @@ public class ViewsController {
 			}
 			case "Cento Kilometri":
 			{
+				centoKilometri = dbController.getCentoKilometri();
+				((CercaView) subFrame).showListaCentoKilometri(centoKilometri, this);
 				break;
 			}
 			case "Compagnie":
 			{
-				compagnie = dbController.getCompagnie();
+				compagnie = dbController.getCompagnieAeree();
 				((CercaView) subFrame).showListaCompagnie(compagnie, this);
-				break;
-			}
-			case "Code":
-			{
 				break;
 			}
 			case "Gate":

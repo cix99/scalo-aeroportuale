@@ -45,7 +45,7 @@ public class CompagniaAereaDAO {
         return compagniaAerea;
     }
 
-    public LinkedList<CompagniaAerea> get(){
+    public LinkedList<CompagniaAerea> find(){
         String query = "SELECT * FROM " + tableName;
         LinkedList<CompagniaAerea> compagniaAereaList = new LinkedList<CompagniaAerea>();
         try {
@@ -67,12 +67,12 @@ public class CompagniaAereaDAO {
     }
 
     public CompagniaAerea first(String nome){
-    	LinkedList<CompagniaAerea> compagniaAereaList = get();
+    	LinkedList<CompagniaAerea> compagniaAereaList = find();
         return compagniaAereaList.get(0);
     }
 
     public CompagniaAerea last(String nome){
-    	LinkedList<CompagniaAerea> compagniaAereaList = get();
+    	LinkedList<CompagniaAerea> compagniaAereaList = find();
         return compagniaAereaList.get(compagniaAereaList.size() - 1);
     }
 

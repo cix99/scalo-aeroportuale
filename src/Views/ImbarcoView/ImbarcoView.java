@@ -1,4 +1,4 @@
-package Views;
+package Views.ImbarcoView;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,6 +30,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import Controllers.ViewsController;
 import Models.Prenotazione;
 import Models.Tratta;
+import Views.TopPanel;
 import Views.Tables.TableModelImbarco;
 
 @SuppressWarnings("serial")

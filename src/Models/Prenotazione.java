@@ -13,15 +13,26 @@ public class Prenotazione{
     private boolean imbarcato;
 
     
-    public Prenotazione(int idTratta, String nomePasseggero, String cognomePasseggero, Coda coda, CentoKilometri centoKilometri, CompagniaAerea compagniaAerea) {
+    public Prenotazione(int idTratta, String nomePasseggero, String cognomePasseggero, String codicePrenotazione, Coda coda, CentoKilometri centoKilometri, CompagniaAerea compagniaAerea) {
 		super();
 		this.idTratta = idTratta;
 		this.nomePasseggero = nomePasseggero;
 		this.cognomePasseggero = cognomePasseggero;
+		this.codicePrenotazione = codicePrenotazione;
 		this.coda = coda;
 		this.centoKilometri = centoKilometri;
 		this.compagniaAerea = compagniaAerea;
 	}
+    
+    public Prenotazione(int idTratta, String nomePasseggero, String cognomePasseggero, String codicePrenotazione, Coda coda, CompagniaAerea compagniaAerea) {
+ 		super();
+ 		this.idTratta = idTratta;
+ 		this.nomePasseggero = nomePasseggero;
+ 		this.cognomePasseggero = cognomePasseggero;
+ 		this.codicePrenotazione = codicePrenotazione;
+ 		this.coda = coda;
+ 		this.compagniaAerea = compagniaAerea;
+ 	}
 
 	public Prenotazione() {
 	}

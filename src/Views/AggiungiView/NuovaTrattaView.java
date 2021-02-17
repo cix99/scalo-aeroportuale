@@ -10,9 +10,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Properties;
-
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -225,6 +225,8 @@ public class NuovaTrattaView extends JPanel {
 	}
 
 	public void showCodaDialog (JFrame aggiungiFrame, int numeroCode) {
+		String[] priorities = {"0", "1", "2", "3", "4", "5"};
+		
 		codaDialog = new JDialog(aggiungiFrame, "Code", true);
     	codaDialog.setMinimumSize(new Dimension(650,450));
     	codaDialog.setLayout(new BorderLayout());
@@ -253,49 +255,118 @@ public class NuovaTrattaView extends JPanel {
 		gc.insets = new Insets(0,20,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanelCD.add(priorityLabel, gc);
-		
+
+		JTextField nomeCoda1TextField = new JTextField();
+		JComboBox<String> priority1ComboBox = new JComboBox<String>(priorities);
+		priority1ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeCoda1TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeCoda1TextField.setColumns(10);
+		nomeCoda1TextField.setMinimumSize(new Dimension(250,30));
 		gc.gridx = 0;     
 		gc.gridy = 1;
-    	
-		//change into a switch case, so that you can access the different textfield and combobox values
+		gc.insets = new Insets(5,0,0,0);
+		gc.anchor = GridBagConstraints.WEST;
+		mainPanelCD.add(nomeCoda1TextField, gc);
+		gc.gridx = 1;     
+		gc.gridy = 1;
+		gc.insets = new Insets(5,20,0,0);
+		gc.anchor = GridBagConstraints.CENTER;
+		mainPanelCD.add(priority1ComboBox, gc);
 		
-		for (int i = 1; i <= numeroCode; i++) {
-    		gc.gridy++;	
-    		UpdateCodaDialog(mainPanelCD, gc, gc.gridy);
-    	}
+		if (numeroCode >= 2) {
+			JTextField nomeCoda2TextField = new JTextField();
+			JComboBox<String> priority2ComboBox = new JComboBox<String>(priorities);
+			priority2ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+			nomeCoda2TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+			nomeCoda2TextField.setColumns(10);
+			nomeCoda2TextField.setMinimumSize(new Dimension(250,30));
+			gc.gridx = 0;     
+			gc.gridy = 2;
+			gc.insets = new Insets(5,0,0,0);
+			gc.anchor = GridBagConstraints.WEST;
+			mainPanelCD.add(nomeCoda2TextField, gc);
+			gc.gridx = 1;     
+			gc.gridy = 2;
+			gc.insets = new Insets(5,20,0,0);
+			gc.anchor = GridBagConstraints.CENTER;
+			mainPanelCD.add(priority2ComboBox, gc);
+		}
+		if (numeroCode >= 3) {
+			JTextField nomeCoda3TextField = new JTextField();
+			JComboBox<String> priority3ComboBox = new JComboBox<String>(priorities);
+			priority3ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+			nomeCoda3TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+			nomeCoda3TextField.setColumns(10);
+			nomeCoda3TextField.setMinimumSize(new Dimension(250,30));
+			gc.gridx = 0;     
+			gc.gridy = 3;
+			gc.insets = new Insets(5,0,0,0);
+			gc.anchor = GridBagConstraints.WEST;
+			mainPanelCD.add(nomeCoda3TextField, gc);
+			gc.gridx = 1;     
+			gc.gridy = 3;
+			gc.insets = new Insets(5,20,0,0);
+			gc.anchor = GridBagConstraints.CENTER;
+			mainPanelCD.add(priority3ComboBox, gc);
+		}
+		if (numeroCode >= 4) {
+			JTextField nomeCoda4TextField = new JTextField();
+			JComboBox<String> priority4ComboBox = new JComboBox<String>(priorities);
+			priority4ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+			nomeCoda4TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+			nomeCoda4TextField.setColumns(10);
+			nomeCoda4TextField.setMinimumSize(new Dimension(250,30));				
+			gc.gridx = 0;     
+			gc.gridy = 4;
+			gc.insets = new Insets(5,0,0,0);
+			gc.anchor = GridBagConstraints.WEST;
+			mainPanelCD.add(nomeCoda4TextField, gc);
+			gc.gridx = 1;     
+			gc.gridy = 4;
+			gc.insets = new Insets(5,20,0,0);
+			gc.anchor = GridBagConstraints.CENTER;
+			mainPanelCD.add(priority4ComboBox, gc);
+		}
+		if (numeroCode >= 5) {
+			JTextField nomeCoda5TextField = new JTextField();
+			JComboBox<String> priority5ComboBox = new JComboBox<String>(priorities);
+			priority5ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+			nomeCoda5TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+			nomeCoda5TextField.setColumns(10);
+			nomeCoda5TextField.setMinimumSize(new Dimension(250,30));			
+			gc.gridx = 0;     
+			gc.gridy = 5;
+			gc.insets = new Insets(5,0,0,0);
+			gc.anchor = GridBagConstraints.WEST;
+			mainPanelCD.add(nomeCoda5TextField, gc);
+			gc.gridx = 1;     
+			gc.gridy = 5;
+			gc.insets = new Insets(5,20,0,0);
+			gc.anchor = GridBagConstraints.CENTER;
+			mainPanelCD.add(priority5ComboBox, gc);
+		}
     	
     	codaDialog.add(mainPanelCD, BorderLayout.CENTER);
     	
     	JPanel buttonPanel = new JPanel();
     	buttonPanel.setBackground(new Color(0, 204, 255));
-    	JButton button = new JButton("Aggiungi");
-    	buttonPanel.add(button);
+    	JButton aggiungiButton = new JButton("Aggiungi");
+    	buttonPanel.add(aggiungiButton);
     	codaDialog.add(buttonPanel, BorderLayout.SOUTH);
+    	
+    	aggiungiButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//Save values into new code and go back to nuova tratta view
+				//Show error if a name already exists, if a coda has already a given priority or if more code have the same priority
+				//Add check of how many coda there are (numeroCode)
+				codaDialog.dispose();
+			}
+		});
     	
     	codaDialog.setLocationRelativeTo(null);
     	codaDialog.setVisible(true);
 	}
 	
-	public void UpdateCodaDialog (JPanel mainPanelCD, GridBagConstraints gc, int y) {
-		
-		JTextField nomeCodaTextField = new JTextField();
-		String[] priorities = {"0", "1", "2", "3", "4", "5"};
-		JComboBox<String> priorityComboBox = new JComboBox<String>(priorities);
-		
-		priorityComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		
-		nomeCodaTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		nomeCodaTextField.setColumns(10);
-		nomeCodaTextField.setMinimumSize(new Dimension(250,30));
-			
-		gc.gridx = 0;
-		gc.insets = new Insets(5,0,0,0);
-		gc.anchor = GridBagConstraints.WEST;
-		mainPanelCD.add(nomeCodaTextField, gc);
-		gc.gridx = 1;
-		gc.insets = new Insets(5,20,0,0);
-		gc.anchor = GridBagConstraints.CENTER;
-		mainPanelCD.add(priorityComboBox, gc);
-	}
 	
 }

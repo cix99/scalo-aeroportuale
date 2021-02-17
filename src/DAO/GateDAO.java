@@ -56,7 +56,7 @@ public class GateDAO extends JDBC {
         return gate;
     }
 
-    public LinkedList<Gate> get(){
+    public LinkedList<Gate> find(){
         String query = "SELECT * FROM gate";
         LinkedList<Gate> gateList = new LinkedList<Gate>();
         try {
@@ -76,12 +76,12 @@ public class GateDAO extends JDBC {
     }
 
     public Gate first(){
-    	LinkedList<Gate> gateList = get();
+    	LinkedList<Gate> gateList = find();
         return gateList.get(0);
     }
 
     public Gate last(){
-    	LinkedList<Gate> gateList = get();
+    	LinkedList<Gate> gateList = find();
         return gateList.get(gateList.size() - 1);
     }
 }
