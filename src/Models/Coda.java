@@ -15,6 +15,12 @@ public class Coda {
 		super();
 		this.nomeCoda = nomeCoda;
 	}
+    
+    public Coda(String nomeCoda, int priority) {
+		super();
+		this.nomeCoda = nomeCoda;
+		this.priority = priority;
+	}
 	
 	public Coda() {
 	}

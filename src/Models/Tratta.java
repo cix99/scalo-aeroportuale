@@ -14,15 +14,14 @@ public class Tratta{
     private LocalDateTime oraFineImbarcoEffettivo;
     private Gate gate;
     private Stato statoImbarco;
-    private Boolean ritardo;
-    private ArrayList<Coda> code;
+    private Boolean ritardo;    
     
-    
-    public Tratta(String destinazione, CompagniaAerea compagniaAerea, LocalDateTime oraInizioImbarcoStimato) {
+    public Tratta(String destinazione, CompagniaAerea compagniaAerea, LocalDateTime oraInizioImbarcoStimato, LocalDateTime oraFineImbarcoStimato) {
 		super();
 		this.destinazione = destinazione;
 		this.compagniaAerea = compagniaAerea;
 		this.oraInizioImbarcoStimato = oraInizioImbarcoStimato;
+		this.oraFineImbarcoStimato = oraFineImbarcoStimato;
 	}
 
 	public Tratta() {
@@ -67,10 +66,6 @@ public class Tratta{
 	public Boolean getRitardo() {
 		return ritardo;
 	}
-	
-	public ArrayList<Coda> getCode() {		
-		return code;
-	}
 
 	public void setId(int id) {
 		this.id = id;
@@ -112,11 +107,4 @@ public class Tratta{
 		this.ritardo = ritardo;
 	}
     
-	public void setCode(Coda coda) {
-		if (code == null) {
-			this.code = new ArrayList<Coda>();
-		}
-		this.code.add(coda);
-	}
-	
 }

@@ -1,5 +1,7 @@
 package Controllers;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -216,6 +218,22 @@ public class ViewsController {
 		}
 	}
 	
+	public void salvaNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime dataInizio, LocalDateTime dataFine, ArrayList<Coda> code) {
+		//check che datafine sia posteriore a datainizio
+		if (dataFine.isBefore(dataInizio)) {
+			JOptionPane.showMessageDialog(subFrame, "La data di fine imbarco non può essere prima di quella di inizio", "Errore data", JOptionPane.ERROR_MESSAGE);
+		}
+		else {
+			if (dbController.salvaNuovaTratta(destinazione, nomeCompagnia, dataInizio, dataFine, code)) {
+				JOptionPane.showMessageDialog(subFrame, "Tratta per (" + destinazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+			}
+			else {
+				JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento tratta", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
+	}
+	
 	public void salvaNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
 		if (dbController.salvaNuovoCentoKilometri(codice, nomeCompagnia, punti)) {
 			JOptionPane.showMessageDialog(subFrame, "Cliente (" + codice + ") cento kilometri inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
@@ -247,6 +265,25 @@ public class ViewsController {
 		LinkedList<Tratta> trattaList = new LinkedList<Tratta>();
 		trattaList = dbController.getTratteFromCompagnia(nomeCompagnia);
 		return trattaList;
+	}
+	
+	public boolean checkCode(ArrayList<Coda> codeList) {
+		for (int i = 1; i < codeList.size(); i++) {
+			if (codeList.get(i-1).getNomeCoda().equals(codeList.get(i).getNomeCoda())) {
+				JOptionPane.showMessageDialog(subFrame, "Non possono esserci code con lo stesso nome (" + codeList.get(i).getNomeCoda() +")", "Errore inserimento code", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}	
+			else if (codeList.get(i-1).getPriority() == codeList.get(i).getPriority()) {
+				JOptionPane.showMessageDialog(subFrame, "Non possono esserci code con la stessa priorità (" + codeList.get(i).getPriority() +")", "Errore inserimento code", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public LocalDateTime convertiIntToDate(int anno, int mese, int giorno, int ora, int minuti) {
+		LocalDateTime time = LocalDateTime.of(anno, mese, giorno, ora, minuti);
+		return time;
 	}
 	
 	public void cercaView() {

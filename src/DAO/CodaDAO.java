@@ -11,18 +11,21 @@ public class CodaDAO extends JDBC {
 
 	private String tableName = "coda";
 	
-	public Coda store(Coda coda){
-        String query = "INSERT INTO " + tableName + " VALUES  (?)";
+	public boolean store(Coda coda){
+        String query = "INSERT INTO " + tableName + " (id_tratta, nome_coda, priority) VALUES  (?, ?, ?)";
 
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setString(1, coda.getNomeCoda());
+            statement.setInt(1, coda.getIdTratta());
+            statement.setString(2, coda.getNomeCoda());
+            statement.setInt(3, coda.getPriority());
             statement.executeUpdate();
             statement.close();
         }catch(SQLException e){
             System.out.println(e);
+            return false;
         }
-        return coda;
+        return true;
     }
 
     public Coda findById(int idCoda){

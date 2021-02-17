@@ -12,31 +12,27 @@ public class TrattaDAO extends JDBC {
 
 	private String tableName = "tratta";
 	
-	public Tratta store(Tratta tratta){
-        String query = "INSERT INTO " + tableName + " (destinazione, compagnia_aerea, ora_inizio_imbarco_stimato, ora_inizio_imbarco_effettivo, ora_fine_imbarco_stimato, ora_fine_imbarco_effettivo, gate) VALUES  (?, ?, ?, ?, ?, ?, ?)";
-
-//        CompagniaAerea compagniaAerea = new CompagniaAerea().first(tratta.compagniaAerea);
-//        if(compagniaAerea.nomeCompagnia == null){
-//            compagniaAerea.nomeCompagnia = tratta.compagniaAerea;
-//            compagniaAerea.store();
-//        }
+	public int store(Tratta tratta){
+//        String query = "INSERT INTO " + tableName + " (destinazione, compagnia_aerea, ora_inizio_imbarco_stimato, ora_inizio_imbarco_effettivo, "
+//        											+ "ora_fine_imbarco_stimato, ora_fine_imbarco_effettivo, gate) VALUES  (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO " + tableName + " (destinazione, compagnia_aerea, ora_inizio_imbarco_stimato, ora_fine_imbarco_stimato) VALUES  (?, ?, ?, ?) RETURNING (id)";
 
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, tratta.getDestinazione());
             statement.setString(2, tratta.getCompagniaAerea().getNomeCompagnia());
             statement.setObject(3, tratta.getOraInizioImbarcoStimato());
-            statement.setObject(4, tratta.getOraInizioImbarcoEffettivo());
-            statement.setObject(5, tratta.getOraFineImbarcoStimato());
-            statement.setObject(6, tratta.getOraFineImbarcoEffettivo());
-            statement.setString(7, tratta.getGate().getNomeGate());
+            //statement.setObject(4, tratta.getOraInizioImbarcoEffettivo());
+            statement.setObject(4, tratta.getOraFineImbarcoStimato());
+            //statement.setObject(6, tratta.getOraFineImbarcoEffettivo());
+            //statement.setString(7, tratta.getGate().getNomeGate());
             statement.executeUpdate();
             statement.close();
         }catch(SQLException e){
             System.out.println(e);
         }
 
-        return tratta;
+        return true;
     }
 
     public LinkedList<Tratta> find(){

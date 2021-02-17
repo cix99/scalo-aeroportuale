@@ -1,5 +1,7 @@
 package Controllers;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import DAO.*;
@@ -79,6 +81,29 @@ public class DatabaseController {
 	   }
 	   return false;
    }
+   
+	public boolean salvaNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime inizioImbarco, LocalDateTime fineImbarco, ArrayList<Coda> code) {
+		TrattaDAO trattaDao = new TrattaDAO();
+		Tratta tratta = new Tratta(destinazione, new CompagniaAerea(nomeCompagnia), inizioImbarco, fineImbarco);
+		if (trattaDao.store(tratta)) {
+			if (salvaNuoveCode(code, tratta.getId())) {
+				return true;
+			}
+		}
+		return false;
+	}   
+	
+	public boolean salvaNuoveCode(ArrayList<Coda> code, int idTratta) {
+		CodaDAO codaDao = new CodaDAO();
+		for (Coda coda : code) { 
+			coda.setIdTratta(idTratta);
+			System.out.println("test" + coda.getIdTratta());
+			
+	          if (!codaDao.store(coda))
+	        	  return false;
+	    }
+		return true;
+	}
     
     public boolean salvaNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
     	CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
@@ -111,6 +136,6 @@ public class DatabaseController {
     	if (gateDao.store(gate))
     		return true;
     	return false;
-    }    
+    } 
     
 }
