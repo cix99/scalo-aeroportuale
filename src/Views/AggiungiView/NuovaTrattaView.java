@@ -105,6 +105,7 @@ public class NuovaTrattaView extends JPanel {
 		JDatePanelImpl datePanelStart = new JDatePanelImpl(model, p);
 		JDatePickerImpl datePickerStart = new JDatePickerImpl(datePanelStart, new DateLabelFormatter());
 		
+		
 		oraInizioLabel = new JLabel("Ora Inizio Imbarco");
 		oraInizioLabel.setForeground(Color.WHITE);
 		oraInizioLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
@@ -397,24 +398,29 @@ public class NuovaTrattaView extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				codaList = new ArrayList<Coda>();
-				codaList.add(new Coda(nomeCoda1TextField.getText(), Integer.parseInt(priority1ComboBox.getSelectedItem().toString())));
+				if (!nomeCoda1TextField.getText().isBlank())
+					codaList.add(new Coda(nomeCoda1TextField.getText(), Integer.parseInt(priority1ComboBox.getSelectedItem().toString())));
 				if (numeroCode > 1) {
 					for (int i = 2; i <= numeroCode; i++) {
 						switch (i) {
 							case 2: {
-								codaList.add(new Coda(nomeCoda2TextField.getText(),Integer.parseInt(priority2ComboBox.getSelectedItem().toString())));
+								if (!nomeCoda2TextField.getText().isBlank())
+									codaList.add(new Coda(nomeCoda2TextField.getText(),Integer.parseInt(priority2ComboBox.getSelectedItem().toString())));
 								break;
 							}
 							case 3: {
-								codaList.add(new Coda(nomeCoda3TextField.getText(),Integer.parseInt(priority3ComboBox.getSelectedItem().toString())));
+								if (!nomeCoda3TextField.getText().isBlank())
+									codaList.add(new Coda(nomeCoda3TextField.getText(),Integer.parseInt(priority3ComboBox.getSelectedItem().toString())));
 								break;
 							}
 							case 4: {
-								codaList.add(new Coda(nomeCoda4TextField.getText(),Integer.parseInt(priority4ComboBox.getSelectedItem().toString())));
+								if (!nomeCoda4TextField.getText().isBlank())
+									codaList.add(new Coda(nomeCoda4TextField.getText(),Integer.parseInt(priority4ComboBox.getSelectedItem().toString())));
 								break;
 							}
 							case 5: {
-								codaList.add(new Coda(nomeCoda5TextField.getText(),Integer.parseInt(priority5ComboBox.getSelectedItem().toString())));
+								if (!nomeCoda5TextField.getText().isBlank())
+									codaList.add(new Coda(nomeCoda5TextField.getText(),Integer.parseInt(priority5ComboBox.getSelectedItem().toString())));
 								break;
 							}
 							default:

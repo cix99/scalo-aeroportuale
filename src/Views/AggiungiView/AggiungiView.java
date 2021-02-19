@@ -32,7 +32,7 @@ public class AggiungiView extends JFrame{
 		setTitle("Scalo Aeroportuale - Aggiungi");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(50, 50, 1150, 650);
-		setMinimumSize(new Dimension (1230,700));
+		setMinimumSize(new Dimension (1330,700));
 		
 		mainPanel = new JPanel(new BorderLayout(0,0));
 		mainPanel.setBorder(new EmptyBorder(0, 5, 5, 5));

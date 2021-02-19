@@ -1,9 +1,12 @@
 package Views.Tables;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
+import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 
 import Controllers.ViewsController;
@@ -45,7 +48,7 @@ public class TableModelTratta extends AbstractTableModel {
 //	@Override
 //	public boolean isCellEditable(int rowIndex, int columnIndex) {
 //		switch (columnIndex) {
-//		case 5:
+//		case 10:
 //			return true;
 //		default:
 //			return false;
@@ -94,6 +97,12 @@ public class TableModelTratta extends AbstractTableModel {
 //				return;
 //		}
 //	}
+	
+	public void removeRow(int row) {          //removes a row based on number from the data
+		tratte.remove(row);
+		fireTableRowsDeleted(row, row);    //updates the table
+	}
+	
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
@@ -107,19 +116,25 @@ public class TableModelTratta extends AbstractTableModel {
 			return tratta.getCompagniaAerea().getNomeCompagnia();
 		case 3:
 			return tratta.getOraInizioImbarcoStimato().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-		case 4:
-			return tratta.getOraInizioImbarcoEffettivo().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-		case 5:
-			return tratta.getOraFineImbarcoStimato().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-		case 6:
-			{
+		case 4: {
+			if (tratta.getOraInizioImbarcoEffettivo() != null)
+				return tratta.getOraInizioImbarcoEffettivo().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			else
+				return "-";
+		}
+		case 5: {
+			if (tratta.getOraFineImbarcoStimato() != null)
+				return tratta.getOraFineImbarcoStimato().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			else
+				return "-";
+		}
+		case 6: {
 				if (tratta.getOraFineImbarcoEffettivo() != null)
 					return tratta.getOraFineImbarcoEffettivo().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 				else
 					return "-";
 			}
-		case 7:
-			{
+		case 7: {
 				if (tratta.getGate().getNomeGate() != null)
 					return tratta.getGate().getNomeGate();
 				else

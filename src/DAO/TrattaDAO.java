@@ -16,7 +16,7 @@ public class TrattaDAO extends JDBC {
 //        String query = "INSERT INTO " + tableName + " (destinazione, compagnia_aerea, ora_inizio_imbarco_stimato, ora_inizio_imbarco_effettivo, "
 //        											+ "ora_fine_imbarco_stimato, ora_fine_imbarco_effettivo, gate) VALUES  (?, ?, ?, ?, ?, ?, ?)";
         String query = "INSERT INTO " + tableName + " (destinazione, compagnia_aerea, ora_inizio_imbarco_stimato, ora_fine_imbarco_stimato) VALUES  (?, ?, ?, ?) RETURNING (id)";
-
+        int id = 0;
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, tratta.getDestinazione());
@@ -26,13 +26,17 @@ public class TrattaDAO extends JDBC {
             statement.setObject(4, tratta.getOraFineImbarcoStimato());
             //statement.setObject(6, tratta.getOraFineImbarcoEffettivo());
             //statement.setString(7, tratta.getGate().getNomeGate());
-            statement.executeUpdate();
+//            statement.executeUpdate();
+            //idTratta = statement.getGeneratedKeys().getInt("id");
+            statement.execute();
+            ResultSet lastInsert = statement.getResultSet();
+            lastInsert.next();
+            id = lastInsert.getInt(1);
             statement.close();
         }catch(SQLException e){
             System.out.println(e);
         }
-
-        return true;
+        return id;
     }
 
     public LinkedList<Tratta> find(){
@@ -50,9 +54,12 @@ public class TrattaDAO extends JDBC {
                 tratta.setDestinazione(resultSet.getString("destinazione"));
                 tratta.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
                 tratta.setOraInizioImbarcoStimato(resultSet.getTimestamp("ora_inizio_imbarco_stimato").toLocalDateTime());
-                tratta.setOraInizioImbarcoEffettivo(resultSet.getTimestamp("ora_inizio_imbarco_effettivo").toLocalDateTime());
-                tratta.setOraFineImbarcoStimato(resultSet.getTimestamp("ora_fine_imbarco_stimato").toLocalDateTime());
-                tratta.setOraFineImbarcoEffettivo(resultSet.getTimestamp("ora_fine_imbarco_effettivo").toLocalDateTime());
+                if (resultSet.getTimestamp("ora_inizio_imbarco_effettivo") != null)
+                	tratta.setOraInizioImbarcoEffettivo(resultSet.getTimestamp("ora_inizio_imbarco_effettivo").toLocalDateTime());
+                if (resultSet.getTimestamp("ora_fine_imbarco_stimato") != null)
+                	tratta.setOraFineImbarcoStimato(resultSet.getTimestamp("ora_fine_imbarco_stimato").toLocalDateTime());
+                if (resultSet.getTimestamp("ora_fine_imbarco_effettivo") != null)
+                	tratta.setOraFineImbarcoEffettivo(resultSet.getTimestamp("ora_fine_imbarco_effettivo").toLocalDateTime());
                 tratta.setStatoImbarco(Stato.valueOf(resultSet.getString("stato_imbarco")));
                 tratta.setRitardo(resultSet.getBoolean("ritardo"));
                 tratta.setGate(gateDAO.findByName(resultSet.getString("gate")));

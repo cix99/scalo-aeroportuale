@@ -23,6 +23,8 @@ import java.util.LinkedList;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 @SuppressWarnings("serial")
 public class CercaView extends JFrame {
@@ -78,7 +80,6 @@ public class CercaView extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				controller.loadCercaCenterPanel(cercaComboBox.getSelectedItem().toString());
-				
 			}
 		});
 		selectionPanel.add(okButton);
@@ -120,7 +121,30 @@ public class CercaView extends JFrame {
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		//table.setFillsViewportHeight(true);
 		
+		JButton modificaButton = new JButton("Modifica riga");
+		
+		JButton eliminaButton = new JButton("Elimina riga");
+		eliminaButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				if (table.getSelectedRow() != -1) {
+					TableModelTratta model = (TableModelTratta) table.getModel();
+					model.removeRow(table.getSelectedRow());
+					//aggiorna il database
+				}
+				else {
+					JOptionPane.showMessageDialog(CercaView.this, "Seleziona un riga da cancellare", "Errore cancellazione", JOptionPane.ERROR_MESSAGE);
+				}
+
+			}
+		});
+		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		buttonsPanel.setBackground(new Color(0, 153, 255));
+		buttonsPanel.add(modificaButton);
+		buttonsPanel.add(eliminaButton);
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
+		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);
 		mainPanel.revalidate();
 	
 	}

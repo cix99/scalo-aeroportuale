@@ -85,8 +85,9 @@ public class DatabaseController {
 	public boolean salvaNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime inizioImbarco, LocalDateTime fineImbarco, ArrayList<Coda> code) {
 		TrattaDAO trattaDao = new TrattaDAO();
 		Tratta tratta = new Tratta(destinazione, new CompagniaAerea(nomeCompagnia), inizioImbarco, fineImbarco);
-		if (trattaDao.store(tratta)) {
-			if (salvaNuoveCode(code, tratta.getId())) {
+		int idTratta = trattaDao.store(tratta);
+		if (idTratta != 0) {
+			if (salvaNuoveCode(code, idTratta)) {
 				return true;
 			}
 		}
@@ -97,10 +98,8 @@ public class DatabaseController {
 		CodaDAO codaDao = new CodaDAO();
 		for (Coda coda : code) { 
 			coda.setIdTratta(idTratta);
-			System.out.println("test" + coda.getIdTratta());
-			
-	          if (!codaDao.store(coda))
-	        	  return false;
+			if (!codaDao.store(coda))
+				return false;
 	    }
 		return true;
 	}

@@ -268,14 +268,18 @@ public class ViewsController {
 	}
 	
 	public boolean checkCode(ArrayList<Coda> codeList) {
-		for (int i = 1; i < codeList.size(); i++) {
-			if (codeList.get(i-1).getNomeCoda().equals(codeList.get(i).getNomeCoda())) {
-				JOptionPane.showMessageDialog(subFrame, "Non possono esserci code con lo stesso nome (" + codeList.get(i).getNomeCoda() +")", "Errore inserimento code", JOptionPane.ERROR_MESSAGE);
-				return false;
-			}	
-			else if (codeList.get(i-1).getPriority() == codeList.get(i).getPriority()) {
-				JOptionPane.showMessageDialog(subFrame, "Non possono esserci code con la stessa priorità (" + codeList.get(i).getPriority() +")", "Errore inserimento code", JOptionPane.ERROR_MESSAGE);
-				return false;
+		for (int i = 0; i < codeList.size(); i++) {
+			for (int j = 0; j < codeList.size(); j++) {
+				if (j != i) {
+					if (codeList.get(j).getNomeCoda().equals(codeList.get(i).getNomeCoda())) {
+						JOptionPane.showMessageDialog(subFrame, "Non possono esserci code con lo stesso nome (" + codeList.get(i).getNomeCoda() +")", "Errore inserimento code", JOptionPane.ERROR_MESSAGE);
+						return false;
+					}	
+					else if (codeList.get(j).getPriority() == codeList.get(i).getPriority()) {
+						JOptionPane.showMessageDialog(subFrame, "Non possono esserci code con la stessa priorità (" + codeList.get(i).getPriority() +")", "Errore inserimento code", JOptionPane.ERROR_MESSAGE);
+						return false;
+					}
+				}
 			}
 		}
 		return true;
