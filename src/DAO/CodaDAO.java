@@ -40,7 +40,7 @@ public class CodaDAO extends JDBC {
             	coda.setIdTratta(resultSet.getInt("id_tratta"));
                 coda.setNomeCoda(resultSet.getString("nome_coda"));
                 coda.setPriority(resultSet.getInt("priority"));
-                break;
+               break;
             }
             resultSet.close();
             statement.close();

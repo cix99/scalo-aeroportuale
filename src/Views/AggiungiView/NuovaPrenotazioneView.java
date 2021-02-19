@@ -26,6 +26,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 
 import Controllers.ViewsController;
+import Models.Coda;
 import Models.Tratta;
 
 @SuppressWarnings("serial")
@@ -134,8 +135,8 @@ public class NuovaPrenotazioneView extends JPanel {
 		compagniaComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				LinkedList<Tratta> tratteList = controller.getTratteFromCompagnie(compagniaComboBox.getSelectedItem().toString());
-
+				LinkedList<Tratta> tratteList = controller.getTratteFromCompagnia(compagniaComboBox.getSelectedItem().toString());
+		
 				String [] tratteArray = new String[tratteList.size()];
 				ListIterator<Tratta> tratteCursor = tratteList.listIterator();
 				trattaIndex = 0;
@@ -159,9 +160,21 @@ public class NuovaPrenotazioneView extends JPanel {
 		trattaComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		trattaComboBox.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				String [] codaArray = controller.getCodaFromIdTratta(idTrattaList[trattaComboBox.getSelectedIndex()]);
-				UpdateCodaComboBox(codaArray);
+			public void actionPerformed(ActionEvent e) {				//Questo sta venendo chiamato anche quando non dovrebbe, cioè quando viene scelta una nuova compagnia
+				//System.out.println("trattaComboBox.selected: " + trattaComboBox.getSelectedIndex());
+				if (trattaComboBox.getSelectedIndex() != -1) {			//Questo sembra risolvere la situazione
+					LinkedList<Coda> code = controller.getCodaFromIdTratta(idTrattaList[trattaComboBox.getSelectedIndex()]);
+					String [] codeArray = new String[code.size()];
+					ListIterator<Coda> cursor = code.listIterator();
+					int i = 0;
+					while (cursor.hasNext()) {
+						Coda current = cursor.next();
+						codeArray[i] = current.getNomeCoda();
+						i++;
+					}
+					UpdateCodaComboBox(codeArray);
+				}
+				
 			}
 		});
 		
@@ -269,7 +282,7 @@ public class NuovaPrenotazioneView extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				controller.salvaNuovaPrenotazione(nomeTextField.getText(), cognomeTextField.getText(), codicePrenotazioneTextField.getText().toString(), 
 						centoKilometriTextField.getText(), compagniaCentoKilometriComboBox.getSelectedItem().toString(), 
-						compagniaComboBox.getSelectedItem().toString(), idTrattaList[trattaIndex-1], codaComboBox.getSelectedItem().toString());
+						compagniaComboBox.getSelectedItem().toString(), idTrattaList[trattaIndex], codaComboBox.getSelectedItem().toString());
 				
 			}
 		});

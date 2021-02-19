@@ -82,9 +82,9 @@ public class DatabaseController {
 	   return false;
    }
    
-	public boolean salvaNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime inizioImbarco, LocalDateTime fineImbarco, ArrayList<Coda> code) {
+	public boolean salvaNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime inizioImbarco, LocalDateTime fineImbarco, int maxPrenotazioni, ArrayList<Coda> code) {
 		TrattaDAO trattaDao = new TrattaDAO();
-		Tratta tratta = new Tratta(destinazione, new CompagniaAerea(nomeCompagnia), inizioImbarco, fineImbarco);
+		Tratta tratta = new Tratta(destinazione, new CompagniaAerea(nomeCompagnia), inizioImbarco, fineImbarco, maxPrenotazioni);
 		int idTratta = trattaDao.store(tratta);
 		if (idTratta != 0) {
 			if (salvaNuoveCode(code, idTratta)) {
@@ -135,6 +135,48 @@ public class DatabaseController {
     	if (gateDao.store(gate))
     		return true;
     	return false;
-    } 
+    }
+
+	public void getClientiCK(ArrayList<String> clientiCKList, int idCentoKilometri) {
+		PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
+		LinkedList<Prenotazione> prenotazioniList = prenotazioneDao.findByCentoKilometriId(idCentoKilometri);
+		clientiCKList.add(prenotazioniList.getFirst().getNomePasseggero());
+		clientiCKList.add(prenotazioniList.getFirst().getCognomePasseggero());
+	}
+
+	public boolean deleteTratta(int idTratta) {
+		TrattaDAO trattaDao = new TrattaDAO();
+		if (trattaDao.delete(idTratta))
+			return true;
+		return false;
+	}
+
+	public boolean deletePrenotazione(String idPrenotazione) {
+		PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
+		if (prenotazioneDao.delete(idPrenotazione))
+			return true;
+		return false;
+	}
+
+	public boolean deleteCentoKilometri(int idCentoKilometri) {
+		CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
+		if (centoKilometriDao.delete(idCentoKilometri))
+			return true;
+		return false;
+	}
+
+	public boolean deleteCompagniaAerea(String nomeCompagnia) {
+		CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
+		if (compagniaAereaDao.delete(nomeCompagnia))
+			return true;
+		return false;
+	}
+
+	public boolean deleteGate(String nomeGate) {
+		GateDAO gateDao = new GateDAO();
+		if (gateDao.delete(nomeGate))
+			return true;
+		return false;
+	} 
     
 }

@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -25,7 +26,7 @@ public class NuovoCentoKilometriView extends JPanel {
 
 	private JPanel mainPanel;
 	private JLabel compagniaLabel;
-	private JTextField compagniaTextField;
+	private JComboBox<String> compagniaComboBox;
 	private JLabel codiceLabel;
 	private JTextField codiceTextField;
 	private JLabel puntiLabel;
@@ -36,7 +37,7 @@ public class NuovoCentoKilometriView extends JPanel {
 		setLayout(new BorderLayout());
 		setBackground(new Color(0, 0, 153));
 		
-		JLabel menuLabel = new JLabel("   Nuova Cento Kilometri");
+		JLabel menuLabel = new JLabel("   Nuovo Cento Kilometri");
 		menuLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
 		menuLabel.setForeground(Color.WHITE);
 		
@@ -47,10 +48,9 @@ public class NuovoCentoKilometriView extends JPanel {
 		compagniaLabel.setForeground(Color.WHITE);
 		compagniaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		compagniaLabel.setMinimumSize(new Dimension(100, 30));
-		compagniaTextField = new JTextField();
-		compagniaTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		compagniaTextField.setColumns(15);
-		compagniaTextField.setMinimumSize(new Dimension(150,30));
+		compagniaComboBox = new JComboBox<String>(controller.getCompagnieAeree());
+		compagniaComboBox.setEditable(false);
+		compagniaComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		
 		codiceLabel = new JLabel("Codice");
 		codiceLabel.setForeground(Color.WHITE);
@@ -94,7 +94,7 @@ public class NuovoCentoKilometriView extends JPanel {
 		JPanel compagniaPanel = new JPanel(new BorderLayout());
 		compagniaPanel.setBackground(new Color(0, 0, 153));
 		compagniaPanel.add(compagniaLabel, BorderLayout.WEST);
-		compagniaPanel.add(compagniaTextField, BorderLayout.SOUTH);
+		compagniaPanel.add(compagniaComboBox, BorderLayout.SOUTH);
 		JPanel codicePanel = new JPanel(new BorderLayout());
 		codicePanel.setBackground(new Color(0, 0, 153));
 		codicePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -140,7 +140,7 @@ public class NuovoCentoKilometriView extends JPanel {
 		salvaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				controller.salvaNuovoCentoKilometri(codiceTextField.getText(), compagniaTextField.getText(), puntiTextField.getText());
+				controller.salvaNuovoCentoKilometri(codiceTextField.getText(), compagniaComboBox.getSelectedItem().toString(), puntiTextField.getText());
 			}
 		});
 	}

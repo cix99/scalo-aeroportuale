@@ -89,6 +89,13 @@ public class TableModelPrenotazione extends AbstractTableModel {
 //				return;
 //		}
 //	}
+	
+	public void removeRow(int row) {          //removes a row based on number from the data
+		if (controller.deletePrenotazione(prenotazioni.get(row).getId())) {
+			prenotazioni.remove(row);
+			fireTableRowsDeleted(row, row);    //updates the table
+		}
+	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {

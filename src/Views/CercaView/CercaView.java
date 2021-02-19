@@ -18,13 +18,12 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 @SuppressWarnings("serial")
 public class CercaView extends JFrame {
@@ -33,7 +32,7 @@ public class CercaView extends JFrame {
 	private TopPanel topPanel;
 	private JPanel selectionPanel;
 	private JLabel cercaLabel;
-	private String[] items = {"Tratte", "Prenotazioni", "Cento Kilometri", "Compagnie", "Gate"};
+	private String[] items = {"Tratte", "Prenotazioni", "Cento Kilometri", "Compagnie Aeree", "Gates"};
 	private JComboBox<String> cercaComboBox;
 	private JButton okButton;
 	private JPanel centerPanel;
@@ -76,6 +75,7 @@ public class CercaView extends JFrame {
 		cercaComboBox.setSize(new Dimension (20,10));
 		selectionPanel.add(cercaComboBox);
 		okButton = new JButton("Ok");
+		okButton.setFocusPainted(false);
 		okButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -109,44 +109,29 @@ public class CercaView extends JFrame {
 		scrollPane.setBackground(new Color (0, 0, 153));
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
 		tableRenderer.setHorizontalAlignment(JLabel.CENTER);
-		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(1).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(2).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(3).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(5).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(6).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(7).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(8).setCellRenderer(tableRenderer);
+		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer); //ID
+		table.getColumnModel().getColumn(0).setMaxWidth(30);
+		table.getColumnModel().getColumn(1).setCellRenderer(tableRenderer);	//Destinazione
+		table.getColumnModel().getColumn(2).setCellRenderer(tableRenderer); //Compagnia Aerea
+		table.getColumnModel().getColumn(3).setCellRenderer(tableRenderer); //Inizio imbarco stimato
+		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer);	//Inizio imbarco effettivo
+		table.getColumnModel().getColumn(5).setCellRenderer(tableRenderer); //Fine imbarco stimato
+		table.getColumnModel().getColumn(6).setCellRenderer(tableRenderer);	//Fine imbarco effettivo
+		table.getColumnModel().getColumn(7).setCellRenderer(tableRenderer);	//Gate
+		table.getColumnModel().getColumn(7).setMaxWidth(35);
+		table.getColumnModel().getColumn(8).setCellRenderer(tableRenderer); //Stato imbarco
+		table.getColumnModel().getColumn(9).setCellRenderer(tableRenderer); //Ritardo
+		table.getColumnModel().getColumn(9).setMinWidth(30);
+		table.getColumnModel().getColumn(9).setMaxWidth(50);
+		table.getColumnModel().getColumn(10).setCellRenderer(tableRenderer); //Max Prenotazioni
+		table.getColumnModel().getColumn(10).setMinWidth(30);
+		table.getColumnModel().getColumn(10).setMaxWidth(110);
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		//table.setFillsViewportHeight(true);
 		
-		JButton modificaButton = new JButton("Modifica riga");
-		
-		JButton eliminaButton = new JButton("Elimina riga");
-		eliminaButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				if (table.getSelectedRow() != -1) {
-					TableModelTratta model = (TableModelTratta) table.getModel();
-					model.removeRow(table.getSelectedRow());
-					//aggiorna il database
-				}
-				else {
-					JOptionPane.showMessageDialog(CercaView.this, "Seleziona un riga da cancellare", "Errore cancellazione", JOptionPane.ERROR_MESSAGE);
-				}
-
-			}
-		});
-		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		buttonsPanel.setBackground(new Color(0, 153, 255));
-		buttonsPanel.add(modificaButton);
-		buttonsPanel.add(eliminaButton);
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
-		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);
+		showButtonPanel(cercaComboBox.getSelectedItem().toString());
 		mainPanel.revalidate();
-	
 	}
 	
 	public void showListaPrenotazioni(LinkedList<Prenotazione> prenotazioni, ViewsController controller) { 
@@ -158,19 +143,28 @@ public class CercaView extends JFrame {
 		scrollPane.setBackground(new Color (0, 0, 153));
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
 		tableRenderer.setHorizontalAlignment(JLabel.CENTER);
-		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(1).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(2).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(3).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(5).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(6).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(7).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(8).setCellRenderer(tableRenderer);
+		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer); //ID
+		//table.getColumnModel().getColumn(0).setMinWidth(240);
+		table.getColumnModel().getColumn(0).setPreferredWidth(240);
+		table.getColumnModel().getColumn(1).setCellRenderer(tableRenderer); //ID tratta
+		table.getColumnModel().getColumn(1).setMinWidth(35);
+		table.getColumnModel().getColumn(1).setMaxWidth(60);
+		table.getColumnModel().getColumn(2).setCellRenderer(tableRenderer); //Nome
+		table.getColumnModel().getColumn(3).setCellRenderer(tableRenderer); //Cognome
+		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer); //Compagnia Aerea
+		table.getColumnModel().getColumn(5).setCellRenderer(tableRenderer); //Codice Prenotazione
+		table.getColumnModel().getColumn(5).setMinWidth(80);
+		table.getColumnModel().getColumn(6).setCellRenderer(tableRenderer); //Cento Kilometri
+		table.getColumnModel().getColumn(6).setMinWidth(100);
+		table.getColumnModel().getColumn(7).setCellRenderer(tableRenderer); //Coda
+		table.getColumnModel().getColumn(8).setCellRenderer(tableRenderer); //Imbarcato
+		table.getColumnModel().getColumn(8).setMinWidth(40);
+		table.getColumnModel().getColumn(8).setMaxWidth(65);
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		//table.setFillsViewportHeight(true);
 		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
+		showButtonPanel(cercaComboBox.getSelectedItem().toString());
 		mainPanel.revalidate();
 	
 	}
@@ -189,6 +183,7 @@ public class CercaView extends JFrame {
 		//table.setFillsViewportHeight(true);
 		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
+		showButtonPanel(cercaComboBox.getSelectedItem().toString());
 		mainPanel.revalidate();
 	
 	}
@@ -207,14 +202,15 @@ public class CercaView extends JFrame {
 		//table.setFillsViewportHeight(true);
 		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
+		showButtonPanel(cercaComboBox.getSelectedItem().toString());
 		mainPanel.revalidate();
 	
 	}
 
-	public void showListaCentoKilometri(LinkedList<CentoKilometri> centoKilometri, ViewsController viewsController) {
+	public void showListaCentoKilometri(LinkedList<CentoKilometri> centoKilometri, ArrayList<String> clientiCKList, ViewsController viewsController) {
 		tableModelCentoKilometri = new TableModelCentoKilometri(viewsController);
 		table = new JTable(tableModelCentoKilometri);
-		tableModelCentoKilometri.setData(centoKilometri);
+		tableModelCentoKilometri.setData(centoKilometri, clientiCKList);
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBackground(new Color (0, 0, 153));
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
@@ -223,14 +219,90 @@ public class CercaView extends JFrame {
 		table.getColumnModel().getColumn(1).setCellRenderer(tableRenderer);
 		table.getColumnModel().getColumn(2).setCellRenderer(tableRenderer);
 		table.getColumnModel().getColumn(3).setCellRenderer(tableRenderer);
+		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer);
+		table.getColumnModel().getColumn(5).setCellRenderer(tableRenderer);
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		//table.setFillsViewportHeight(true);
 		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
+		showButtonPanel(cercaComboBox.getSelectedItem().toString());
 		mainPanel.revalidate();
-		
 	}
 
+	public void showButtonPanel (String tableChoice) {
+		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		buttonsPanel.setBackground(new Color(0, 153, 255));
+		JButton modificaButton = new JButton("Modifica riga");
+		modificaButton.setFocusPainted(false);
+		
+		JButton eliminaButton = new JButton("Elimina riga");
+		eliminaButton.setFocusPainted(false);
+		eliminaButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Object[] options = {"Sì", "No"};
+				if (table.getSelectedRow() != -1) {
+					switch (tableChoice) {
+						case "Tratte": {
+							int choice = JOptionPane.showOptionDialog(CercaView.this, "Vuoi davvero eliminare la tratta selezionata?", "Conferma cancellazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+									null,     //do not use a custom Icon
+									options,  //the titles of buttons
+									options[1]); //default button title
+							if (choice == JOptionPane.YES_OPTION) {
+								TableModelTratta model = (TableModelTratta) table.getModel();
+								model.removeRow(table.getSelectedRow());
+								//table.getSelectedRows(); per eliminare tutte le righe selezionate
+							}
+							break;
+						}
+						case "Prenotazioni": {
+							int choice = JOptionPane.showOptionDialog(CercaView.this, "Vuoi davvero eliminare la prenotazione selezionata?", "Conferma cancellazione", 
+																	  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]); 
+							if (choice == JOptionPane.YES_OPTION) {
+								TableModelPrenotazione model = (TableModelPrenotazione) table.getModel();
+								model.removeRow(table.getSelectedRow());
+							}
+							break;
+						}
+						case "Cento Kilometri": {
+							int choice = JOptionPane.showOptionDialog(CercaView.this, "Vuoi davvero eliminare il cento kilometri selezionato?", "Conferma cancellazione", 
+																	  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]); 
+							if (choice == JOptionPane.YES_OPTION) {
+								TableModelCentoKilometri model = (TableModelCentoKilometri) table.getModel();
+								model.removeRow(table.getSelectedRow());
+							}
+							break;
+						}
+						case "Compagnie Aeree": {
+							int choice = JOptionPane.showOptionDialog(CercaView.this, "Vuoi davvero eliminare la compagnia aerea selezionata?", "Conferma cancellazione", 
+																	  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]); 
+							if (choice == JOptionPane.YES_OPTION) {
+								TableModelCompagnia model = (TableModelCompagnia) table.getModel();
+								model.removeRow(table.getSelectedRow());
+							}
+							break;
+						}
+						case "Gates": {
+							int choice = JOptionPane.showOptionDialog(CercaView.this, "Vuoi davvero eliminare il gate selezionato?", "Conferma cancellazione", 
+																	  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]); 
+							if (choice == JOptionPane.YES_OPTION) {
+								TableModelGate model = (TableModelGate) table.getModel();
+								model.removeRow(table.getSelectedRow());
+							}
+							break;
+						}
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(CercaView.this, "Seleziona un riga da cancellare", "Errore cancellazione", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		buttonsPanel.add(modificaButton);
+		buttonsPanel.add(eliminaButton);
+		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);
+	}
+	
 	public void emptyCenterPanel () {
 		if (centerPanel != null) {
 			centerPanel.removeAll();

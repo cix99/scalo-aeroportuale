@@ -117,6 +117,21 @@ public class CentoKilometriDAO extends JDBC {
         }
         return centoKilometriList;
     }
+    
+	public boolean delete(int idCentoKilometri) {
+		String query = "DELETE FROM " + tableName + " WHERE id = ?";
+
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setInt(1, idCentoKilometri);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
 
     public CentoKilometri first(){
         LinkedList<CentoKilometri> centoKilometriList = find();
@@ -127,4 +142,5 @@ public class CentoKilometriDAO extends JDBC {
     	LinkedList<CentoKilometri> centoKilometriList = find();
         return centoKilometriList.get(centoKilometriList.size() - 1);
     }
+    
 }

@@ -74,6 +74,13 @@ public class TableModelCompagnia extends AbstractTableModel {
 //		}
 //	}
 
+	public void removeRow(int row) {          //removes a row based on number from the data
+		if (controller.deleteCompagniaAerea(compagnie.get(row).getNomeCompagnia())) {
+			compagnie.remove(row);
+			fireTableRowsDeleted(row, row);    //updates the table
+		}
+	}
+	
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		CompagniaAerea compagnia = compagnie.get(rowIndex);

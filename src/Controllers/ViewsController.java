@@ -101,7 +101,7 @@ public class ViewsController {
 				prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
 				if (prenotati.isEmpty() == false) {
 					//listCodaPriority = getCodaPrioritiesForTratta(tratte.getFirst().getId());  [return i valori int delle code presenti per la tratta]
-					((ImbarcoView) subFrame).showListaPrenotati(this, prenotati, 5);  
+					((ImbarcoView) subFrame).showListaPrenotati(this, prenotati);  
 				}
 				else {
 					JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questo volo", "Nessuna prenotazione", JOptionPane.ERROR_MESSAGE);
@@ -113,55 +113,37 @@ public class ViewsController {
 		}
 	}
 	
-	public void loadImbarcoCenterPanelCoda(String nomeCoda, int idTratta) { 
-		
-		//((ImbarcoView) subFrame).emptyCenterPanel();
+	public void loadImbarcoCenterPanelCoda(String nomeCoda) { 
 		
 		((ImbarcoView) subFrame).emptyTable();
-		codeVolo = dbController.getCodaByIdTratta(idTratta);
-		
-		if (tratte.isEmpty() == false) {
-			//((ImbarcoView) subFrame).showTrattaInfoView(tratte.getFirst(), this); //(tratta)
-			//if (dbController.getPrenotatiFromTratta(tratte.getFirst().getId()) != null) {
-				//prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
-				if (prenotati.isEmpty() == false) {
-					//listCodaPriority = getCodaPrioritiesForTratta(tratte.getFirst().getId());  [return i valori int delle code presenti per la tratta]
-					LinkedList<Prenotazione> prenotatiCoda = new LinkedList<Prenotazione>();
-					
-					ListIterator<Prenotazione> cursor = prenotati.listIterator();
-					while (cursor.hasNext()) {
-						Prenotazione current = (Prenotazione) cursor.next();
-						if (current.getCoda().getNomeCoda().equals(nomeCoda)) {
-							prenotatiCoda.add(current);
-						}
-					}
-					if (prenotatiCoda.isEmpty() == false)
-						((ImbarcoView) subFrame).showListaPrenotati(this, prenotatiCoda, prenotatiCoda.getFirst().getCoda().getPriority());
-					else
-						JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questa coda", "Nessuno in coda", JOptionPane.ERROR_MESSAGE);
-				}
-				else {
-					JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questo volo", "Nessuna prenotazione", JOptionPane.ERROR_MESSAGE);
-				}
+		if (prenotati.isEmpty() == false) {
+			if (nomeCoda.equals("Tutte")) {
+				((ImbarcoView) subFrame).showListaPrenotati(this, prenotati);
 			}
-		//}
+			else {
+				LinkedList<Prenotazione> prenotatiCoda = new LinkedList<Prenotazione>();
+				ListIterator<Prenotazione> cursor = prenotati.listIterator();
+				while (cursor.hasNext()) {
+					Prenotazione current = (Prenotazione) cursor.next();
+					if (current.getCoda().getNomeCoda().equals(nomeCoda)) {
+						prenotatiCoda.add(current);
+					}
+				}
+				if (prenotatiCoda.isEmpty() == false)
+					((ImbarcoView) subFrame).showListaPrenotati(this, prenotatiCoda);
+				else
+					JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questa coda", "Nessuno in coda", JOptionPane.ERROR_MESSAGE);
+			}
+		}	
 		else {
-			JOptionPane.showMessageDialog(subFrame, "Non ci sono tratte per questo gate", "Nessuna tratta trovata", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questo volo", "Nessuna prenotazione", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
-	public String[] getCodaFromIdTratta(int idTratta) {
-		LinkedList<Coda> list = dbController.getCodaByIdTratta(idTratta);
-		
-		String [] stringArray = new String[list.size()];
-		ListIterator<Coda> cursor = list.listIterator();
-		int i = 0;
-		while (cursor.hasNext()) {
-			Coda current = cursor.next();
-			stringArray[i] = current.getNomeCoda();
-			i++;
-		}
-		return stringArray;
+	public LinkedList<Coda> getCodaFromIdTratta(int idTratta) {
+		LinkedList<Coda> codeList = new LinkedList<Coda>();
+		codeList = dbController.getCodaByIdTratta(idTratta);
+		return codeList;
 	}
 	
 	public void aggiungiView() {
@@ -218,19 +200,21 @@ public class ViewsController {
 		}
 	}
 	
-	public void salvaNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime dataInizio, LocalDateTime dataFine, ArrayList<Coda> code) {
-		//check che datafine sia posteriore a datainizio
-		if (dataFine.isBefore(dataInizio)) {
-			JOptionPane.showMessageDialog(subFrame, "La data di fine imbarco non può essere prima di quella di inizio", "Errore data", JOptionPane.ERROR_MESSAGE);
-		}
-		else {
-			if (dbController.salvaNuovaTratta(destinazione, nomeCompagnia, dataInizio, dataFine, code)) {
-				JOptionPane.showMessageDialog(subFrame, "Tratta per (" + destinazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+	public void salvaNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime dataInizio, LocalDateTime dataFine, int maxPrenotazioni, ArrayList<Coda> code) {
+		if (!destinazione.isBlank()) {
+			if (dataFine.isAfter(dataInizio)) {
+				if (dbController.salvaNuovaTratta(destinazione, nomeCompagnia, dataInizio, dataFine, maxPrenotazioni, code)) {
+					JOptionPane.showMessageDialog(subFrame, "Tratta per (" + destinazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+				}
+				else {
+					JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento tratta", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			else {
-				JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento tratta", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(subFrame, "La data di fine imbarco non può essere prima di quella di inizio", "Errore data", JOptionPane.ERROR_MESSAGE);
 			}
 		}
+		JOptionPane.showMessageDialog(subFrame, "Destinazione non valida", "Errore destinazione", JOptionPane.ERROR_MESSAGE);
 		
 	}
 	
@@ -261,7 +245,7 @@ public class ViewsController {
 		}
 	}
 	
-	public LinkedList<Tratta> getTratteFromCompagnie(String nomeCompagnia) {
+	public LinkedList<Tratta> getTratteFromCompagnia(String nomeCompagnia) {
 		LinkedList<Tratta> trattaList = new LinkedList<Tratta>();
 		trattaList = dbController.getTratteFromCompagnia(nomeCompagnia);
 		return trattaList;
@@ -330,16 +314,24 @@ public class ViewsController {
 			case "Cento Kilometri":
 			{
 				centoKilometri = dbController.getCentoKilometri();
-				((CercaView) subFrame).showListaCentoKilometri(centoKilometri, this);
+				ArrayList<String> clientiCKList = new ArrayList<String>();
+				
+				ListIterator<CentoKilometri> cursor = centoKilometri.listIterator();
+				while (cursor.hasNext()) {
+					CentoKilometri current = cursor.next();
+					dbController.getClientiCK(clientiCKList, current.getId());
+				}
+				
+				((CercaView) subFrame).showListaCentoKilometri(centoKilometri, clientiCKList, this);
 				break;
 			}
-			case "Compagnie":
+			case "Compagnie Aeree":
 			{
 				compagnie = dbController.getCompagnieAeree();
 				((CercaView) subFrame).showListaCompagnie(compagnie, this);
 				break;
 			}
-			case "Gate":
+			case "Gates":
 			{
 				gates = dbController.getGates();
 				((CercaView) subFrame).showListaGates(gates, this);
@@ -350,6 +342,62 @@ public class ViewsController {
 		}
 		
 	}
+	
+	public boolean deleteTratta (int idTratta) {
+		if (dbController.deleteTratta(idTratta)) {
+			JOptionPane.showMessageDialog(subFrame, "Tratta eliminata con successo!", "Cancellazione riuscita", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+			return true;
+		}
+		else {
+			JOptionPane.showMessageDialog(subFrame, "Cancellazione fallita", "Errore durante cancellazione", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+	}
+	
+	public boolean deletePrenotazione(String idPrenotazione) {
+		if (dbController.deletePrenotazione(idPrenotazione)) {
+			JOptionPane.showMessageDialog(subFrame, "Prenotazione eliminata con successo!", "Cancellazione riuscita", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+			return true;
+		}
+		else {
+			JOptionPane.showMessageDialog(subFrame, "Cancellazione fallita", "Errore durante cancellazione", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+	}
+	
+	public boolean deleteCentoKilometri(int idCentoKilometri) {
+		if (dbController.deleteCentoKilometri(idCentoKilometri)) {
+			JOptionPane.showMessageDialog(subFrame, "Cento kilometri eliminato con successo!", "Cancellazione riuscita", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+			return true;
+		}
+		else {
+			JOptionPane.showMessageDialog(subFrame, "Cancellazione fallita", "Errore durante cancellazione", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+	}
+	
+	public boolean deleteCompagniaAerea(String nomeCompagnia) {
+		if (dbController.deleteCompagniaAerea(nomeCompagnia)) {
+			JOptionPane.showMessageDialog(subFrame, "Compagnia aerea eliminata con successo!", "Cancellazione riuscita", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+			return true;
+		}
+		else {
+			JOptionPane.showMessageDialog(subFrame, "Cancellazione fallita", "Errore durante cancellazione", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+	}
+	
+	public boolean deleteGate(String nomeGate) {
+		if (dbController.deleteGate(nomeGate)) {
+			JOptionPane.showMessageDialog(subFrame, "Gate eliminato con successo!", "Cancellazione riuscita", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+			return true;
+		}
+		else {
+			JOptionPane.showMessageDialog(subFrame, "Cancellazione fallita", "Errore durante cancellazione", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+	}
+	
 	
 	public void statisticheView() {
 		subFrame = new StatisticheView (this);

@@ -1,12 +1,8 @@
 package Views.Tables;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
-
-import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 
 import Controllers.ViewsController;
@@ -17,8 +13,8 @@ import Models.Tratta;
 public class TableModelTratta extends AbstractTableModel {
 
 	private LinkedList<Tratta> tratte;
-	private int numberOfColumns = 10;
-	private String[] columnNames = {"ID", "Destinazione", "Compagnia Aerea", "Inizio Imbarco Stimato", "Inizio Imbarco Effettivo", "Fine Imbarco Stimato", "Fine Imbarco Effettivo", "Gate", "Stato Imbarco", "Ritardo"};
+	private int numberOfColumns = 11;
+	private String[] columnNames = {"ID", "Destinazione", "Compagnia Aerea", "Inizio Imbarco Stimato", "Inizio Imbarco Effettivo", "Fine Imbarco Stimato", "Fine Imbarco Effettivo", "Gate", "Stato Imbarco", "Ritardo", "Max Prenotazioni"};
 	
 	private ViewsController controller;
 	
@@ -78,7 +74,9 @@ public class TableModelTratta extends AbstractTableModel {
 		case 8:
 			return Stato.class;
 		case 9:
-			return Boolean.class;
+			return String.class;
+		case 10:
+			return Integer.class;
 		default:
 			return null;
 		}
@@ -99,8 +97,10 @@ public class TableModelTratta extends AbstractTableModel {
 //	}
 	
 	public void removeRow(int row) {          //removes a row based on number from the data
-		tratte.remove(row);
-		fireTableRowsDeleted(row, row);    //updates the table
+		if (controller.deleteTratta(tratte.get(row).getId())) {
+			tratte.remove(row);
+			fireTableRowsDeleted(row, row);    //updates the table
+		}
 	}
 	
 
@@ -144,6 +144,8 @@ public class TableModelTratta extends AbstractTableModel {
 			return tratta.getStatoImbarco();
 		case 9:
 			return tratta.getRitardo();
+		case 10:
+			return tratta.getMaxPrenotazioni();
 		default:
 			return null;
 		}

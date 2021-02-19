@@ -1,7 +1,6 @@
 package Models;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class Tratta{
 
@@ -15,13 +14,15 @@ public class Tratta{
     private Gate gate;
     private Stato statoImbarco;
     private Boolean ritardo;    
+    private int maxPrenotazioni;
     
-    public Tratta(String destinazione, CompagniaAerea compagniaAerea, LocalDateTime oraInizioImbarcoStimato, LocalDateTime oraFineImbarcoStimato) {
+    public Tratta(String destinazione, CompagniaAerea compagniaAerea, LocalDateTime oraInizioImbarcoStimato, LocalDateTime oraFineImbarcoStimato, int maxPrenotazioni) {
 		super();
 		this.destinazione = destinazione;
 		this.compagniaAerea = compagniaAerea;
 		this.oraInizioImbarcoStimato = oraInizioImbarcoStimato;
 		this.oraFineImbarcoStimato = oraFineImbarcoStimato;
+		this.maxPrenotazioni = maxPrenotazioni;
 	}
 
 	public Tratta() {
@@ -67,6 +68,10 @@ public class Tratta{
 		return ritardo;
 	}
 
+	public int getMaxPrenotazioni() {
+		return maxPrenotazioni;
+	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -105,6 +110,10 @@ public class Tratta{
 
 	public void setRitardo(Boolean ritardo) {
 		this.ritardo = ritardo;
+	}
+	
+	public void setMaxPrenotazioni(int maxPrenotazioni) {
+		this.maxPrenotazioni = maxPrenotazioni;
 	}
     
 }

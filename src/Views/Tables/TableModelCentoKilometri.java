@@ -1,5 +1,6 @@
 package Views.Tables;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.table.AbstractTableModel;
@@ -11,8 +12,9 @@ import Models.CentoKilometri;
 public class TableModelCentoKilometri extends AbstractTableModel {
 
 	private LinkedList<CentoKilometri> centoKilometri;
-	private int numberOfColumns = 4;
-	private String[] columnNames = {"ID", "Codice", "Compagnia", "Punti"};
+	private ArrayList<String> clientiCKList;
+	private int numberOfColumns = 6;
+	private String[] columnNames = {"ID", "Compagnia", "Codice", "Nome", "Cognome", "Punti"};
 	
 	private ViewsController controller;
 	
@@ -20,8 +22,9 @@ public class TableModelCentoKilometri extends AbstractTableModel {
 		this.controller = controller;
 	}
 	
-	public void setData (LinkedList<CentoKilometri> centoKilometri) {
+	public void setData (LinkedList<CentoKilometri> centoKilometri, ArrayList<String> clientiCKList) {
 		this.centoKilometri = centoKilometri;
+		this.clientiCKList = clientiCKList;
 	}
 	
 	@Override
@@ -60,6 +63,10 @@ public class TableModelCentoKilometri extends AbstractTableModel {
 		case 2:
 			return String.class;
 		case 3:
+			return String.class;
+		case 4:
+			return String.class;
+		case 5:
 			return Integer.class;
 		default:
 			return null;
@@ -79,6 +86,13 @@ public class TableModelCentoKilometri extends AbstractTableModel {
 //				return;
 //		}
 //	}
+	
+	public void removeRow(int row) {          //removes a row based on number from the data
+		if (controller.deleteCentoKilometri(centoKilometri.get(row).getId())) {
+			centoKilometri.remove(row);
+			fireTableRowsDeleted(row, row);    //updates the table
+		}
+	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
@@ -87,10 +101,14 @@ public class TableModelCentoKilometri extends AbstractTableModel {
 		case 0:
 			return centoKilometriCell.getId();
 		case 1:
-			return centoKilometriCell.getCodiceCompagnia();
-		case 2:
 			return centoKilometriCell.getCompagniaAerea().getNomeCompagnia();
-		case 3:	
+		case 2:
+			return centoKilometriCell.getCodiceCompagnia();
+		case 3:
+			return clientiCKList.get(2*rowIndex);
+		case 4:
+			return clientiCKList.get(2*rowIndex+1);
+		case 5:	
 			return centoKilometriCell.getPunti();
 		default:
 			return null;

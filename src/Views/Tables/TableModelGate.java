@@ -73,6 +73,13 @@ public class TableModelGate extends AbstractTableModel {
 //				return;
 //		}
 //	}
+	
+	public void removeRow(int row) {          //removes a row based on number from the data
+		if (controller.deleteGate(gates.get(row).getNomeGate())) {
+			gates.remove(row);
+			fireTableRowsDeleted(row, row);    //updates the table
+		}
+	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {

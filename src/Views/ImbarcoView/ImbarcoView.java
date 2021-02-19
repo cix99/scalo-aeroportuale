@@ -14,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -28,6 +29,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import Controllers.ViewsController;
+import Models.Coda;
 import Models.Prenotazione;
 import Models.Tratta;
 import Views.TopPanel;
@@ -138,15 +140,24 @@ public class ImbarcoView extends JFrame{
 		
 		centerPanel.add(mainSubPanel, BorderLayout.NORTH);
 		
-		String[] codaArray = controller.getCodaFromIdTratta(tratta.getId());
-		codaComboBox = new JComboBox<String>(codaArray);
+		LinkedList<Coda> code = controller.getCodaFromIdTratta(tratta.getId());
+		String [] codeArray = new String[code.size()+1];
+		codeArray[0] = "Tutte";
+		ListIterator<Coda> cursor = code.listIterator();
+		int i = 1;
+		while (cursor.hasNext()) {
+			Coda current = cursor.next();
+			codeArray[i] = current.getNomeCoda();
+			i++;
+		}	
+		codaComboBox = new JComboBox<String>(codeArray);
 		codaComboBox.setEditable(false);
 		codaComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		
 		codaComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.loadImbarcoCenterPanelCoda(codaComboBox.getSelectedItem().toString(), tratta.getId());
+				controller.loadImbarcoCenterPanelCoda(codaComboBox.getSelectedItem().toString());
 			}
 		});
 		
@@ -157,30 +168,26 @@ public class ImbarcoView extends JFrame{
 		
 		centerPanel.add(codaPanel, BorderLayout.WEST);
 
-		
 		mainPanel.revalidate();
 	}
 	
-	public void showListaPrenotati(ViewsController controller, LinkedList<Prenotazione> prenotati, int codaPriority) { 
+	public void showListaPrenotati(ViewsController controller, LinkedList<Prenotazione> prenotati) { 
 		
 		tableModel = new TableModelImbarco(controller);
 		table = new JTable(tableModel);
 		
-		//TODO: carica solo i prenotati per la coda con priority più alta
 		setData(prenotati);
 		
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBackground(new Color (0, 0, 153));		
 		
-		table.getColumnModel().getColumn(1).setMinWidth(150);
-		table.getColumnModel().getColumn(2).setMinWidth(200);
-		
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
 		tableRenderer.setHorizontalAlignment(JLabel.CENTER);
-		//tableRenderer.setBackground(new Color(0,204,255));
 		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer);
 		table.getColumnModel().getColumn(1).setCellRenderer(tableRenderer);
+		table.getColumnModel().getColumn(1).setMinWidth(150);
 		table.getColumnModel().getColumn(2).setCellRenderer(tableRenderer);
+		table.getColumnModel().getColumn(2).setMinWidth(200);
 		table.getColumnModel().getColumn(3).setCellRenderer(tableRenderer);
 		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer);
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -196,31 +203,12 @@ public class ImbarcoView extends JFrame{
 		chiudiImbarcoPanel.add(chiudiImbarcoButton);
 		centerPanel.add(chiudiImbarcoPanel, BorderLayout.SOUTH);
 		
-		//mainPanel.revalidate();
-		
-//		table.getModel().addTableModelListener(new TableModelListener() {
-//
-//	            @Override
-//	            public void tableChanged(TableModelEvent e) {
-//	                System.out.println(tableModel.getValueAt(e.getFirstRow(), 0)
-//	                    + " " + tableModel.getValueAt(e.getFirstRow(), 1));
-//	                tableModel.fireTableCellUpdated(e.getFirstRow(), e.getFirstRow());
-//	                //tableRefresh();
-//	            }
-//	        });
-		
-		//CodaComboBox non si sta aggiornando nella gui quando cambi selezione
-		//repaint();
 	}
 	
 	public void setData (LinkedList<Prenotazione> prenotati) {
 		tableModel.setData(prenotati);
 		
 	}
-	
-//	public void tableRefresh() {
-//		tableModel.fireTableDataChanged();
-//	}
 	
 	public void emptyCenterPanel () {
 		if (centerPanel != null) {
@@ -232,7 +220,6 @@ public class ImbarcoView extends JFrame{
 	public void emptyTable () {
 		if (scrollPane != null) {
 			scrollPane.removeAll();
-			
 		}
 	}
 	

@@ -10,12 +10,12 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -25,14 +25,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 import Controllers.ViewsController;
 import Models.Coda;
-import Models.Tratta;
 
 import org.jdatepicker.impl.*;
-import org.jdatepicker.util.*;
-import org.jdatepicker.*;
+//import org.jdatepicker.util.*;
+//import org.jdatepicker.*;
 
 @SuppressWarnings("serial")
 public class NuovaTrattaView extends JPanel {
@@ -61,6 +61,8 @@ public class NuovaTrattaView extends JPanel {
 								"45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", };
 	private JLabel codeLabel;
 	private JComboBox<String> numeroCodeComboBox;
+	private JLabel maxPrenotazioniLabel;
+	private JTextField maxPrenotazioniTextField;
 	private String[] numeroCode = {"1", "2", "3", "4", "5"};
 	
 	private JDialog codaDialog;
@@ -106,7 +108,7 @@ public class NuovaTrattaView extends JPanel {
 		JDatePickerImpl datePickerStart = new JDatePickerImpl(datePanelStart, new DateLabelFormatter());
 		
 		
-		oraInizioLabel = new JLabel("Ora Inizio Imbarco");
+		oraInizioLabel = new JLabel("Ora");
 		oraInizioLabel.setForeground(Color.WHITE);
 		oraInizioLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		hourStartComboBox = new JComboBox<String>(hours);
@@ -126,7 +128,7 @@ public class NuovaTrattaView extends JPanel {
 		JDatePanelImpl datePanelEnd = new JDatePanelImpl(model2, p2);
 		JDatePickerImpl datePickerEnd = new JDatePickerImpl(datePanelEnd, new DateLabelFormatter());
 		
-		oraFineLabel = new JLabel("Ora Fine Imbarco");
+		oraFineLabel = new JLabel("Ora");
 		oraFineLabel.setForeground(Color.WHITE);
 		oraFineLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		hourEndComboBox = new JComboBox<String>(hours);
@@ -155,10 +157,32 @@ public class NuovaTrattaView extends JPanel {
 			}
 		});
 		
+		maxPrenotazioniLabel = new JLabel("Max Prenotazioni");
+		maxPrenotazioniLabel.setForeground(Color.WHITE);
+		maxPrenotazioniLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		maxPrenotazioniLabel.setMinimumSize(new Dimension(100, 30));
+		maxPrenotazioniTextField = new JTextField();
+		maxPrenotazioniTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		maxPrenotazioniTextField.setColumns(5);
+		maxPrenotazioniTextField.setMinimumSize(new Dimension(70,30));
+		maxPrenotazioniTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!Character.isDigit(c)) {
+					e.consume();
+				}
+			}
+		});
+		
 		GridBagConstraints gc = new GridBagConstraints();
 		
 		JPanel midTopPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
 		midTopPanel.setBackground(new Color (0, 0, 153));
+		TitledBorder topTitleBorder = new TitledBorder("Info principali");
+		topTitleBorder.setTitleColor(Color.WHITE);
+		topTitleBorder.setTitleFont(new Font("Segoe UI", Font.PLAIN, 18));
+		midTopPanel.setBorder(topTitleBorder);
 		JPanel destinazionePanel = new JPanel(new BorderLayout());
 		destinazionePanel.setBackground(new Color(0, 0, 153));
 		destinazionePanel.add(destinazioneLabel, BorderLayout.WEST);
@@ -171,8 +195,12 @@ public class NuovaTrattaView extends JPanel {
 		midTopPanel.add(destinazionePanel);
 		midTopPanel.add(compagniaPanel);
 		
-		JPanel midCenterPanel = new JPanel();
-		midCenterPanel.setBackground(new Color(0, 0, 153));
+		JPanel midCenterTopPanel = new JPanel();
+		midCenterTopPanel.setBackground(new Color(0, 0, 153));
+		TitledBorder centerTopTitleBorder = new TitledBorder("Inizio Imbarco");
+		centerTopTitleBorder.setTitleColor(Color.WHITE);
+		centerTopTitleBorder.setTitleFont(new Font("Segoe UI", Font.PLAIN, 18));
+		midCenterTopPanel.setBorder(centerTopTitleBorder);
 		JPanel dataStartPanel = new JPanel(new BorderLayout());
 		dataStartPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		dataStartPanel.setBackground(new Color(0, 0, 153));
@@ -187,6 +215,15 @@ public class NuovaTrattaView extends JPanel {
 		startPanel.add(hourStartComboBox);
 		startPanel.add(minuteStartComboBox);
 		oraInizioPanel.add(startPanel, BorderLayout.CENTER);
+		midCenterTopPanel.add(dataStartPanel);
+		midCenterTopPanel.add(oraInizioPanel);
+		
+		JPanel midCenterBottomPanel = new JPanel();
+		midCenterBottomPanel.setBackground(new Color(0, 0, 153));
+		TitledBorder centerBottomTitleBorder = new TitledBorder("Fine Imbarco");
+		centerBottomTitleBorder.setTitleColor(Color.WHITE);
+		centerBottomTitleBorder.setTitleFont(new Font("Segoe UI", Font.PLAIN, 18));
+		midCenterBottomPanel.setBorder(centerBottomTitleBorder);
 		JPanel dataEndPanel = new JPanel(new BorderLayout());
 		dataEndPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		dataEndPanel.setBackground(new Color(0, 0, 153));
@@ -201,31 +238,47 @@ public class NuovaTrattaView extends JPanel {
 		endPanel.add(hourEndComboBox);
 		endPanel.add(minuteEndComboBox);
 		oraFinePanel.add(endPanel, BorderLayout.CENTER);
-		
-		midCenterPanel.add(dataStartPanel);
-		midCenterPanel.add(oraInizioPanel);
-		midCenterPanel.add(dataEndPanel);
-		midCenterPanel.add(oraFinePanel);
+		midCenterBottomPanel.add(dataEndPanel);
+		midCenterBottomPanel.add(oraFinePanel);
 		
 		JPanel midBottomPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
 		midBottomPanel.setBackground(new Color (0, 0, 153));
+		TitledBorder bottomTitleBorder = new TitledBorder("Info secondarie");
+		bottomTitleBorder.setTitleColor(Color.WHITE);
+		bottomTitleBorder.setTitleFont(new Font("Segoe UI", Font.PLAIN, 18));
+		midBottomPanel.setBorder(bottomTitleBorder);
 		JPanel codePanel = new JPanel(new BorderLayout());
 		codePanel.setBackground(new Color(0, 0, 153));
 		codePanel.add(codeLabel, BorderLayout.WEST);
 		codePanel.add(numeroCodeComboBox, BorderLayout.SOUTH);
+		JPanel maxPrenotazioniPanel = new JPanel(new BorderLayout());
+		maxPrenotazioniPanel.setBackground(new Color(0, 0, 153));
+		maxPrenotazioniPanel.setBorder(new EmptyBorder(0, 20, 0, 0));
+		maxPrenotazioniPanel.add(maxPrenotazioniLabel, BorderLayout.WEST);
+		maxPrenotazioniPanel.add(maxPrenotazioniTextField, BorderLayout.SOUTH);
 		midBottomPanel.add(codePanel);
+		midBottomPanel.add(maxPrenotazioniPanel);
 		
 		gc.gridx = 0;  
 		gc.gridy = 0;
+		gc.gridwidth = 3;
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(midTopPanel, gc);
 		gc.gridx = 0;     
 		gc.gridy = 1;
+		gc.gridwidth = 1;
 		gc.insets = new Insets(20,0,0,0);
 		gc.anchor = GridBagConstraints.WEST;
-		mainPanel.add(midCenterPanel, gc);
+		mainPanel.add(midCenterTopPanel, gc);
+		gc.gridx = 1;     
+		gc.gridy = 1;
+		gc.gridwidth = 1;
+		gc.insets = new Insets(20,0,0,0);
+		gc.anchor = GridBagConstraints.WEST;
+		mainPanel.add(midCenterBottomPanel, gc);
 		gc.gridx = 0;     
 		gc.gridy = 2;
+		gc.gridwidth = 2;
 		gc.insets = new Insets(20,0,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(midBottomPanel, gc);
@@ -245,13 +298,12 @@ public class NuovaTrattaView extends JPanel {
 																		datePickerStart.getJDateInstantPanel().getModel().getDay(),
 																		Integer.parseInt(hourStartComboBox.getSelectedItem().toString()), 
 																		Integer.parseInt(minuteStartComboBox.getSelectedItem().toString()));
-				LocalDateTime dataFine = controller.convertiIntToDate(datePickerStart.getJDateInstantPanel().getModel().getYear(), 
-																		datePickerStart.getJDateInstantPanel().getModel().getMonth()+1,
-																		datePickerStart.getJDateInstantPanel().getModel().getDay(),
+				LocalDateTime dataFine = controller.convertiIntToDate(datePickerEnd.getJDateInstantPanel().getModel().getYear(), 
+																		datePickerEnd.getJDateInstantPanel().getModel().getMonth()+1,
+																		datePickerEnd.getJDateInstantPanel().getModel().getDay(),
 																		Integer.parseInt(hourEndComboBox.getSelectedItem().toString()), 
 																		Integer.parseInt(minuteEndComboBox.getSelectedItem().toString()));
-				
-				controller.salvaNuovaTratta(destinazioneTextField.getText(), compagniaComboBox.getSelectedItem().toString(), dataInizio, dataFine, codaList);
+				controller.salvaNuovaTratta(destinazioneTextField.getText(), compagniaComboBox.getSelectedItem().toString(), dataInizio, dataFine, Integer.parseInt(maxPrenotazioniTextField.getText()), codaList);
 			}
 		});
 		

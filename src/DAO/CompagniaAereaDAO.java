@@ -26,7 +26,7 @@ public class CompagniaAereaDAO {
     }
 
     public CompagniaAerea findByName(String nome){
-        String query = "SELECT * FROM " + tableName + " WHERE nome_compagnia = ?";
+        String query = "SELECT * FROM " + tableName + " WHERE nome_compagnia = (?)";
         CompagniaAerea compagniaAerea = new CompagniaAerea();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -65,6 +65,21 @@ public class CompagniaAereaDAO {
         }
         return compagniaAereaList;
     }
+    
+	public boolean delete(String nomeCompagnia) {
+		String query = "DELETE FROM " + tableName + " WHERE nome_compagnia = ?";
+
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, nomeCompagnia);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
 
     public CompagniaAerea first(String nome){
     	LinkedList<CompagniaAerea> compagniaAereaList = find();

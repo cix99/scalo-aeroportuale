@@ -22,20 +22,6 @@ public class GateDAO extends JDBC {
         }
         return true;
     }
-    
-    public boolean delete (String nomeGate) {
-    	String query = "DELETE FROM " + tableName + " WHERE nome_gate = (?)";
-        try {
-            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setString(1, nomeGate);
-            statement.executeUpdate();
-        }catch(SQLException e){
-            System.out.println(e);
-            return false;
-        }
-
-        return true;
-    }
 
     public Gate findByName(String nome){
         String query = "SELECT * FROM " + tableName + " WHERE nome_gate = ?";
@@ -75,6 +61,19 @@ public class GateDAO extends JDBC {
         return gateList;
     }
 
+    public boolean delete (String nomeGate) {
+    	String query = "DELETE FROM " + tableName + " WHERE nome_gate = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, nomeGate);
+            statement.executeUpdate();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+    }
+    
     public Gate first(){
     	LinkedList<Gate> gateList = find();
         return gateList.get(0);
