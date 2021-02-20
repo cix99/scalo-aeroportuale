@@ -303,7 +303,7 @@ public class NuovaTrattaView extends JPanel {
 																		datePickerEnd.getJDateInstantPanel().getModel().getDay(),
 																		Integer.parseInt(hourEndComboBox.getSelectedItem().toString()), 
 																		Integer.parseInt(minuteEndComboBox.getSelectedItem().toString()));
-				controller.salvaNuovaTratta(destinazioneTextField.getText(), compagniaComboBox.getSelectedItem().toString(), dataInizio, dataFine, Integer.parseInt(maxPrenotazioniTextField.getText()), codaList);
+				controller.saveNuovaTratta(destinazioneTextField.getText(), compagniaComboBox.getSelectedItem().toString(), dataInizio, dataFine, Integer.parseInt(maxPrenotazioniTextField.getText()), codaList);
 			}
 		});
 		

@@ -6,34 +6,24 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
-import java.util.ListIterator;
-
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 
-import Controllers.ViewsController;
 import Models.Coda;
 import Models.Prenotazione;
 import Models.Tratta;
 import Views.TopPanel;
-import Views.Tables.TableModelImbarco;
+import Controllers.ViewsController;
 
 @SuppressWarnings("serial")
 public class ImbarcoView extends JFrame{
@@ -43,23 +33,18 @@ public class ImbarcoView extends JFrame{
 	private JPanel gateSelectionPanel;
 	private JLabel gateLabel;
 	private JComboBox<String> gateComboBox;
-	private String[] items = { "1", "2", "3" };
 	private JButton okButton;
 	
 	private JPanel centerPanel;
-	private JLabel destinazioneLabel;
-	private JLabel compagniaLabel;
-	private JLabel dataLabel;
-	private JLabel oraLabel;
+	private TrattaInfoPanel trattaInfoPanel;
+	private CodeOptionsPanel codeOptionsPanel;
+	private PrenotatiPanel prenotatiPanel;
 	
-	private JComboBox<String> codaComboBox;
-	
-	private JScrollPane scrollPane;
-	private JTable table;
-	private TableModelImbarco tableModel;
-
+	private ViewsController viewsController;
 
 	public ImbarcoView (ViewsController controller) {	
+		this.viewsController = controller;
+		
 		setTitle("Scalo Aeroportuale - Inizia Imbarco");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
@@ -72,28 +57,27 @@ public class ImbarcoView extends JFrame{
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		setContentPane(mainPanel);
 		
-		topPanel = new TopPanel(controller, false);
+		topPanel = new TopPanel(viewsController, false);
 		
 		gateSelectionPanel = new JPanel();
 		gateSelectionPanel.setBackground(new Color(0, 204, 255));
 		gateSelectionPanel.setLayout(new FlowLayout());
 		gateSelectionPanel.setMinimumSize(new Dimension(300,100));
-		
 		gateLabel = new JLabel("Gate ");
 		gateLabel.setForeground(Color.WHITE);
 		gateLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		gateSelectionPanel.add(gateLabel);
-		gateComboBox = new JComboBox<String>(items);
-		gateComboBox.setSize(new Dimension (20,10));
-		gateSelectionPanel.add(gateComboBox);
+		gateComboBox = new JComboBox<String>(viewsController.getGates());
+		gateComboBox.setSize(new Dimension (20,10));	
 		okButton = new JButton("Ok");
+		okButton.setFocusPainted(false);
 		okButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				controller.loadImbarcoCenterPanel(gateComboBox.getSelectedItem().toString());
-				
+				viewsController.loadTrattaInfo(gateComboBox.getSelectedItem().toString());
 			}
 		});
+		gateSelectionPanel.add(gateLabel);
+		gateSelectionPanel.add(gateComboBox);
 		gateSelectionPanel.add(okButton);
 		topPanel.add(gateSelectionPanel, BorderLayout.SOUTH);
 		mainPanel.add(topPanel, BorderLayout.NORTH);
@@ -111,105 +95,6 @@ public class ImbarcoView extends JFrame{
 		});
 	}
 	
-	public void showTrattaInfoView (Tratta tratta, ViewsController controller) { 	
-		destinazioneLabel = new JLabel("Volo per: " + tratta.getDestinazione()); 
-		destinazioneLabel.setForeground(Color.WHITE);
-		destinazioneLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		compagniaLabel = new JLabel("Compagnia: " + tratta.getCompagniaAerea().getNomeCompagnia());
-		compagniaLabel.setForeground(Color.WHITE);
-		compagniaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		String date = tratta.getOraInizioImbarcoStimato().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-		String hour = tratta.getOraInizioImbarcoStimato().format(DateTimeFormatter.ofPattern("HH:mm"));
-		dataLabel = new JLabel("Data: " + date);
-		dataLabel.setForeground(Color.WHITE);
-		dataLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		oraLabel = new JLabel("Ora: " + hour);
-		oraLabel.setForeground(Color.WHITE);
-		oraLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		
-		JPanel mainSubPanel = new JPanel (new FlowLayout());
-		mainSubPanel.setBackground(new Color(0, 153, 255));
-		
-		mainSubPanel.add(destinazioneLabel);
-		mainSubPanel.add(Box.createHorizontalStrut(50));
-		mainSubPanel.add(compagniaLabel);
-		mainSubPanel.add(Box.createHorizontalStrut(50));
-		mainSubPanel.add(dataLabel);
-		mainSubPanel.add(Box.createHorizontalStrut(50));
-		mainSubPanel.add(oraLabel);
-		
-		centerPanel.add(mainSubPanel, BorderLayout.NORTH);
-		
-		LinkedList<Coda> code = controller.getCodaFromIdTratta(tratta.getId());
-		String [] codeArray = new String[code.size()+1];
-		codeArray[0] = "Tutte";
-		ListIterator<Coda> cursor = code.listIterator();
-		int i = 1;
-		while (cursor.hasNext()) {
-			Coda current = cursor.next();
-			codeArray[i] = current.getNomeCoda();
-			i++;
-		}	
-		codaComboBox = new JComboBox<String>(codeArray);
-		codaComboBox.setEditable(false);
-		codaComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		
-		codaComboBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.loadImbarcoCenterPanelCoda(codaComboBox.getSelectedItem().toString());
-			}
-		});
-		
-		JPanel codaPanel = new JPanel();
-		codaPanel.setBackground(new Color(0,0,153));
-		codaPanel.setBorder(new EmptyBorder(5,5,0,0));
-		codaPanel.add(codaComboBox);
-		
-		centerPanel.add(codaPanel, BorderLayout.WEST);
-
-		mainPanel.revalidate();
-	}
-	
-	public void showListaPrenotati(ViewsController controller, LinkedList<Prenotazione> prenotati) { 
-		
-		tableModel = new TableModelImbarco(controller);
-		table = new JTable(tableModel);
-		
-		setData(prenotati);
-		
-		scrollPane = new JScrollPane(table);
-		scrollPane.setBackground(new Color (0, 0, 153));		
-		
-		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
-		tableRenderer.setHorizontalAlignment(JLabel.CENTER);
-		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(1).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(1).setMinWidth(150);
-		table.getColumnModel().getColumn(2).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(2).setMinWidth(200);
-		table.getColumnModel().getColumn(3).setCellRenderer(tableRenderer);
-		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer);
-		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-		//table.setFillsViewportHeight(true);
-		
-		centerPanel.add(scrollPane, BorderLayout.CENTER);
-		
-		JPanel chiudiImbarcoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		chiudiImbarcoPanel.setBackground(new Color(0, 0, 153));
-		chiudiImbarcoPanel.setBorder(new EmptyBorder(0,5,5,5));
-		JButton chiudiImbarcoButton = new JButton("Chiudi Imbarco");
-		chiudiImbarcoButton.setFocusPainted(false);
-		chiudiImbarcoPanel.add(chiudiImbarcoButton);
-		centerPanel.add(chiudiImbarcoPanel, BorderLayout.SOUTH);
-		
-	}
-	
-	public void setData (LinkedList<Prenotazione> prenotati) {
-		tableModel.setData(prenotati);
-		
-	}
-	
 	public void emptyCenterPanel () {
 		if (centerPanel != null) {
 			centerPanel.removeAll();
@@ -217,10 +102,59 @@ public class ImbarcoView extends JFrame{
 		}
 	}
 	
-	public void emptyTable () {
-		if (scrollPane != null) {
-			scrollPane.removeAll();
-		}
+	public void showTrattaInfo(Tratta tratta) {
+		emptyCenterPanel();
+		trattaInfoPanel = new TrattaInfoPanel(tratta, viewsController);
+		centerPanel.add(trattaInfoPanel, BorderLayout.NORTH);
 	}
 	
+	public void showCodeOptionsPanel (LinkedList<Coda> codeList) {
+		codeOptionsPanel = new CodeOptionsPanel(codeList, viewsController, topPanel);
+		centerPanel.add(codeOptionsPanel, BorderLayout.WEST);
+	}
+	
+	public void showPrenotatiPanel(LinkedList<Prenotazione> prenotati) {
+		if (prenotatiPanel != null) {
+			centerPanel.remove(prenotatiPanel);
+			topPanel.UpdateBackButton();
+		}
+		prenotatiPanel = new PrenotatiPanel(prenotati, viewsController);	
+		centerPanel.add(prenotatiPanel, BorderLayout.CENTER);
+		
+		JPanel chiudiImbarcoCodaPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		chiudiImbarcoCodaPanel.setBackground(new Color(0, 0, 153));
+		chiudiImbarcoCodaPanel.setBorder(new EmptyBorder(5,5,0,5));
+		JButton chiudiImbarcoCodaButton = new JButton("Chiudi Coda");
+		chiudiImbarcoCodaButton.setFocusPainted(false);
+		chiudiImbarcoCodaButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				viewsController.updateFineImbarcoCoda();
+			}
+		});
+		JPanel chiudiImbarcoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		chiudiImbarcoPanel.setBackground(new Color(0, 0, 153));
+		chiudiImbarcoPanel.setBorder(new EmptyBorder(0,5,5,5));
+		JButton chiudiImbarcoButton = new JButton("Chiudi Imbarco");
+		chiudiImbarcoButton.setFocusPainted(false);
+		chiudiImbarcoButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				viewsController.updateFineImbarco();
+				//controlla se è andato a buon fine
+					//se si, mostra la nuova tratta per il gate
+			}
+		});
+		
+		chiudiImbarcoCodaPanel.add(chiudiImbarcoCodaButton);
+		chiudiImbarcoPanel.add(chiudiImbarcoButton);
+		centerPanel.add(chiudiImbarcoCodaPanel, BorderLayout.EAST);
+		centerPanel.add(chiudiImbarcoPanel, BorderLayout.SOUTH);
+		
+	}
+	
+	public void emptyPrenotatiPanelTable() {
+		prenotatiPanel.emptyTable();
+		prenotatiPanel.repaint();
+	}
 }

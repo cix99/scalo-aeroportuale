@@ -39,6 +39,10 @@ public class CodaDAO extends JDBC {
             	coda.setId(resultSet.getInt("id"));
             	coda.setIdTratta(resultSet.getInt("id_tratta"));
                 coda.setNomeCoda(resultSet.getString("nome_coda"));
+                if (resultSet.getTimestamp("inizio_imbarco_coda") != null)
+                	coda.setInizioImbarcoCoda(resultSet.getTimestamp("inizio_imbarco_coda").toLocalDateTime());
+                if (resultSet.getTimestamp("fine_imbarco_coda") != null)
+                	coda.setFineImbarcoCoda(resultSet.getTimestamp("fine_imbarco_coda").toLocalDateTime());
                 coda.setPriority(resultSet.getInt("priority"));
                break;
             }
@@ -64,6 +68,10 @@ public class CodaDAO extends JDBC {
             	coda.setId(resultSet.getInt("id"));
             	coda.setIdTratta(resultSet.getInt("id_tratta"));
                 coda.setNomeCoda(resultSet.getString("nome_coda"));
+                if (resultSet.getTimestamp("inizio_imbarco_coda") != null)
+                	coda.setInizioImbarcoCoda(resultSet.getTimestamp("inizio_imbarco_coda").toLocalDateTime());
+                if (resultSet.getTimestamp("fine_imbarco_coda") != null)
+                	coda.setFineImbarcoCoda(resultSet.getTimestamp("fine_imbarco_coda").toLocalDateTime());
                 coda.setPriority(resultSet.getInt("priority"));
                 break;
             }
@@ -78,7 +86,7 @@ public class CodaDAO extends JDBC {
     }
     
     public LinkedList<Coda> findCodaByIdTratta(int idTratta){
-        String query = "SELECT * FROM " + tableName + " WHERE id_tratta = ?";
+        String query = "SELECT * FROM " + tableName + " WHERE id_tratta = ? ORDER BY priority DESC";
         LinkedList<Coda> codaList = new LinkedList<Coda>();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -89,6 +97,10 @@ public class CodaDAO extends JDBC {
                 coda.setId(resultSet.getInt("id"));
             	coda.setIdTratta(resultSet.getInt("id_tratta"));
                 coda.setNomeCoda(resultSet.getString("nome_coda"));
+                if (resultSet.getTimestamp("inizio_imbarco_coda") != null)
+                	coda.setInizioImbarcoCoda(resultSet.getTimestamp("inizio_imbarco_coda").toLocalDateTime());
+                if (resultSet.getTimestamp("fine_imbarco_coda") != null)
+                	coda.setFineImbarcoCoda(resultSet.getTimestamp("fine_imbarco_coda").toLocalDateTime());
                 coda.setPriority(resultSet.getInt("priority"));
                 codaList.add(coda);
             }
@@ -113,6 +125,10 @@ public class CodaDAO extends JDBC {
                 coda.setId(resultSet.getInt("id"));
             	coda.setIdTratta(resultSet.getInt("id_tratta"));
                 coda.setNomeCoda(resultSet.getString("nome_coda"));
+                if (resultSet.getTimestamp("inizio_imbarco_coda") != null)
+                	coda.setInizioImbarcoCoda(resultSet.getTimestamp("inizio_imbarco_coda").toLocalDateTime());
+                if (resultSet.getTimestamp("fine_imbarco_coda") != null)
+                	coda.setFineImbarcoCoda(resultSet.getTimestamp("fine_imbarco_coda").toLocalDateTime());
                 coda.setPriority(resultSet.getInt("priority"));
                 codaList.add(coda);
             }
@@ -135,4 +151,34 @@ public class CodaDAO extends JDBC {
     	LinkedList<Coda> codaList = find();
         return codaList.get(codaList.size() - 1);
     }
+
+	public boolean updateInizioImbarco(Coda coda) {
+		String query = "UPDATE " + tableName + " SET inizio_imbarco_coda = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setObject(1, coda.getInizioImbarcoCoda());
+            statement.setInt(2, coda.getId());
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
+
+	public boolean updateFineImbarco(Coda coda) {
+		String query = "UPDATE " + tableName + " SET fine_imbarco_coda = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setObject(1, coda.getFineImbarcoCoda());
+            statement.setInt(2, coda.getId());
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
 }

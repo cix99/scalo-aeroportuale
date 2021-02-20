@@ -13,8 +13,6 @@ public class TrattaDAO extends JDBC {
 	private String tableName = "tratta";
 	
 	public int store(Tratta tratta){
-//        String query = "INSERT INTO " + tableName + " (destinazione, compagnia_aerea, ora_inizio_imbarco_stimato, ora_inizio_imbarco_effettivo, "
-//        											+ "ora_fine_imbarco_stimato, ora_fine_imbarco_effettivo, gate) VALUES  (?, ?, ?, ?, ?, ?, ?)";
         String query = "INSERT INTO " + tableName + " (destinazione, compagnia_aerea, ora_inizio_imbarco_stimato, ora_fine_imbarco_stimato, max_prenotazioni) VALUES  (?, ?, ?, ?, ?) RETURNING (id)";
         int id = 0;
         try {
@@ -27,8 +25,6 @@ public class TrattaDAO extends JDBC {
             statement.setInt(5, tratta.getMaxPrenotazioni());
             //statement.setObject(6, tratta.getOraFineImbarcoEffettivo());
             //statement.setString(7, tratta.getGate().getNomeGate());
-//            statement.executeUpdate();
-            //idTratta = statement.getGeneratedKeys().getInt("id");
             statement.execute();
             ResultSet lastInsert = statement.getResultSet();
             if (lastInsert.next())
@@ -172,4 +168,36 @@ public class TrattaDAO extends JDBC {
     	LinkedList<Tratta> TrattaList = find();
         return TrattaList.get(TrattaList.size() - 1);
     }
+
+	public boolean updateInizioImbarco(Tratta tratta) {
+		String query = "UPDATE " + tableName + " SET ora_inizio_imbarco_effettivo = ?, stato_imbarco = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setObject(1, tratta.getOraInizioImbarcoEffettivo());
+            statement.setObject(2, tratta.getStatoImbarco(), java.sql.Types.OTHER);
+            statement.setInt(3, tratta.getId());
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
+
+	public boolean updateFineImbarco(Tratta tratta) {
+		String query = "UPDATE " + tableName + " SET ora_fine_imbarco_effettivo = ?, stato_imbarco = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setObject(1, tratta.getOraFineImbarcoEffettivo());
+            statement.setObject(2, tratta.getStatoImbarco(), java.sql.Types.OTHER);
+            statement.setInt(3, tratta.getId());
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
 }

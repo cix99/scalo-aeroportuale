@@ -21,11 +21,6 @@ public class DatabaseController {
     	return prenotazioni;
     }
     
-    public void updateImbarcatoInDatabase(boolean value, String id) {
-    	PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
-    	prenotazioneDao.updateImbarcato(value, id);
-    }
-    
     public LinkedList<Tratta> getTratteFromCompagnia(String nomeCompagnia) {
     	TrattaDAO trattaDao = new TrattaDAO();
     	LinkedList<Tratta> tratte = trattaDao.findTrattaByCompagnia(nomeCompagnia);
@@ -175,6 +170,41 @@ public class DatabaseController {
 	public boolean deleteGate(String nomeGate) {
 		GateDAO gateDao = new GateDAO();
 		if (gateDao.delete(nomeGate))
+			return true;
+		return false;
+	}
+
+    public boolean updateImbarcatoInDatabase(boolean value, String id) {
+    	PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
+    	if (prenotazioneDao.updateImbarcato(value, id))
+    		return true;
+    	return false;
+    }
+	
+	public boolean updateInizioImbarco(Tratta tratta) {
+		TrattaDAO trattaDao = new TrattaDAO();
+		if (trattaDao.updateInizioImbarco(tratta))
+			return true;
+		return false;
+	}
+
+	public boolean updateCodaInizioImbarco(Coda coda) {
+		CodaDAO codaDao = new CodaDAO();
+		if (codaDao.updateInizioImbarco(coda))
+			return true;
+		return false;
+	}
+
+	public boolean updateCodaFineImbarco(Coda coda) {
+		CodaDAO codaDao = new CodaDAO();
+		if (codaDao.updateFineImbarco(coda))
+			return true;
+		return false;
+	}
+
+	public boolean updateFineImbarco(Tratta tratta) {
+		TrattaDAO trattaDao = new TrattaDAO();
+		if (trattaDao.updateFineImbarco(tratta))
 			return true;
 		return false;
 	} 

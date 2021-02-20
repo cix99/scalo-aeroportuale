@@ -140,7 +140,7 @@ public class NuovoCentoKilometriView extends JPanel {
 		salvaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				controller.salvaNuovoCentoKilometri(codiceTextField.getText(), compagniaComboBox.getSelectedItem().toString(), puntiTextField.getText());
+				controller.saveNuovoCentoKilometri(codiceTextField.getText(), compagniaComboBox.getSelectedItem().toString(), puntiTextField.getText());
 			}
 		});
 	}

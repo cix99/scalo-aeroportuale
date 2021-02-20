@@ -78,7 +78,7 @@ public class NuovaCompagniaView extends JPanel {
 		salvaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				controller.salvaNuovaCompagniaAerea(compagniaTextField.getText());
+				controller.saveNuovaCompagniaAerea(compagniaTextField.getText());
 			}
 		});
 	}

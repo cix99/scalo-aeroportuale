@@ -15,7 +15,6 @@ public class PrenotazioneDAO extends JDBC {
 	public boolean store(Prenotazione prenotazione){
         String query = "INSERT INTO " + tableName + " (id, id_tratta, codice_prenotazione, nome_passeggero, cognome_passeggero, "
         								+ "coda, cento_kilometri, compagnia_aerea, imbarcato) VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             UUID uuid = UUID.randomUUID();
@@ -34,14 +33,12 @@ public class PrenotazioneDAO extends JDBC {
             System.out.println(e);
             return false;
         }
-
         return true;
     }
 	
 	public boolean storeWithoutCK(Prenotazione prenotazione){
         String query = "INSERT INTO " + tableName + " (id, id_tratta, codice_prenotazione, nome_passeggero, cognome_passeggero, "
         								+ "coda, compagnia_aerea, imbarcato) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)";
-
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             UUID uuid = UUID.randomUUID();
@@ -59,7 +56,6 @@ public class PrenotazioneDAO extends JDBC {
             System.out.println(e);
             return false;
         }
-
         return true;
     }
 
@@ -94,7 +90,7 @@ public class PrenotazioneDAO extends JDBC {
     }
     
     public LinkedList<Prenotazione> findByTrattaId(int trattaId){
-        String query = "SELECT * FROM " + tableName + " WHERE id_tratta = ? ORDER BY id ASC"; //Possiamo modificare ORDER BY in seguito
+        String query = "SELECT * FROM " + tableName + " LEFT JOIN coda ON coda.id = " + tableName + ".coda WHERE coda.id_tratta = ? ORDER BY coda.priority DESC"; 
         LinkedList<Prenotazione> PrenotazioneList = new LinkedList<Prenotazione>();
         CodaDAO codaDAO = new CodaDAO();
         CentoKilometriDAO centoKilometriDAO = new CentoKilometriDAO();
@@ -155,7 +151,7 @@ public class PrenotazioneDAO extends JDBC {
         return PrenotazioneList;
     }
     
-    public void updateImbarcato (boolean value, String id) {
+    public boolean updateImbarcato (boolean value, String id) {
     	String query = "UPDATE " + tableName + " SET imbarcato = ? WHERE id = ?";
 		try {
 			PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -165,7 +161,9 @@ public class PrenotazioneDAO extends JDBC {
 			statement.close();
 		}catch(SQLException e){
 			System.out.println(e);
+			return false;
 		}
+		return true;
     }
     
 	public boolean delete(String idPrenotazione) {

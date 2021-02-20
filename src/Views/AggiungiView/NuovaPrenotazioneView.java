@@ -280,7 +280,7 @@ public class NuovaPrenotazioneView extends JPanel {
 		salvaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				controller.salvaNuovaPrenotazione(nomeTextField.getText(), cognomeTextField.getText(), codicePrenotazioneTextField.getText().toString(), 
+				controller.saveNuovaPrenotazione(nomeTextField.getText(), cognomeTextField.getText(), codicePrenotazioneTextField.getText().toString(), 
 						centoKilometriTextField.getText(), compagniaCentoKilometriComboBox.getSelectedItem().toString(), 
 						compagniaComboBox.getSelectedItem().toString(), idTrattaList[trattaIndex], codaComboBox.getSelectedItem().toString());
 				

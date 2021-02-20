@@ -79,7 +79,7 @@ public class NuovoGateView extends JPanel {
 		salvaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				controller.salvaNuovoGate(gateTextField.getText());
+				controller.saveNuovoGate(gateTextField.getText());
 			}
 		});
 	}

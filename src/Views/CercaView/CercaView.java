@@ -23,6 +23,7 @@ import java.util.LinkedList;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 @SuppressWarnings("serial")
@@ -130,7 +131,7 @@ public class CercaView extends JFrame {
 		//table.setFillsViewportHeight(true);
 		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
-		showButtonPanel(cercaComboBox.getSelectedItem().toString());
+		showButtonPanel(cercaComboBox.getSelectedItem().toString(), controller);
 		mainPanel.revalidate();
 	}
 	
@@ -164,7 +165,7 @@ public class CercaView extends JFrame {
 		//table.setFillsViewportHeight(true);
 		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
-		showButtonPanel(cercaComboBox.getSelectedItem().toString());
+		showButtonPanel(cercaComboBox.getSelectedItem().toString(), controller);
 		mainPanel.revalidate();
 	
 	}
@@ -183,7 +184,7 @@ public class CercaView extends JFrame {
 		//table.setFillsViewportHeight(true);
 		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
-		showButtonPanel(cercaComboBox.getSelectedItem().toString());
+		showButtonPanel(cercaComboBox.getSelectedItem().toString(), controller);
 		mainPanel.revalidate();
 	
 	}
@@ -202,13 +203,13 @@ public class CercaView extends JFrame {
 		//table.setFillsViewportHeight(true);
 		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
-		showButtonPanel(cercaComboBox.getSelectedItem().toString());
+		showButtonPanel(cercaComboBox.getSelectedItem().toString(), controller);
 		mainPanel.revalidate();
 	
 	}
 
-	public void showListaCentoKilometri(LinkedList<CentoKilometri> centoKilometri, ArrayList<String> clientiCKList, ViewsController viewsController) {
-		tableModelCentoKilometri = new TableModelCentoKilometri(viewsController);
+	public void showListaCentoKilometri(LinkedList<CentoKilometri> centoKilometri, ArrayList<String> clientiCKList, ViewsController controller) {
+		tableModelCentoKilometri = new TableModelCentoKilometri(controller);
 		table = new JTable(tableModelCentoKilometri);
 		tableModelCentoKilometri.setData(centoKilometri, clientiCKList);
 		scrollPane = new JScrollPane(table);
@@ -225,15 +226,48 @@ public class CercaView extends JFrame {
 		//table.setFillsViewportHeight(true);
 		
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
-		showButtonPanel(cercaComboBox.getSelectedItem().toString());
+		showButtonPanel(cercaComboBox.getSelectedItem().toString(), controller);
 		mainPanel.revalidate();
 	}
 
-	public void showButtonPanel (String tableChoice) {
+	public void showButtonPanel (String tableChoice, ViewsController controller) {
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		buttonsPanel.setBackground(new Color(0, 153, 255));
 		JButton modificaButton = new JButton("Modifica riga");
 		modificaButton.setFocusPainted(false);
+		modificaButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (table.getSelectedRow() != -1) {
+					switch (tableChoice) {
+						case "Tratte": {
+							
+//							TableModelTratta model = (TableModelTratta) table.getModel();
+//							
+//							
+//							showModificaTrattaDialog (controller, model);
+//							
+//							
+//							
+//							model.removeRow(table.getSelectedRow());
+						}
+							
+						case "Prenotazioni": {
+							
+						}
+						case "Cento Kilometri": {
+							
+						}
+						case "Compagnie Aeree": {
+							
+						}
+						case "Gates": {
+							
+						}
+					}
+				}
+			}
+		});
 		
 		JButton eliminaButton = new JButton("Elimina riga");
 		eliminaButton.setFocusPainted(false);
@@ -301,6 +335,17 @@ public class CercaView extends JFrame {
 		buttonsPanel.add(modificaButton);
 		buttonsPanel.add(eliminaButton);
 		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);
+	}
+	
+	public void showModificaTrattaDialog (ViewsController controller, AbstractTableModel model) {
+		JDialog codaDialog = new JDialog(CercaView.this, "Modifica", true);
+    	codaDialog.setMinimumSize(new Dimension(650,450));
+    	codaDialog.setLayout(new BorderLayout());
+    	for (int i = 0; i < table.getColumnCount(); i++) {
+    		model.getValueAt(table.getSelectedRow(), i);
+    	}
+    	
+
 	}
 	
 	public void emptyCenterPanel () {
