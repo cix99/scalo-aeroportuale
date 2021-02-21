@@ -40,6 +40,11 @@ public class ImbarcoView extends JFrame{
 	private CodeOptionsPanel codeOptionsPanel;
 	private PrenotatiPanel prenotatiPanel;
 	
+	private JPanel chiudiImbarcoCodaPanel;
+	private JButton chiudiImbarcoCodaButton;
+	private JPanel chiudiImbarcoPanel;
+	private JButton chiudiImbarcoButton;
+	
 	private ViewsController viewsController;
 
 	public ImbarcoView (ViewsController controller) {	
@@ -109,6 +114,10 @@ public class ImbarcoView extends JFrame{
 	}
 	
 	public void showCodeOptionsPanel (LinkedList<Coda> codeList) {
+		if (codeOptionsPanel != null) {
+			centerPanel.remove(codeOptionsPanel);
+			topPanel.UpdateBackButton();
+		}
 		codeOptionsPanel = new CodeOptionsPanel(codeList, viewsController, topPanel);
 		centerPanel.add(codeOptionsPanel, BorderLayout.WEST);
 	}
@@ -121,36 +130,61 @@ public class ImbarcoView extends JFrame{
 		prenotatiPanel = new PrenotatiPanel(prenotati, viewsController);	
 		centerPanel.add(prenotatiPanel, BorderLayout.CENTER);
 		
-		JPanel chiudiImbarcoCodaPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		if (chiudiImbarcoButton == null && chiudiImbarcoCodaButton == null) {
+			addChiudiButtons();
+		} else {
+			if (codeOptionsPanel.getSelectedCoda().equals("Tutte")) {
+				chiudiImbarcoButton.setEnabled(true);
+				chiudiImbarcoCodaButton.setEnabled(false);
+			}
+			else {
+				chiudiImbarcoButton.setEnabled(false);
+				chiudiImbarcoCodaButton.setEnabled(true);
+			}
+		}
+
+	}
+	
+	public void addChiudiButtons() {
+		chiudiImbarcoCodaPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		chiudiImbarcoCodaPanel.setBackground(new Color(0, 0, 153));
 		chiudiImbarcoCodaPanel.setBorder(new EmptyBorder(5,5,0,5));
-		JButton chiudiImbarcoCodaButton = new JButton("Chiudi Coda");
+		chiudiImbarcoCodaButton = new JButton("Chiudi Coda");
 		chiudiImbarcoCodaButton.setFocusPainted(false);
+		
+		chiudiImbarcoCodaButton.setEnabled(false);
 		chiudiImbarcoCodaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				viewsController.updateFineImbarcoCoda();
+				if (chiudiImbarcoCodaButton.isEnabled()) {
+					viewsController.updateFineImbarcoCoda(codeOptionsPanel.getSelectedCoda());
+					chiudiImbarcoCodaButton.setEnabled(false);
+				}		
 			}
-		});
-		JPanel chiudiImbarcoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		});				
+
+		chiudiImbarcoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		chiudiImbarcoPanel.setBackground(new Color(0, 0, 153));
 		chiudiImbarcoPanel.setBorder(new EmptyBorder(0,5,5,5));
-		JButton chiudiImbarcoButton = new JButton("Chiudi Imbarco");
+		chiudiImbarcoButton = new JButton("Chiudi Imbarco");
 		chiudiImbarcoButton.setFocusPainted(false);
+	
 		chiudiImbarcoButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				viewsController.updateFineImbarco();
-				//controlla se è andato a buon fine
-					//se si, mostra la nuova tratta per il gate
+				if (chiudiImbarcoButton.isEnabled()) {
+					viewsController.updateFineImbarco();
+					//controlla se è andato a buon fine
+						//se si, mostra la nuova tratta per il gate
+				}	
 			}
 		});
 		
 		chiudiImbarcoCodaPanel.add(chiudiImbarcoCodaButton);
 		chiudiImbarcoPanel.add(chiudiImbarcoButton);
+		
 		centerPanel.add(chiudiImbarcoCodaPanel, BorderLayout.EAST);
 		centerPanel.add(chiudiImbarcoPanel, BorderLayout.SOUTH);
-		
 	}
 	
 	public void emptyPrenotatiPanelTable() {

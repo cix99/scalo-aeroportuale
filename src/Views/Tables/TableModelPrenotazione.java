@@ -12,7 +12,7 @@ public class TableModelPrenotazione extends AbstractTableModel {
 
 	private LinkedList<Prenotazione> prenotazioni;
 	private int numberOfColumns = 9;
-	private String[] columnNames = {"ID", "ID Tratta", "Nome", "Cognome", "Compagnia Aerea", "Codice", "Cento Kilometri", "Coda", "Imbarcato"};
+	private String[] columnNames = {"ID", "Codice", "Compagnia Aerea", "ID Tratta", "Nome", "Cognome", "Cento Kilometri", "Coda", "Imbarcato"};
 	
 	private ViewsController controller;
 	
@@ -56,15 +56,15 @@ public class TableModelPrenotazione extends AbstractTableModel {
 		case 0:
 			return String.class;
 		case 1:
-			return Integer.class;
+			return String.class;
 		case 2:
 			return String.class;
 		case 3:
-			return String.class;
+			return Integer.class;
 		case 4:
 			return String.class;
 		case 5:
-			return Integer.class;
+			return String.class;
 		case 6:
 			return String.class;
 		case 7:
@@ -104,19 +104,19 @@ public class TableModelPrenotazione extends AbstractTableModel {
 		case 0:
 			return prenotazione.getId();
 		case 1:
-			return prenotazione.getIdTratta();
-		case 2:
-			return prenotazione.getNomePasseggero();
-		case 3:
-			return prenotazione.getCognomePasseggero();
-		case 4:
-			return prenotazione.getCompagniaAerea().getNomeCompagnia();
-		case 5:
 			return prenotazione.getCodicePrenotazione();
+		case 2:
+			return prenotazione.getCompagniaAerea().getNomeCompagnia();
+		case 3:
+			return prenotazione.getIdTratta();
+		case 4:
+			return prenotazione.getNomePasseggero();
+		case 5:
+			return prenotazione.getCognomePasseggero();
 		case 6:
 		{
 			if (prenotazione.getCentoKilometri().getCodiceCompagnia() != null)
-				return prenotazione.getCentoKilometri().getCodiceCompagnia();
+				return prenotazione.getCentoKilometri().getCodiceCompagnia() + " (" + prenotazione.getCentoKilometri().getCompagniaAerea().getNomeCompagnia() + ")";
 			else
 				return "-";
 		}

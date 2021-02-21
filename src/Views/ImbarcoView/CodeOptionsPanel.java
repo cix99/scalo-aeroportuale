@@ -38,9 +38,13 @@ public class CodeOptionsPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				viewsController.loadPrenotatiImbarcoPerCoda(codaComboBox.getSelectedItem().toString());
-				topPanel.UpdateBackButton();	//questo fa riapparire il back button ma solo se non ci sono prenotati...
+				
 			}
 		});
 		add(codaComboBox);
+	}
+	
+	public String getSelectedCoda () {
+		return codaComboBox.getSelectedItem().toString();
 	}
 }

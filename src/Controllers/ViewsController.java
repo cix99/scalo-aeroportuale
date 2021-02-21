@@ -158,27 +158,16 @@ public class ViewsController {
 		//Chiamata da Tratta Info view
 	public void showCode(Tratta tratta) {
 		code = new LinkedList<Coda>();
-		code = dbController.getCodaByIdTratta(tratta.getId());
+		code = dbController.getCodaByIdTratta(tratta.getId());	
+		LinkedList<Coda> codeList = new LinkedList<Coda>();
 		ListIterator<Coda> cursor = code.listIterator();
 		while (cursor.hasNext()) {
-			Coda current = (Coda) cursor.next();
-			//System.out.println("Coda" + current.getNomeCoda());
-			if (current.getFineImbarcoCoda() != null)
-				code.remove(current);		//Business non viene rimosso dalla combo box se non si ricarica la pagina
-											//Inoltre non sembra riuscire ad accedere all'ultimo elemento della lista perchè Standard rimane, anche se la prima volta lo riesce ad accedere...
-		}
-		if (!code.isEmpty()) {
-			LocalDateTime now = LocalDateTime.now();
-			LocalDateTime time = convertiIntToDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), now.getHour(), now.getMinute());
-			Coda coda = code.getFirst();
-			coda.setInizioImbarcoCoda(time);
-			if (!dbController.updateCodaInizioImbarco(coda)) {
-				JOptionPane.showMessageDialog(subFrame, "Aggiornamento orario inizio imbarco per coda non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
+			Coda current = cursor.next();
+			if (current.getFineImbarcoCoda() == null) {
+				codeList.add(current);
 			}
 		}
-		if (code.isEmpty())
-			System.out.println("Code is empty");
-		((ImbarcoView) subFrame).showCodeOptionsPanel(code);
+		((ImbarcoView) subFrame).showCodeOptionsPanel(codeList);
 	}
 	
 	public void loadTrattaInfo(String nomeGate) { 		
@@ -197,6 +186,7 @@ public class ViewsController {
 				((ImbarcoView) subFrame).showPrenotatiPanel(prenotati);
 			}
 			else {
+				updateInizioImbarcoCoda(nomeCoda);
 				LinkedList<Prenotazione> prenotatiCoda = new LinkedList<Prenotazione>();
 				ListIterator<Prenotazione> cursor = prenotati.listIterator();
 				while (cursor.hasNext()) {
@@ -230,7 +220,7 @@ public class ViewsController {
 					if (dbController.getPrenotatiFromTratta(tratte.getFirst().getId()) != null) {
 						prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
 						if (prenotati.isEmpty() == false) {
-							((CercaView) subFrame).showListaTratte(tratte, this);
+							((CercaView) subFrame).showListaTratte(tratte);
 						}
 						else {
 							JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questo volo", "Nessuna prenotazione", JOptionPane.ERROR_MESSAGE);
@@ -245,7 +235,7 @@ public class ViewsController {
 			case "Prenotazioni":
 			{
 				prenotazioni = dbController.getPrenotazioni();
-				((CercaView) subFrame).showListaPrenotazioni(prenotazioni, this);
+				((CercaView) subFrame).showListaPrenotazioni(prenotazioni);
 				break;
 			}
 			case "Cento Kilometri":
@@ -259,19 +249,19 @@ public class ViewsController {
 					dbController.getClientiCK(clientiCKList, current.getId());
 				}
 				
-				((CercaView) subFrame).showListaCentoKilometri(centoKilometri, clientiCKList, this);
+				((CercaView) subFrame).showListaCentoKilometri(centoKilometri, clientiCKList);
 				break;
 			}
 			case "Compagnie Aeree":
 			{
 				compagnie = dbController.getCompagnieAeree();
-				((CercaView) subFrame).showListaCompagnie(compagnie, this);
+				((CercaView) subFrame).showListaCompagnie(compagnie);
 				break;
 			}
 			case "Gates":
 			{
 				gates = dbController.getGates();
-				((CercaView) subFrame).showListaGates(gates, this);
+				((CercaView) subFrame).showListaGates(gates);
 				break;
 			}
 			default:
@@ -429,15 +419,45 @@ public class ViewsController {
 		}
 	}
 
-	public void updateFineImbarcoCoda() {
+	public void updateInizioImbarcoCoda(String nomeCoda) {
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime time = convertiIntToDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), now.getHour(), now.getMinute());
-		Coda coda = code.getFirst();
-		coda.setFineImbarcoCoda(time);
-		if (!dbController.updateCodaFineImbarco(coda)) {
-			JOptionPane.showMessageDialog(subFrame, "Aggiornamento orario fine imbarco per coda non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
+		
+		ListIterator<Coda> cursor = code.listIterator();
+		if (cursor.hasNext()) {
+			Coda current = cursor.next();
+			while (!current.getNomeCoda().equals(nomeCoda)) {
+				current = cursor.next();
+			}
+			current.setInizioImbarcoCoda(time);
+			if (!dbController.updateCodaInizioImbarco(current)) {
+				JOptionPane.showMessageDialog(subFrame, "Aggiornamento orario inizio imbarco per coda non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	public void updateFineImbarcoCoda(String nomeCoda) {
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime time = convertiIntToDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), now.getHour(), now.getMinute());
+		
+		ListIterator<Coda> cursor = code.listIterator();
+		if (cursor.hasNext()) {
+			Coda current = cursor.next();
+			while (!current.getNomeCoda().equals(nomeCoda)) {
+				current = cursor.next();
+			}
+			if (current.getFineImbarcoCoda() == null) {
+				current.setFineImbarcoCoda(time);
+				if (!dbController.updateCodaFineImbarco(current)) {
+					JOptionPane.showMessageDialog(subFrame, "Aggiornamento orario fine imbarco per coda non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			else {
+				JOptionPane.showMessageDialog(subFrame, "La coda " + nomeCoda + " è già stata chiusa", "Errore update", JOptionPane.ERROR_MESSAGE); //questo non dovrebbe mai apparire
+			}	
 		}
 		showCode(tratte.getFirst());
+		((ImbarcoView) subFrame).showPrenotatiPanel(prenotati);
 	}
 	
 	public void updateFineImbarco() {

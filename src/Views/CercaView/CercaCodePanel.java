@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 @SuppressWarnings("serial")
-public class CercaCentoKilometriView extends JPanel {
+public class CercaCodePanel extends JPanel {
 
-    public CercaCentoKilometriView() {
+    public CercaCodePanel() {
         this.setLayout(new BorderLayout());
-        this.setBackground(Color.green);
+        this.setBackground(Color.red);
 
     }
 
