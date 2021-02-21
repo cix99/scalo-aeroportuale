@@ -9,6 +9,7 @@ import Models.*;
 
 public class DatabaseController {
 		    
+	//Get
     public LinkedList<Tratta> getTrattaInfoFromGate(String nomeGate) {
     	TrattaDAO trattaDao = new TrattaDAO();
     	LinkedList<Tratta> tratte = trattaDao.findTrattaByGate(nomeGate);
@@ -58,38 +59,47 @@ public class DatabaseController {
     	return gateDao.find();
     }
     
-   public boolean salvaNuovaPrenotazione(String nome, String cognome, String codicePrenotazione, String centoKilometri, String compagniaCentoKilometri, String compagniaVolo, int idTratta, String coda) {
-	   PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
-	   Prenotazione prenotazione;
-	   CodaDAO codaDao = new CodaDAO();
-	   CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
-	   if (!centoKilometri.isBlank())
-	   {
-		   prenotazione = new Prenotazione(idTratta, nome, cognome, codicePrenotazione, codaDao.findByNameAndTratta(coda, idTratta), centoKilometriDao.findByCodeAndCompany(centoKilometri, compagniaCentoKilometri), new CompagniaAerea(compagniaVolo));
-		   if (prenotazioneDao.store(prenotazione))
-			   return true;
-	   }
-	   else {
-		   prenotazione = new Prenotazione(idTratta, nome, cognome, codicePrenotazione, codaDao.findByNameAndTratta(coda, idTratta), new CompagniaAerea(compagniaVolo));
-		   if (prenotazioneDao.storeWithoutCK(prenotazione))
-			   return true;
-	   }
-	   return false;
-   }
+	public void getClientiCK(ArrayList<String> clientiCKList, int idCentoKilometri) {
+		PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
+		LinkedList<Prenotazione> prenotazioniList = prenotazioneDao.findByCentoKilometriId(idCentoKilometri);
+		clientiCKList.add(prenotazioniList.getFirst().getNomePasseggero());
+		clientiCKList.add(prenotazioniList.getFirst().getCognomePasseggero());
+	}
+    
+	//Save
+	public boolean saveNuovaPrenotazione(String nome, String cognome, String codicePrenotazione, String centoKilometri, String compagniaCentoKilometri, String compagniaVolo, int idTratta, String coda) {
+		PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
+		Prenotazione prenotazione;
+		CodaDAO codaDao = new CodaDAO();
+		CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
+		if (!centoKilometri.isBlank()) {
+			prenotazione = new Prenotazione(idTratta, nome, cognome, codicePrenotazione, codaDao.findByNameAndTratta(coda, idTratta), centoKilometriDao.findByCodeAndCompany(centoKilometri, compagniaCentoKilometri), new CompagniaAerea(compagniaVolo));
+			if (prenotazioneDao.store(prenotazione))
+				return true;
+		}
+		else {
+			prenotazione = new Prenotazione(idTratta, nome, cognome, codicePrenotazione, codaDao.findByNameAndTratta(coda, idTratta), new CompagniaAerea(compagniaVolo));
+			if (prenotazioneDao.storeWithoutCK(prenotazione))
+				return true;
+		}
+		return false;
+	}
+	
    
-	public boolean salvaNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime inizioImbarco, LocalDateTime fineImbarco, int maxPrenotazioni, ArrayList<Coda> code) {
+	public boolean saveNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime inizioImbarco, LocalDateTime fineImbarco, int maxPrenotazioni, ArrayList<Coda> code) {
 		TrattaDAO trattaDao = new TrattaDAO();
 		Tratta tratta = new Tratta(destinazione, new CompagniaAerea(nomeCompagnia), inizioImbarco, fineImbarco, maxPrenotazioni);
 		int idTratta = trattaDao.store(tratta);
 		if (idTratta != 0) {
-			if (salvaNuoveCode(code, idTratta)) {
+			if (saveNuoveCode(code, idTratta)) {
 				return true;
 			}
 		}
 		return false;
 	}   
 	
-	public boolean salvaNuoveCode(ArrayList<Coda> code, int idTratta) {
+	
+	public boolean saveNuoveCode(ArrayList<Coda> code, int idTratta) {
 		CodaDAO codaDao = new CodaDAO();
 		for (Coda coda : code) { 
 			coda.setIdTratta(idTratta);
@@ -99,7 +109,7 @@ public class DatabaseController {
 		return true;
 	}
     
-    public boolean salvaNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
+    public boolean saveNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
     	CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
     	int puntiValore;
     	try {
@@ -116,7 +126,7 @@ public class DatabaseController {
     	return false;
     }
     
-    public boolean salvaNuovoCompagniaAerea(String nomeCompagnia) {
+    public boolean saveNuovoCompagniaAerea(String nomeCompagnia) {
     	CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
     	CompagniaAerea compagniaAerea = new CompagniaAerea(nomeCompagnia);
     	if (compagniaAereaDao.store(compagniaAerea))
@@ -124,7 +134,7 @@ public class DatabaseController {
     	return false;
     }
     
-    public boolean salvaNuovoGate(String nomeGate) {
+    public boolean saveNuovoGate(String nomeGate) {
     	GateDAO gateDao = new GateDAO();
     	Gate gate = new Gate(nomeGate);
     	if (gateDao.store(gate))
@@ -132,19 +142,15 @@ public class DatabaseController {
     	return false;
     }
 
-	public void getClientiCK(ArrayList<String> clientiCKList, int idCentoKilometri) {
-		PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
-		LinkedList<Prenotazione> prenotazioniList = prenotazioneDao.findByCentoKilometriId(idCentoKilometri);
-		clientiCKList.add(prenotazioniList.getFirst().getNomePasseggero());
-		clientiCKList.add(prenotazioniList.getFirst().getCognomePasseggero());
-	}
-
-	public boolean deleteTratta(int idTratta) {
+	
+    //Delete
+    public boolean deleteTratta(int idTratta) {
 		TrattaDAO trattaDao = new TrattaDAO();
 		if (trattaDao.delete(idTratta))
 			return true;
 		return false;
 	}
+    
 
 	public boolean deletePrenotazione(String idPrenotazione) {
 		PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
@@ -152,6 +158,7 @@ public class DatabaseController {
 			return true;
 		return false;
 	}
+	
 
 	public boolean deleteCentoKilometri(int idCentoKilometri) {
 		CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
@@ -159,6 +166,7 @@ public class DatabaseController {
 			return true;
 		return false;
 	}
+	
 
 	public boolean deleteCompagniaAerea(String nomeCompagnia) {
 		CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
@@ -166,6 +174,7 @@ public class DatabaseController {
 			return true;
 		return false;
 	}
+	
 
 	public boolean deleteGate(String nomeGate) {
 		GateDAO gateDao = new GateDAO();
@@ -174,12 +183,14 @@ public class DatabaseController {
 		return false;
 	}
 
+	//Update
     public boolean updateImbarcatoInDatabase(boolean value, String id) {
     	PrenotazioneDAO prenotazioneDao = new PrenotazioneDAO();
     	if (prenotazioneDao.updateImbarcato(value, id))
     		return true;
     	return false;
     }
+    
 	
 	public boolean updateInizioImbarco(Tratta tratta) {
 		TrattaDAO trattaDao = new TrattaDAO();
@@ -187,6 +198,7 @@ public class DatabaseController {
 			return true;
 		return false;
 	}
+	
 
 	public boolean updateCodaInizioImbarco(Coda coda) {
 		CodaDAO codaDao = new CodaDAO();
@@ -194,6 +206,7 @@ public class DatabaseController {
 			return true;
 		return false;
 	}
+	
 
 	public boolean updateCodaFineImbarco(Coda coda) {
 		CodaDAO codaDao = new CodaDAO();
@@ -201,6 +214,7 @@ public class DatabaseController {
 			return true;
 		return false;
 	}
+	
 
 	public boolean updateFineImbarco(Tratta tratta) {
 		TrattaDAO trattaDao = new TrattaDAO();

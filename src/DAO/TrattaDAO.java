@@ -72,7 +72,7 @@ public class TrattaDAO extends JDBC {
     }
     
     public LinkedList<Tratta> findTrattaByGate(String nomeGate){
-        String query = "SELECT * FROM " + tableName + " WHERE gate = ?";
+        String query = "SELECT * FROM " + tableName + " WHERE gate = ? AND stato_imbarco <> ? ORDER BY ora_inizio_imbarco_stimato ASC";
         LinkedList<Tratta> TrattaList = new LinkedList<Tratta>();
         CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
         GateDAO gateDAO = new GateDAO();
@@ -80,6 +80,7 @@ public class TrattaDAO extends JDBC {
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, nomeGate);
+            statement.setObject(2, Stato.CONCLUSO, java.sql.Types.OTHER);
             ResultSet resultSet = statement.executeQuery();
         	while (resultSet.next()) {
                 Tratta tratta = new Tratta();

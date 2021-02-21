@@ -173,9 +173,12 @@ public class ImbarcoView extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (chiudiImbarcoButton.isEnabled()) {
-					viewsController.updateFineImbarco();
-					//controlla se è andato a buon fine
-						//se si, mostra la nuova tratta per il gate
+					if (viewsController.updateFineImbarco()) {
+						viewsController.loadTrattaInfo(gateComboBox.getSelectedItem().toString());
+						chiudiImbarcoButton = null;
+						chiudiImbarcoCodaButton = null;
+					}
+
 				}	
 			}
 		});

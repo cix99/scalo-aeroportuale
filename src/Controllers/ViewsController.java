@@ -272,7 +272,7 @@ public class ViewsController {
 
 	//Save
 	public void saveNuovaPrenotazione(String nome, String cognome, String codicePrenotazione, String centoKilometri, String compagniaCentoKilometri, String compagniaVolo, int idTratta, String coda) {
-		if (dbController.salvaNuovaPrenotazione(nome, cognome, codicePrenotazione, centoKilometri, compagniaCentoKilometri, compagniaVolo, idTratta, coda)) {
+		if (dbController.saveNuovaPrenotazione(nome, cognome, codicePrenotazione, centoKilometri, compagniaCentoKilometri, compagniaVolo, idTratta, coda)) {
 			JOptionPane.showMessageDialog(subFrame, "Prenotazione (" + codicePrenotazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		}
 		else {
@@ -283,7 +283,7 @@ public class ViewsController {
 	public void saveNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime dataInizio, LocalDateTime dataFine, int maxPrenotazioni, ArrayList<Coda> code) {
 		if (!destinazione.isBlank()) {
 			if (dataFine.isAfter(dataInizio)) {
-				if (dbController.salvaNuovaTratta(destinazione, nomeCompagnia, dataInizio, dataFine, maxPrenotazioni, code)) {
+				if (dbController.saveNuovaTratta(destinazione, nomeCompagnia, dataInizio, dataFine, maxPrenotazioni, code)) {
 					JOptionPane.showMessageDialog(subFrame, "Tratta per (" + destinazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 				}
 				else {
@@ -294,12 +294,13 @@ public class ViewsController {
 				JOptionPane.showMessageDialog(subFrame, "La data di fine imbarco non può essere prima di quella di inizio", "Errore data", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		JOptionPane.showMessageDialog(subFrame, "Destinazione non valida", "Errore destinazione", JOptionPane.ERROR_MESSAGE);
-		
+		else {
+			JOptionPane.showMessageDialog(subFrame, "Destinazione non valida", "Errore destinazione", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public void saveNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
-		if (dbController.salvaNuovoCentoKilometri(codice, nomeCompagnia, punti)) {
+		if (dbController.saveNuovoCentoKilometri(codice, nomeCompagnia, punti)) {
 			JOptionPane.showMessageDialog(subFrame, "Cliente (" + codice + ") cento kilometri inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		}
 		else {
@@ -308,7 +309,7 @@ public class ViewsController {
 	}
 	
 	public void saveNuovaCompagniaAerea(String nomeCompagnia) {
-		if (dbController.salvaNuovoCompagniaAerea(nomeCompagnia)) {
+		if (dbController.saveNuovoCompagniaAerea(nomeCompagnia)) {
 			JOptionPane.showMessageDialog(subFrame, "Compagnia " + nomeCompagnia + " inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		}
 		else {
@@ -317,7 +318,7 @@ public class ViewsController {
 	}
 	
 	public void saveNuovoGate(String nomeGate) {
-		if (dbController.salvaNuovoGate(nomeGate)) {
+		if (dbController.saveNuovoGate(nomeGate)) {
 			JOptionPane.showMessageDialog(subFrame, "Gate " + nomeGate + " inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		}
 		else {
@@ -460,7 +461,7 @@ public class ViewsController {
 		((ImbarcoView) subFrame).showPrenotatiPanel(prenotati);
 	}
 	
-	public void updateFineImbarco() {
+	public boolean updateFineImbarco() {
 		Tratta tratta = tratte.getFirst();
 		if (tratta.getStatoImbarco() == Stato.IN_CORSO) {
 			LocalDateTime now = LocalDateTime.now();
@@ -469,8 +470,13 @@ public class ViewsController {
 			tratta.setStatoImbarco(Stato.CONCLUSO);
 			if (!dbController.updateFineImbarco(tratta)) {
 				JOptionPane.showMessageDialog(subFrame, "Aggiornamento orario fine imbarco non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			else {
+				JOptionPane.showMessageDialog(subFrame, "Imbarco chiuso con successo", "Chiuso Imbarco", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
+		return true;
 	}
 	
 	//Other

@@ -282,7 +282,7 @@ public class NuovaPrenotazioneView extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				controller.saveNuovaPrenotazione(nomeTextField.getText(), cognomeTextField.getText(), codicePrenotazioneTextField.getText().toString(), 
 						centoKilometriTextField.getText(), compagniaCentoKilometriComboBox.getSelectedItem().toString(), 
-						compagniaComboBox.getSelectedItem().toString(), idTrattaList[trattaIndex], codaComboBox.getSelectedItem().toString());
+						compagniaComboBox.getSelectedItem().toString(), idTrattaList[trattaIndex-1], codaComboBox.getSelectedItem().toString());
 				
 			}
 		});

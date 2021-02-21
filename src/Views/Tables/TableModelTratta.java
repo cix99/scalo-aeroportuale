@@ -1,5 +1,5 @@
 package Views.Tables;
-
+ 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
@@ -43,14 +43,24 @@ public class TableModelTratta extends AbstractTableModel {
 
 //	@Override
 //	public boolean isCellEditable(int rowIndex, int columnIndex) {
-//		switch (columnIndex) {
-//		case 10:
-//			return true;
-//		default:
-//			return false;
+//		if (tratte.get(rowIndex).getStatoImbarco() == Stato.IN_ATTESA) {
+//			switch (columnIndex) {
+//			case 3:
+//				return true;
+//			case 5:
+//				return true;
+//			case 7:
+//				return true;
+//			case 10:
+//				return true;
+//			default:
+//				return false;
+//			}
 //		}
+//		else
+//			return false;
+//		
 //	}
-
 	
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
@@ -82,24 +92,25 @@ public class TableModelTratta extends AbstractTableModel {
 		}
 	}
 
-//	@Override
-//	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-//		if (tratte == null) return;
-//		Prenotazione prenotazione = tratte.get(rowIndex);
-//		switch (columnIndex) {
-//			case 5:
-//				prenotazione.setImbarcato((boolean) aValue);
-//				controller.updateImbarcatoInDatabase((boolean) aValue, prenotazione.getId());
-//				break;
-//			default:
-//				return;
-//		}
-//	}
+	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		if (tratte == null) return;
+		Tratta tratta = tratte.get(rowIndex);
+		switch (columnIndex) {
+			case 5: {
+				tratta.setOraInizioImbarcoStimato((LocalDateTime) aValue);
+				//controller.updateInizioImbarcoStimato((LocalDateTime) aValue, tratta.getId());
+				break;
+			}
+			default:
+				return;
+		}
+	}
 	
-	public void removeRow(int row) {          //removes a row based on number from the data
+	public void removeRow(int row) {        
 		if (controller.deleteTratta(tratte.get(row).getId())) {
 			tratte.remove(row);
-			fireTableRowsDeleted(row, row);    //updates the table
+			fireTableRowsDeleted(row, row);    
 		}
 	}
 	

@@ -3,15 +3,14 @@ package Views.CercaView;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-
-import Controllers.ViewsController;
-import Models.Tratta;
-import Views.Tables.TableModelTratta;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
+
+import Controllers.ViewsController;
+import Models.Tratta;
+import Views.Tables.TableModelTratta;
 
 @SuppressWarnings("serial")
 public class CercaTrattePanel extends JPanel {
@@ -25,13 +24,15 @@ public class CercaTrattePanel extends JPanel {
 	private JButton eliminaButton;
 	
 	private CercaView cercaView;
+	private ViewsController viewsController;
 	
     public CercaTrattePanel(LinkedList<Tratta> tratte, ViewsController controller, CercaView cercaView) {
     	this.cercaView = cercaView;
+    	this.viewsController = controller;
     	
     	setLayout(new BorderLayout());
     	
-    	tableModel = new TableModelTratta(controller);
+    	tableModel = new TableModelTratta(viewsController);
 		table = new JTable(tableModel);
 		tableModel.setData(tratte);
 		scrollPane = new JScrollPane(table);
@@ -69,7 +70,16 @@ public class CercaTrattePanel extends JPanel {
 		modificaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				showModificaTrattaDialog();
+				if (table.getSelectedRow() != -1) {
+					TableModelTratta model = (TableModelTratta) table.getModel();
+					for (int i = 0; i < table.getColumnCount(); i++) {
+						model.getValueAt(table.getSelectedRow(), i);
+					}
+					showModificaTrattaDialog(model);
+				}
+				else {
+					JOptionPane.showMessageDialog(CercaTrattePanel.this, "Seleziona un riga da modificare", "Errore modifica", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			
 		});
@@ -100,26 +110,34 @@ public class CercaTrattePanel extends JPanel {
 		return buttonsPanel;
 	}
 	
-	public void showModificaTrattaDialog() {
-		JDialog codaDialog = new JDialog(cercaView, "Modifica", true);
-		codaDialog.setMinimumSize(new Dimension(650,450));
-		codaDialog.setLayout(new BorderLayout());
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(0, 0, 153));
-		codaDialog.add(panel);
-		TableModelTratta model = (TableModelTratta) table.getModel();
-		if (table.getSelectedRow() != -1) {
-			for (int i = 0; i < table.getColumnCount(); i++) {
-				model.getValueAt(table.getSelectedRow(), i);
-			}
-		}
-		else {
-			JOptionPane.showMessageDialog(CercaTrattePanel.this, "Seleziona un riga da modificare", "Errore modifica", JOptionPane.ERROR_MESSAGE);
-		}
+	public void showModificaTrattaDialog(TableModelTratta model) {
+		JDialog trattaDialog = new JDialog(cercaView, "Modifica", true);
+		trattaDialog.setSize(new Dimension(800,600));
+		trattaDialog.setResizable(false);
+		trattaDialog.setLayout(new BorderLayout());
 		
-		codaDialog.setLocationRelativeTo(null);
-		codaDialog.setVisible(true);
+		JPanel menuPanel = new JPanel();
+		menuPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		menuPanel.setBackground(new Color(0, 153, 255));
+		JLabel menuLabel = new JLabel("   Modifica Tratta");
+		menuLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
+		menuLabel.setForeground(Color.WHITE);
+		menuPanel.add(menuLabel);
 		
-	}
+		TrattaDialogPanel trattaDialogPanel = new TrattaDialogPanel(viewsController, cercaView);
+		trattaDialogPanel.setDestinazione(model.getValueAt(table.getSelectedRow(), 1).toString());
+		trattaDialogPanel.setCompagniaAerea(model.getValueAt(table.getSelectedRow(), 2).toString());
+		trattaDialogPanel.setInizioImbarcoStimato(model.getValueAt(table.getSelectedRow(), 3).toString());
+		trattaDialogPanel.setFineImbarcoStimato(model.getValueAt(table.getSelectedRow(), 5).toString());
+		//trattaDialogPanel.setGate(model.getValueAt(table.getSelectedRow(), 7).toString());
+		trattaDialogPanel.setMaxPrenotazioni((int) model.getValueAt(table.getSelectedRow(), 10));
+		
+		trattaDialog.add(menuPanel, BorderLayout.NORTH);
+		trattaDialog.add(trattaDialogPanel, BorderLayout.CENTER);
+
+		trattaDialog.setLocationRelativeTo(null);
+		trattaDialog.setVisible(true);
+		
+	}	
 
 }
