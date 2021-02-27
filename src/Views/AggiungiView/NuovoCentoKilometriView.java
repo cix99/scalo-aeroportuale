@@ -115,11 +115,11 @@ public class NuovoCentoKilometriView extends JPanel {
 		centerPanel.add(compagniaPanel, gc);
 		gc.gridx = 0;  
 		gc.gridy = 1;
-		gc.insets = new Insets(10,0,0,0);
+		gc.insets = new Insets(20,0,0,0);
 		centerPanel.add(codicePanel, gc);
 		gc.gridx = 0;  
 		gc.gridy = 2;
-		gc.insets = new Insets(10,0,0,0);
+		gc.insets = new Insets(20,0,0,0);
 		centerPanel.add(puntiPanel, gc);
 		
 		mainPanel.add(centerPanel, BorderLayout.CENTER);

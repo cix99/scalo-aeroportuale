@@ -47,7 +47,7 @@ public class LoginView extends JFrame {
 		
 		accedi = new JButton("Accedi");
 		accedi.setHorizontalAlignment(SwingConstants.LEFT);
-		accedi.setForeground(new Color(51, 255, 0));
+		accedi.setForeground(new Color(255, 255, 255));
 		accedi.setContentAreaFilled(false);
 		accedi.setBorder(null);
 		accedi.setIcon(null);
@@ -58,23 +58,23 @@ public class LoginView extends JFrame {
 			controller.login(usernameField.getText(), passwordField.getPassword());
 			}
 		});
-		accedi.setFont(new Font("Century Schoolbook", Font.PLAIN, 18));
+		accedi.setFont(new Font("Century Schoolbook", Font.PLAIN, 20));
 		accedi.setBounds(600, 351, 105, 28);
 		contentPane.add(accedi);
 		
 		username = new JLabel("Username");
 		username.setForeground(new Color(255, 255, 255));
-		username.setFont(new Font("Century Schoolbook", Font.BOLD, 12));
+		username.setFont(new Font("Century Schoolbook", Font.BOLD, 15));
 		username.setHorizontalAlignment(SwingConstants.LEFT);
 		username.setIcon(null);
-		username.setBounds(540, 199, 74, 14);
+		username.setBounds(540, 199, 100, 14);
 		contentPane.add(username);
 		
 		password = new JLabel("Password");
 		password.setForeground(new Color(255, 255, 255));
 		password.setHorizontalAlignment(SwingConstants.LEFT);
-		password.setFont(new Font("Century Schoolbook", Font.BOLD, 12));
-		password.setBounds(540, 265, 74, 14);
+		password.setFont(new Font("Century Schoolbook", Font.BOLD, 15));
+		password.setBounds(540, 265, 100, 14);
 		contentPane.add(password);
 		
 		usernameField = new JTextField();
@@ -106,11 +106,11 @@ public class LoginView extends JFrame {
 		
 		loginLabel = new JLabel("LOGIN");
 		loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		loginLabel.setFont(new Font("Maiandra GD", Font.BOLD, 26));
-		loginLabel.setForeground(new Color(51, 255, 0));
+		loginLabel.setFont(new Font("Century Schoolbook", Font.BOLD, 26));
+		loginLabel.setForeground(new Color(255, 255, 255));
 		loginLabel.setBounds(575, 135, 118, 28);
 		contentPane.add(loginLabel);
-		
+		//Maiandra GD
 		sfondoLabel = new JLabel("");
 		Image sfondoImage = new ImageIcon (this.getClass().getResource("/bello.png")).getImage();
 		sfondoLabel.setIcon(new ImageIcon(sfondoImage));
