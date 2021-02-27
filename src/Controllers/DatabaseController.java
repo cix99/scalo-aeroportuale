@@ -57,8 +57,12 @@ public class DatabaseController {
 	public LinkedList<CentoKilometri> getCentoKilometri() {
     	return centoKilometriDao.find();
 	}
+	
+	public CentoKilometri getCentoKilometri(String centoKilometri, String nomeCompagnia) {
+		return centoKilometriDao.findByCodeAndCompany(centoKilometri, nomeCompagnia);
+	}
 
-    public LinkedList<CompagniaAerea> getCompagnieAeree() {
+	public LinkedList<CompagniaAerea> getCompagnieAeree() {
     	return compagniaAereaDao.find();
     }
     
@@ -75,19 +79,20 @@ public class DatabaseController {
 	//Save
 	public boolean saveNuovaPrenotazione(String nome, String cognome, String codicePrenotazione, String centoKilometri, String compagniaCentoKilometri, String compagniaVolo, int idTratta, String coda) {
 		Prenotazione prenotazione;
-		if (!centoKilometri.isBlank()) {
-			prenotazione = new Prenotazione(idTratta, nome, cognome, codicePrenotazione, codaDao.findByNameAndTratta(coda, idTratta), centoKilometriDao.findByCodeAndCompany(centoKilometri, compagniaCentoKilometri), new CompagniaAerea(compagniaVolo));
-			if (prenotazioneDao.store(prenotazione))
-				return true;
-		}
-		else {
-			prenotazione = new Prenotazione(idTratta, nome, cognome, codicePrenotazione, codaDao.findByNameAndTratta(coda, idTratta), new CompagniaAerea(compagniaVolo));
-			if (prenotazioneDao.storeWithoutCK(prenotazione))
-				return true;
-		}
+		prenotazione = new Prenotazione(idTratta, nome, cognome, codicePrenotazione, codaDao.findByNameAndTratta(coda, idTratta), centoKilometriDao.findByCodeAndCompany(centoKilometri, compagniaCentoKilometri), new CompagniaAerea(compagniaVolo));
+		if (prenotazioneDao.store(prenotazione))
+			return true;
 		return false;
 	}
-   
+	
+	public boolean saveNuovaPrenotazione(String nome, String cognome, String codicePrenotazione, String compagniaVolo, int idTratta, String coda) {
+		Prenotazione prenotazione;
+		prenotazione = new Prenotazione(idTratta, nome, cognome, codicePrenotazione, codaDao.findByNameAndTratta(coda, idTratta), new CompagniaAerea(compagniaVolo));
+		if (prenotazioneDao.storeWithoutCK(prenotazione))
+			return true;
+		return false;
+	}
+
 	public boolean saveNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime inizioImbarco, LocalDateTime fineImbarco, int maxPrenotazioni, ArrayList<Coda> code) {
 		Tratta tratta = new Tratta(destinazione, new CompagniaAerea(nomeCompagnia), inizioImbarco, fineImbarco, maxPrenotazioni);
 		int idTratta = trattaDao.store(tratta);
