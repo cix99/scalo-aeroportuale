@@ -124,7 +124,7 @@ public class CercaCompagniePanel extends JPanel {
 		aggiornaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (model.updateRow(compagniaTextField.getText(), table.getSelectedRow()))
+				if (model.updateRow(compagniaTextField.getText(), table.getSelectedRow(), table.getSelectedColumn()))
 						compagniaDialog.dispose();
 			}
 		});

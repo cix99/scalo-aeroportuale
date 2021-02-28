@@ -173,8 +173,6 @@ public class TrattaDialogPanel extends JPanel {
 			}
 		});
 		
-		GridBagConstraints gc = new GridBagConstraints();
-		
 		JPanel midTopPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
 		midTopPanel.setBackground(new Color (0, 0, 153));
 		TitledBorder topTitleBorder = new TitledBorder("Info principali");
@@ -257,6 +255,7 @@ public class TrattaDialogPanel extends JPanel {
 		midBottomPanel.add(codePanel);
 		midBottomPanel.add(maxPrenotazioniPanel);
 		
+		GridBagConstraints gc = new GridBagConstraints();
 		gc.gridx = 0;  
 		gc.gridy = 0;
 		gc.gridwidth = 3;

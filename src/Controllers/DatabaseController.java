@@ -220,6 +220,12 @@ public class DatabaseController {
 		if (trattaDao.updateFineImbarco(tratta))
 			return true;
 		return false;
+	}
+
+	public boolean updateCentoKilometri(String codice, String nomeCompagnia, int punti, int id) {
+		if (centoKilometriDao.update(codice, nomeCompagnia, punti, id))
+			return true;
+		return false;
 	} 
     
 }

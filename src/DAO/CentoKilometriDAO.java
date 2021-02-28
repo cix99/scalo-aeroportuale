@@ -142,5 +142,22 @@ public class CentoKilometriDAO extends JDBC {
     	LinkedList<CentoKilometri> centoKilometriList = find();
         return centoKilometriList.get(centoKilometriList.size() - 1);
     }
+
+	public boolean update(String codice, String nomeCompagnia, int punti, int id) {
+		String query = "UPDATE " + tableName + " SET codice_compagnia = ?, compagnia_aerea = ?, punti = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, codice);
+            statement.setString(2, nomeCompagnia);
+            statement.setInt(3, punti);
+            statement.setInt(4, id);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
     
 }

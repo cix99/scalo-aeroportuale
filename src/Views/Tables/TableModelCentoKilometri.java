@@ -42,15 +42,19 @@ public class TableModelCentoKilometri extends AbstractTableModel {
 		return numberOfColumns;
 	}
 
-//	@Override
-//	public boolean isCellEditable(int rowIndex, int columnIndex) {
-//		switch (columnIndex) {
-//		case 5:
-//			return true;
-//		default:
-//			return false;
-//		}
-//	}
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		switch (columnIndex) {
+		case 1:
+			return true;
+		case 2:
+			return true;
+		case 5:
+			return true;
+		default:
+			return false;
+		}
+	}
 
 	
 	@Override
@@ -73,19 +77,19 @@ public class TableModelCentoKilometri extends AbstractTableModel {
 		}
 	}
 
-//	@Override
-//	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-//		if (prenotazioni == null) return;
-//		Prenotazione prenotazione = prenotazioni.get(rowIndex);
-//		switch (columnIndex) {
-//			case 5:
-//				prenotazione.setImbarcato((boolean) aValue);
-//				controller.updateImbarcatoInDatabase((boolean) aValue, prenotazione.getId());
-//				break;
-//			default:
-//				return;
-//		}
-//	}
+	public boolean updateRow(String codice, String nomeCompagnia, String punti, int row) {    
+		int puntiValore;
+    	try {
+    	   puntiValore = Integer.parseInt(punti);
+    	} catch (NumberFormatException e) {
+    	   puntiValore = 0;
+    	}
+		if (controller.updateCentoKilometri(codice, nomeCompagnia, puntiValore, centoKilometri.get(row).getId())) {
+			controller.loadCercaCenterPanel("Cento Kilometri");
+			return true;
+		}
+		return false;
+	}
 	
 	public void removeRow(int row) {          //removes a row based on number from the data
 		if (controller.deleteCentoKilometri(centoKilometri.get(row).getId())) {

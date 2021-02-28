@@ -24,8 +24,15 @@ public class CercaPrenotazioniPanel extends JPanel {
 	private JButton modificaButton;
 	private JButton eliminaButton;
 	
-    public CercaPrenotazioniPanel(LinkedList<Prenotazione> prenotazioni, ViewsController controller) {
+	private CercaView cercaView;
+//	private ViewsController viewsController;
+	
+    public CercaPrenotazioniPanel(LinkedList<Prenotazione> prenotazioni, ViewsController controller, CercaView cercaView) {
+    	this.cercaView = cercaView;
+//    	this.viewsController = controller;
+    	
     	setLayout(new BorderLayout());
+    	setBackground(new Color(0, 0, 153));
     	
     	tableModelPrenotazione = new TableModelPrenotazione(controller);
 		table = new JTable(tableModelPrenotazione);
@@ -67,6 +74,22 @@ public class CercaPrenotazioniPanel extends JPanel {
 		buttonsPanel.setBackground(new Color(0, 153, 255));
 		modificaButton = new JButton("Modifica");
 		modificaButton.setFocusPainted(false);
+		modificaButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (table.getSelectedRow() != -1) {
+					TableModelPrenotazione model = (TableModelPrenotazione) table.getModel();
+					for (int i = 0; i < table.getColumnCount(); i++) {
+						model.getValueAt(table.getSelectedRow(), i);
+					}
+					showModificaPrenotazioneDialog(model);
+				}
+				else {
+					JOptionPane.showMessageDialog(CercaPrenotazioniPanel.this, "Seleziona un riga da modificare", "Errore modifica", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			
+		});
 		eliminaButton = new JButton("Elimina");
 		eliminaButton.setFocusPainted(false);
 		eliminaButton.addMouseListener(new MouseAdapter() {
@@ -90,5 +113,52 @@ public class CercaPrenotazioniPanel extends JPanel {
 		buttonsPanel.add(eliminaButton);
 		return buttonsPanel;
 	}
+    
+    public void showModificaPrenotazioneDialog(TableModelPrenotazione model) {
+		JDialog prenotazioneDialog = new JDialog(cercaView, "Modifica", true);
+		prenotazioneDialog.setSize(new Dimension(300,250));
+		prenotazioneDialog.setResizable(false);
+		prenotazioneDialog.setLayout(new BorderLayout());
+		
+		JPanel menuPanel = new JPanel();
+		menuPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		menuPanel.setBackground(new Color(0, 204, 255));
+		JLabel menuLabel = new JLabel("Modifica Gate");
+		menuLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
+		menuLabel.setForeground(Color.WHITE);
+		menuPanel.add(menuLabel);
+		
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.setBackground(new Color (0, 0, 153));
+		JPanel textPanel = new JPanel();
+		textPanel.setBackground(new Color (0, 0, 153));
+		JTextField gateTextField = new JTextField();
+		gateTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		gateTextField.setColumns(3);
+		gateTextField.setText(model.getValueAt(table.getSelectedRow(), 0).toString());
+		textPanel.add(gateTextField);
+		mainPanel.add(textPanel, BorderLayout.CENTER);
+		
+		JPanel bottomPanel = new JPanel(new FlowLayout());
+		bottomPanel.setBackground(new Color (0, 153, 255));
+		JButton aggiornaButton = new JButton("Aggiorna");
+		aggiornaButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+//				if (model.updateRow(gateTextField.getText(), table.getSelectedRow()))
+//						prenotazioneDialog.dispose();
+			}
+		});
+		
+		bottomPanel.add(aggiornaButton);
+		
+		prenotazioneDialog.add(menuPanel, BorderLayout.NORTH);
+		prenotazioneDialog.add(mainPanel, BorderLayout.CENTER);
+		prenotazioneDialog.add(bottomPanel, BorderLayout.SOUTH);
+		
+		prenotazioneDialog.setLocationRelativeTo(null);
+		prenotazioneDialog.setVisible(true);
+		
+	}	
 
 }

@@ -129,8 +129,7 @@ public class ViewsController {
 	}
 	
 	public LinkedList<Gate> getGatesList() {
-		gates = dbController.getGates();
-		return gates;
+		return gates = dbController.getGates();
 	}
 	
 	public String[] getCompagnieAeree() {
@@ -147,11 +146,13 @@ public class ViewsController {
 	}
 	
 	public LinkedList<CompagniaAerea> getCompagnieList() {
-		compagnie = dbController.getCompagnieAeree();
-		return compagnie;
+		return compagnie = dbController.getCompagnieAeree();
 	}
 	
-		//Chiamata da Nuova Prenotazione
+	public LinkedList<CentoKilometri> getCentoKilometri() {
+		return centoKilometri = dbController.getCentoKilometri();
+	}
+	
 	public LinkedList<Coda> getCodaFromIdTratta(int idTratta) {
 		code = new LinkedList<Coda>();
 		code = dbController.getCodaByIdTratta(idTratta);
@@ -291,7 +292,6 @@ public class ViewsController {
 
 	//Save
 	public void saveNuovaPrenotazione(String nome, String cognome, String codicePrenotazione, String centoKilometri, String compagniaCentoKilometri, String compagniaVolo, int idTratta, String coda) {
-		
 		if (nome.isBlank()) {
 			JOptionPane.showMessageDialog(subFrame, "Il campo nome non può essere vuoto", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
 		} else if (cognome.isBlank()) {
@@ -327,6 +327,7 @@ public class ViewsController {
 		
 	}
 	
+	
 	public void saveNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime dataInizio, LocalDateTime dataFine, int maxPrenotazioni, ArrayList<Coda> code) {
 		if (!destinazione.isBlank()) {
 			if (dataFine.isAfter(dataInizio)) {
@@ -346,6 +347,7 @@ public class ViewsController {
 		}
 	}
 	
+	
 	public void saveNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
 		if (dbController.saveNuovoCentoKilometri(codice, nomeCompagnia, punti)) {
 			JOptionPane.showMessageDialog(subFrame, "Cliente (" + codice + ") cento kilometri inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
@@ -354,6 +356,7 @@ public class ViewsController {
 			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
 	
 	public void saveNuovaCompagniaAerea(String nomeCompagnia) {
 		if (dbController.saveNuovoCompagniaAerea(nomeCompagnia)) {
@@ -364,6 +367,7 @@ public class ViewsController {
 		}
 	}
 	
+	
 	public void saveNuovoGate(String nomeGate) {
 		if (dbController.saveNuovoGate(nomeGate)) {
 			JOptionPane.showMessageDialog(subFrame, "Gate " + nomeGate + " inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
@@ -372,6 +376,7 @@ public class ViewsController {
 			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento gate", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
 	
 	public boolean checkCode(ArrayList<Coda> codeArrayList) {
 		for (int i = 0; i < codeArrayList.size(); i++) {
@@ -391,6 +396,7 @@ public class ViewsController {
 		return true;
 	}
 	
+	
 	//Delete
 	public boolean deleteTratta (int idTratta) {
 		if (dbController.deleteTratta(idTratta)) {
@@ -403,6 +409,7 @@ public class ViewsController {
 		}
 	}
 	
+	
 	public boolean deletePrenotazione(String idPrenotazione) {
 		if (dbController.deletePrenotazione(idPrenotazione)) {
 			JOptionPane.showMessageDialog(subFrame, "Prenotazione eliminata con successo!", "Cancellazione riuscita", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
@@ -413,6 +420,7 @@ public class ViewsController {
 			return false;
 		}
 	}
+	
 	
 	public boolean deleteCentoKilometri(int idCentoKilometri) {
 		if (dbController.deleteCentoKilometri(idCentoKilometri)) {
@@ -425,6 +433,7 @@ public class ViewsController {
 		}
 	}
 	
+	
 	public boolean deleteCompagniaAerea(String nomeCompagnia) {
 		if (dbController.deleteCompagniaAerea(nomeCompagnia)) {
 			JOptionPane.showMessageDialog(subFrame, "Compagnia aerea eliminata con successo!", "Cancellazione riuscita", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
@@ -435,6 +444,7 @@ public class ViewsController {
 			return false;
 		}
 	}
+	
 	
 	public boolean deleteGate(String nomeGate) {
 		if (dbController.deleteGate(nomeGate)) {
@@ -447,6 +457,7 @@ public class ViewsController {
 		}
 	}
 	
+	
 	//Update
 	public void updateImbarcatoInDatabase(boolean value, String id) {
 		if (!dbController.updateImbarcatoInDatabase(value, id)) {
@@ -454,6 +465,14 @@ public class ViewsController {
 		}
 	}
 
+	public boolean updateCentoKilometri (String codice, String nomeCompagnia, int punti, int id) {
+		if (!dbController.updateCentoKilometri(codice, nomeCompagnia, punti, id)) {
+			JOptionPane.showMessageDialog(subFrame, "Aggiornamento cento kilometri non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean updateNomeCompagnia (String nomeCompagnia, String oldNomeCompagnia) {
 		if (!dbController.updateNomeCompagnia(nomeCompagnia, oldNomeCompagnia)) {
 			JOptionPane.showMessageDialog(subFrame, "Aggiornamento compagnia non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
@@ -482,6 +501,7 @@ public class ViewsController {
 			}
 		}
 	}
+	
 
 	public void updateInizioImbarcoCoda(String nomeCoda) {
 		LocalDateTime now = LocalDateTime.now();
@@ -499,6 +519,7 @@ public class ViewsController {
 			}
 		}
 	}
+	
 	
 	public void updateFineImbarcoCoda(String nomeCoda) {
 		LocalDateTime now = LocalDateTime.now();
@@ -524,6 +545,7 @@ public class ViewsController {
 		((ImbarcoView) subFrame).showPrenotatiPanel(prenotati);
 	}
 	
+	
 	public boolean updateFineImbarco() {
 		Tratta tratta = tratte.getFirst();
 		if (tratta.getStatoImbarco() == Stato.IN_CORSO) {
@@ -542,10 +564,12 @@ public class ViewsController {
 		return true;
 	}
 	
+	
 	//Other
 	public LocalDateTime convertiIntToDate(int anno, int mese, int giorno, int ora, int minuti) {
 		LocalDateTime time = LocalDateTime.of(anno, mese, giorno, ora, minuti);
 		return time;
 	}
+	
 	
 }

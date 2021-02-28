@@ -58,21 +58,8 @@ public class TableModelCompagnia extends AbstractTableModel {
 		}
 	}
 
-	@Override
-	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		if (compagnie == null) return;
-		CompagniaAerea compagnia = compagnie.get(rowIndex);
-		switch (columnIndex) {
-			case 0:
-				controller.updateNomeCompagnia((String) aValue, compagnia.getNomeCompagnia());
-				break;
-			default:
-				return;
-		}
-	}
-
-	public boolean updateRow(String value, int row) {         
-		if (controller.updateNomeCompagnia(value, compagnie.get(row).getNomeCompagnia())) {
+	public boolean updateRow(String value, int row, int col) {         
+		if (controller.updateNomeCompagnia( value, compagnie.get(row).getNomeCompagnia())) {
 			compagnie = controller.getCompagnieList();
 			fireTableDataChanged();
 			return true;

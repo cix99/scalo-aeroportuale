@@ -57,19 +57,6 @@ public class TableModelGate extends AbstractTableModel {
 			return null;
 		}
 	}
-
-	@Override
-	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		if (gates == null) return;
-		Gate gate = gates.get(rowIndex);
-		switch (columnIndex) {
-			case 0:
-				controller.updateNomeGate((String) aValue, gate.getNomeGate());
-				break;
-			default:
-				return;
-		}
-	}
 	
 	public boolean updateRow(String value, int row) {         
 		if (controller.updateNomeGate(value, gates.get(row).getNomeGate())) {

@@ -104,7 +104,7 @@ public class CercaView extends JFrame {
 	}
 	
 	public void showListaPrenotazioni(LinkedList<Prenotazione> prenotazioni) { 
-		cercaPrenotazioniPanel = new CercaPrenotazioniPanel(prenotazioni, viewsController);
+		cercaPrenotazioniPanel = new CercaPrenotazioniPanel(prenotazioni, viewsController, CercaView.this);
 		centerPanel.add(cercaPrenotazioniPanel, BorderLayout.CENTER);
 		buttonsPanel = cercaPrenotazioniPanel.getButtonsPanel();
 		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);
@@ -112,7 +112,7 @@ public class CercaView extends JFrame {
 	}
 	
 	public void showListaCentoKilometri(LinkedList<CentoKilometri> centoKilometri, ArrayList<String> clientiCKList) {
-		cercaCentoKilometriPanel = new CercaCentoKilometriPanel(centoKilometri, clientiCKList, viewsController);
+		cercaCentoKilometriPanel = new CercaCentoKilometriPanel(centoKilometri, clientiCKList, viewsController, CercaView.this);
 		centerPanel.add(cercaCentoKilometriPanel, BorderLayout.CENTER);
 		buttonsPanel = cercaCentoKilometriPanel.getButtonsPanel();
 		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);
