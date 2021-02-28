@@ -55,7 +55,6 @@ public class TableModelCentoKilometri extends AbstractTableModel {
 			return false;
 		}
 	}
-
 	
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {

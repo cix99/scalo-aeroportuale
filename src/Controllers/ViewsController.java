@@ -349,30 +349,33 @@ public class ViewsController {
 	
 	
 	public void saveNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
-		if (dbController.saveNuovoCentoKilometri(codice, nomeCompagnia, punti)) {
+		if (codice.isBlank()) {
+			JOptionPane.showMessageDialog(subFrame, "Il cento kilometri deve avere un codice", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
+		} else if (dbController.saveNuovoCentoKilometri(codice, nomeCompagnia, punti)) {
 			JOptionPane.showMessageDialog(subFrame, "Cliente (" + codice + ") cento kilometri inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
-		}
-		else {
+		} else {
 			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
 	
 	public void saveNuovaCompagniaAerea(String nomeCompagnia) {
-		if (dbController.saveNuovoCompagniaAerea(nomeCompagnia)) {
+		if (nomeCompagnia.isBlank()) {
+			JOptionPane.showMessageDialog(subFrame, "La compagnia deve avere un nome", "Errore inserimento compagnia", JOptionPane.ERROR_MESSAGE);
+		} else if (dbController.saveNuovoCompagniaAerea(nomeCompagnia)) {
 			JOptionPane.showMessageDialog(subFrame, "Compagnia " + nomeCompagnia + " inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
-		}
-		else {
+		} else {
 			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento compagnia", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
 	
 	public void saveNuovoGate(String nomeGate) {
-		if (dbController.saveNuovoGate(nomeGate)) {
+		if (nomeGate.isBlank()) {
+			JOptionPane.showMessageDialog(subFrame, "Il gate deve avere un nome", "Errore inserimento gate", JOptionPane.ERROR_MESSAGE);
+		} else if (dbController.saveNuovoGate(nomeGate)) {
 			JOptionPane.showMessageDialog(subFrame, "Gate " + nomeGate + " inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
-		}
-		else {
+		} else {
 			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento gate", JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -466,25 +469,40 @@ public class ViewsController {
 	}
 
 	public boolean updateCentoKilometri (String codice, String nomeCompagnia, int punti, int id) {
-		if (!dbController.updateCentoKilometri(codice, nomeCompagnia, punti, id)) {
+		if (codice.isBlank()) {
+			JOptionPane.showMessageDialog(subFrame, "Il cento kilometri deve avere un codice", "Errore update", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (!dbController.updateCentoKilometri(codice, nomeCompagnia, punti, id)) {
 			JOptionPane.showMessageDialog(subFrame, "Aggiornamento cento kilometri non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
 			return false;
+		} else {
+			JOptionPane.showMessageDialog(subFrame, "Cento kilometri aggiornato con successo!", "Update riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		}
 		return true;
 	}
 	
 	public boolean updateNomeCompagnia (String nomeCompagnia, String oldNomeCompagnia) {
-		if (!dbController.updateNomeCompagnia(nomeCompagnia, oldNomeCompagnia)) {
+		if (nomeCompagnia.isBlank()) {
+			JOptionPane.showMessageDialog(subFrame, "La compagnia deve avere un nome", "Errore update", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (!dbController.updateNomeCompagnia(nomeCompagnia, oldNomeCompagnia)) {
 			JOptionPane.showMessageDialog(subFrame, "Aggiornamento compagnia non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
 			return false;
+		} else {
+			JOptionPane.showMessageDialog(subFrame, "Compagnia aerea aggiornata con successo!", "Update riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		}
 		return true;
 	}
 	
 	public boolean updateNomeGate (String nomeGate, String oldNomeGate) {
-		if (!dbController.updateNomeGate(nomeGate, oldNomeGate)) {
+		if (nomeGate.isBlank()) {
+			JOptionPane.showMessageDialog(subFrame, "Il gate deve avere un nome", "Errore update", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (!dbController.updateNomeGate(nomeGate, oldNomeGate)) {
 			JOptionPane.showMessageDialog(subFrame, "Aggiornamento gate non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
 			return false;
+		} else {
+			JOptionPane.showMessageDialog(subFrame, "Gate aggiornato con successo!", "Update riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		}
 		return true;
 	}
