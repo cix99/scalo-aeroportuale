@@ -128,6 +128,11 @@ public class ViewsController {
 		return gatesArray;
 	}
 	
+	public LinkedList<Gate> getGatesList() {
+		gates = dbController.getGates();
+		return gates;
+	}
+	
 	public String[] getCompagnieAeree() {
 		LinkedList<CompagniaAerea> list = dbController.getCompagnieAeree();
 		String [] stringArray = new String[list.size()];
@@ -441,6 +446,14 @@ public class ViewsController {
 		}
 	}
 
+	public boolean updateNomeGate (String nomeGate, String oldNomeGate) {
+		if (!dbController.updateNomeGate(nomeGate, oldNomeGate)) {
+			JOptionPane.showMessageDialog(subFrame, "Aggiornamento gate non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	
 	public void updateInizioImbarco() {
 		Tratta tratta = tratte.getFirst();
 		if (tratta.getStatoImbarco() == Stato.IN_ATTESA) {

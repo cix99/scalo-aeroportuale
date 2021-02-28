@@ -128,7 +128,7 @@ public class CercaView extends JFrame {
 	}
 	
 	public void showListaGates(LinkedList<Gate> gates) { 
-		cercaGatesPanel = new CercaGatesPanel(gates, viewsController);
+		cercaGatesPanel = new CercaGatesPanel(gates, viewsController, CercaView.this);
 		centerPanel.add(cercaGatesPanel, BorderLayout.CENTER);
 		buttonsPanel = cercaGatesPanel.getButtonsPanel();
 		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);

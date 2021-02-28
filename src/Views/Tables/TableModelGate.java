@@ -39,15 +39,13 @@ public class TableModelGate extends AbstractTableModel {
 		return numberOfColumns;
 	}
 
-//	@Override
-//	public boolean isCellEditable(int rowIndex, int columnIndex) {
-//		switch (columnIndex) {
-//		case 5:
-//			return true;
-//		default:
-//			return false;
-//		}
-//	}
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		switch (columnIndex) {
+		default:
+			return true;
+		}
+	}
 
 	
 	@Override
@@ -60,19 +58,27 @@ public class TableModelGate extends AbstractTableModel {
 		}
 	}
 
-//	@Override
-//	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-//		if (prenotazioni == null) return;
-//		Prenotazione prenotazione = prenotazioni.get(rowIndex);
-//		switch (columnIndex) {
-//			case 5:
-//				prenotazione.setImbarcato((boolean) aValue);
-//				controller.updateImbarcatoInDatabase((boolean) aValue, prenotazione.getId());
-//				break;
-//			default:
-//				return;
-//		}
-//	}
+	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		if (gates == null) return;
+		Gate gate = gates.get(rowIndex);
+		switch (columnIndex) {
+			case 0:
+				controller.updateNomeGate((String) aValue, gate.getNomeGate());
+				break;
+			default:
+				return;
+		}
+	}
+	
+	public boolean updateRow(String value, int row, int col) {         
+		if (controller.updateNomeGate(value, gates.get(row).getNomeGate())) {
+			gates = controller.getGatesList();
+			fireTableCellUpdated(row, col);
+			return true;
+		}
+		return false;
+	}
 	
 	public void removeRow(int row) {          //removes a row based on number from the data
 		if (controller.deleteGate(gates.get(row).getNomeGate())) {

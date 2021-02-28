@@ -186,6 +186,12 @@ public class DatabaseController {
     	return false;
     }
     
+    public boolean updateNomeGate(String nomeGate, String oldNomeGate) {
+    	if (gateDao.updateNomeGate(nomeGate, oldNomeGate))
+    		return true;
+    	return false;
+    }
+    
 	public boolean updateInizioImbarco(Tratta tratta) {
 		if (trattaDao.updateInizioImbarco(tratta))
 			return true;

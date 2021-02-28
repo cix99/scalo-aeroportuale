@@ -83,4 +83,19 @@ public class GateDAO extends JDBC {
     	LinkedList<Gate> gateList = find();
         return gateList.get(gateList.size() - 1);
     }
+
+	public boolean updateNomeGate(String nomeGate, String oldNomeGate) {
+		String query = "UPDATE " + tableName + " SET nome_gate = ? WHERE nome_gate = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, nomeGate);
+            statement.setString(2, oldNomeGate);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
 }
