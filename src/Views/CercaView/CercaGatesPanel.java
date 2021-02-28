@@ -25,11 +25,11 @@ public class CercaGatesPanel extends JPanel {
 	private JButton eliminaButton;
 	
 	private CercaView cercaView;
-	private ViewsController viewsController;
+//	private ViewsController viewsController;
 	
     public CercaGatesPanel(LinkedList<Gate> gates, ViewsController controller, CercaView cercaView) {
     	this.cercaView = cercaView;
-    	this.viewsController = controller;
+//    	this.viewsController = controller;
     	
     	setLayout(new BorderLayout());
     	setBackground(new Color(0, 0, 153));
@@ -125,7 +125,7 @@ public class CercaGatesPanel extends JPanel {
 		aggiornaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (model.updateRow(gateTextField.getText(), table.getSelectedRow(), table.getSelectedColumn()))
+				if (model.updateRow(gateTextField.getText(), table.getSelectedRow()))
 						gateDialog.dispose();
 			}
 		});

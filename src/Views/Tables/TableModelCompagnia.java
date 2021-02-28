@@ -39,15 +39,13 @@ public class TableModelCompagnia extends AbstractTableModel {
 		return numberOfColumns;
 	}
 
-//	@Override
-//	public boolean isCellEditable(int rowIndex, int columnIndex) {
-//		switch (columnIndex) {
-//		case 5:
-//			return true;
-//		default:
-//			return false;
-//		}
-//	}
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		switch (columnIndex) {
+		default:
+			return true;
+		}
+	}
 
 	
 	@Override
@@ -60,20 +58,28 @@ public class TableModelCompagnia extends AbstractTableModel {
 		}
 	}
 
-//	@Override
-//	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-//		if (prenotazioni == null) return;
-//		Prenotazione prenotazione = prenotazioni.get(rowIndex);
-//		switch (columnIndex) {
-//			case 5:
-//				prenotazione.setImbarcato((boolean) aValue);
-//				controller.updateImbarcatoInDatabase((boolean) aValue, prenotazione.getId());
-//				break;
-//			default:
-//				return;
-//		}
-//	}
+	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		if (compagnie == null) return;
+		CompagniaAerea compagnia = compagnie.get(rowIndex);
+		switch (columnIndex) {
+			case 0:
+				controller.updateNomeCompagnia((String) aValue, compagnia.getNomeCompagnia());
+				break;
+			default:
+				return;
+		}
+	}
 
+	public boolean updateRow(String value, int row) {         
+		if (controller.updateNomeCompagnia(value, compagnie.get(row).getNomeCompagnia())) {
+			compagnie = controller.getCompagnieList();
+			fireTableDataChanged();
+			return true;
+		}
+		return false;
+	}
+	
 	public void removeRow(int row) {          //removes a row based on number from the data
 		if (controller.deleteCompagniaAerea(compagnie.get(row).getNomeCompagnia())) {
 			compagnie.remove(row);

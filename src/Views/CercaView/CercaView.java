@@ -120,7 +120,7 @@ public class CercaView extends JFrame {
 	}
 	
 	public void showListaCompagnie(LinkedList<CompagniaAerea> compagnie) { 
-		cercaCompagniePanel = new CercaCompagniePanel(compagnie, viewsController);
+		cercaCompagniePanel = new CercaCompagniePanel(compagnie, viewsController, CercaView.this);
 		centerPanel.add(cercaCompagniePanel, BorderLayout.CENTER);
 		buttonsPanel = cercaCompagniePanel.getButtonsPanel();
 		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);

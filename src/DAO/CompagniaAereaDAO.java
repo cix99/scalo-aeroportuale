@@ -46,7 +46,7 @@ public class CompagniaAereaDAO {
     }
 
     public LinkedList<CompagniaAerea> find(){
-        String query = "SELECT * FROM " + tableName;
+        String query = "SELECT * FROM " + tableName + " ORDER BY nome_compagnia ASC";
         LinkedList<CompagniaAerea> compagniaAereaList = new LinkedList<CompagniaAerea>();
         try {
             PreparedStatement statement = JDBC
@@ -91,4 +91,19 @@ public class CompagniaAereaDAO {
         return compagniaAereaList.get(compagniaAereaList.size() - 1);
     }
 
+    public boolean updateNomeCompagnia(String nomeCompagnia, String oldNomeCompagnia) {
+		String query = "UPDATE " + tableName + " SET nome_compagnia = ? WHERE nome_compagnia = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, nomeCompagnia);
+            statement.setString(2, oldNomeCompagnia);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
+    
 }

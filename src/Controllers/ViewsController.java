@@ -146,6 +146,11 @@ public class ViewsController {
 		return stringArray;
 	}
 	
+	public LinkedList<CompagniaAerea> getCompagnieList() {
+		compagnie = dbController.getCompagnieAeree();
+		return compagnie;
+	}
+	
 		//Chiamata da Nuova Prenotazione
 	public LinkedList<Coda> getCodaFromIdTratta(int idTratta) {
 		code = new LinkedList<Coda>();
@@ -181,6 +186,7 @@ public class ViewsController {
 		((ImbarcoView) subFrame).showCodeOptionsPanel(codeList);
 	}
 	
+	
 	public void loadTrattaInfo(String nomeGate) { 		
 		tratte = dbController.getTrattaInfoFromGate(nomeGate);
 		if (!tratte.isEmpty()) 
@@ -188,6 +194,7 @@ public class ViewsController {
 		else 
 			JOptionPane.showMessageDialog(subFrame, "Non ci sono tratte per questo gate", "Nessuna tratta trovata", JOptionPane.ERROR_MESSAGE);
 	}
+	
 	
 	public void loadPrenotatiImbarcoPerCoda(String nomeCoda) { 
 		prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
@@ -219,6 +226,7 @@ public class ViewsController {
 			JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questo volo", "Nessuna prenotazione", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
 	
 	public void loadCercaCenterPanel(String scelta) {
 		((CercaView) subFrame).emptyCenterPanel();
@@ -446,6 +454,14 @@ public class ViewsController {
 		}
 	}
 
+	public boolean updateNomeCompagnia (String nomeCompagnia, String oldNomeCompagnia) {
+		if (!dbController.updateNomeCompagnia(nomeCompagnia, oldNomeCompagnia)) {
+			JOptionPane.showMessageDialog(subFrame, "Aggiornamento compagnia non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean updateNomeGate (String nomeGate, String oldNomeGate) {
 		if (!dbController.updateNomeGate(nomeGate, oldNomeGate)) {
 			JOptionPane.showMessageDialog(subFrame, "Aggiornamento gate non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);

@@ -71,10 +71,10 @@ public class TableModelGate extends AbstractTableModel {
 		}
 	}
 	
-	public boolean updateRow(String value, int row, int col) {         
+	public boolean updateRow(String value, int row) {         
 		if (controller.updateNomeGate(value, gates.get(row).getNomeGate())) {
 			gates = controller.getGatesList();
-			fireTableCellUpdated(row, col);
+			fireTableDataChanged();
 			return true;
 		}
 		return false;

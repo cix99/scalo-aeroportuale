@@ -43,7 +43,7 @@ public class GateDAO extends JDBC {
     }
 
     public LinkedList<Gate> find(){
-        String query = "SELECT * FROM gate";
+        String query = "SELECT * FROM " + tableName + " ORDER BY nome_gate ASC";
         LinkedList<Gate> gateList = new LinkedList<Gate>();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);

@@ -186,6 +186,12 @@ public class DatabaseController {
     	return false;
     }
     
+    public boolean updateNomeCompagnia(String nomeCompagnia, String oldNomeCompagnia) {
+    	if (compagniaAereaDao.updateNomeCompagnia(nomeCompagnia, oldNomeCompagnia))
+    		return true;
+    	return false;
+    }
+    
     public boolean updateNomeGate(String nomeGate, String oldNomeGate) {
     	if (gateDao.updateNomeGate(nomeGate, oldNomeGate))
     		return true;
