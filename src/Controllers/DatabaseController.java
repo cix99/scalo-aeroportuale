@@ -41,6 +41,11 @@ public class DatabaseController {
     	return tratte;
     }
     
+    public LinkedList<Tratta> getTratteFromCompagnia(String nomeCompagnia, Stato stato) {
+    	LinkedList<Tratta> tratte = trattaDao.findTrattaByCompagnia(nomeCompagnia, stato);
+    	return tratte;
+    }
+    
     public LinkedList<Coda> getCodaByIdTratta(int idTratta) {
     	LinkedList<Coda> code = codaDao.findCodaByIdTratta(idTratta);
     	return code;

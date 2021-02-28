@@ -154,6 +154,12 @@ public class ViewsController {
 		return trattaList;
 	}
 	
+	public LinkedList<Tratta> getTratteFromCompagnia(String nomeCompagnia, Stato stato) {
+		LinkedList<Tratta> trattaList = new LinkedList<Tratta>();
+		trattaList = dbController.getTratteFromCompagnia(nomeCompagnia, stato);
+		return trattaList;
+	}
+	
 	//Load
 		//Chiamata da Tratta Info view
 	public void showCode(Tratta tratta) {
@@ -272,28 +278,40 @@ public class ViewsController {
 
 	//Save
 	public void saveNuovaPrenotazione(String nome, String cognome, String codicePrenotazione, String centoKilometri, String compagniaCentoKilometri, String compagniaVolo, int idTratta, String coda) {
-		if (!centoKilometri.isBlank()) {
-			CentoKilometri ck = dbController.getCentoKilometri(centoKilometri, compagniaCentoKilometri);
-			if (ck.getCodiceCompagnia() != null) {
-				if (dbController.saveNuovaPrenotazione(nome, cognome, codicePrenotazione, centoKilometri, compagniaCentoKilometri, compagniaVolo, idTratta, coda)) {
+		
+		if (nome.isBlank()) {
+			JOptionPane.showMessageDialog(subFrame, "Il campo nome non può essere vuoto", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
+		} else if (cognome.isBlank()) {
+			JOptionPane.showMessageDialog(subFrame, "Il campo cognome non può essere vuoto", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
+		} else if (codicePrenotazione.isBlank()) {
+			JOptionPane.showMessageDialog(subFrame, "Il campo codice non può essere vuoto", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
+		} else if (codicePrenotazione.length() != 6) {
+			JOptionPane.showMessageDialog(subFrame, "Il campo codice deve avere 6 caratteri", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
+		} else {
+			if (!centoKilometri.isBlank()) {
+				CentoKilometri ck = dbController.getCentoKilometri(centoKilometri, compagniaCentoKilometri);
+				if (ck.getCodiceCompagnia() != null) {
+					if (dbController.saveNuovaPrenotazione(nome, cognome, codicePrenotazione, centoKilometri, compagniaCentoKilometri, compagniaVolo, idTratta, coda)) {
+						JOptionPane.showMessageDialog(subFrame, "Prenotazione (" + codicePrenotazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+					}
+					else {
+						JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(subFrame, "Cento kilometri (" + centoKilometri + ") inesistente per la compagnia (" + compagniaCentoKilometri + ")", "Cento Kilometri non trovato", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			else {
+				if (dbController.saveNuovaPrenotazione(nome, cognome, codicePrenotazione, compagniaVolo, idTratta, coda)) {
 					JOptionPane.showMessageDialog(subFrame, "Prenotazione (" + codicePrenotazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 				}
 				else {
 					JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-			else {
-				JOptionPane.showMessageDialog(subFrame, "Cento kilometri (" + centoKilometri + ") inesistente per la compagnia (" + compagniaCentoKilometri + ")", "Cento Kilometri non trovato", JOptionPane.ERROR_MESSAGE);
-			}
 		}
-		else {
-			if (dbController.saveNuovaPrenotazione(nome, cognome, codicePrenotazione, compagniaVolo, idTratta, coda)) {
-				JOptionPane.showMessageDialog(subFrame, "Prenotazione (" + codicePrenotazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
-			}
-			else {
-				JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
-			}
-		}
+		
 	}
 	
 	public void saveNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime dataInizio, LocalDateTime dataFine, int maxPrenotazioni, ArrayList<Coda> code) {

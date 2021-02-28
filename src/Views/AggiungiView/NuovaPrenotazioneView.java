@@ -27,6 +27,7 @@ import javax.swing.JComboBox;
 
 import Controllers.ViewsController;
 import Models.Coda;
+import Models.Stato;
 import Models.Tratta;
 
 @SuppressWarnings("serial")
@@ -135,7 +136,7 @@ public class NuovaPrenotazioneView extends JPanel {
 		compagniaComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				LinkedList<Tratta> tratteList = controller.getTratteFromCompagnia(compagniaComboBox.getSelectedItem().toString());
+				LinkedList<Tratta> tratteList = controller.getTratteFromCompagnia(compagniaComboBox.getSelectedItem().toString(), Stato.IN_ATTESA);
 				String [] tratteArray = new String[tratteList.size()];
 				ListIterator<Tratta> tratteCursor = tratteList.listIterator();
 				trattaIndex = 0;
