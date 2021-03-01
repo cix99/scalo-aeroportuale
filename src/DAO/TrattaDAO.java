@@ -13,7 +13,7 @@ public class TrattaDAO extends JDBC {
 	private String tableName = "tratta";
 	
 	public int store(Tratta tratta){
-        String query = "INSERT INTO " + tableName + " (destinazione, compagnia_aerea, ora_inizio_imbarco_stimato, ora_fine_imbarco_stimato, max_prenotazioni) VALUES  (?, ?, ?, ?, ?) RETURNING (id)";
+        String query = "INSERT INTO " + tableName + " (destinazione, compagnia_aerea, ora_inizio_imbarco_stimato, ora_fine_imbarco_stimato, max_prenotazioni, gate) VALUES  (?, ?, ?, ?, ?, ?) RETURNING (id)";
         int id = 0;
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -24,7 +24,7 @@ public class TrattaDAO extends JDBC {
             statement.setObject(4, tratta.getOraFineImbarcoStimato());
             statement.setInt(5, tratta.getMaxPrenotazioni());
             //statement.setObject(6, tratta.getOraFineImbarcoEffettivo());
-            //statement.setString(7, tratta.getGate().getNomeGate());
+            statement.setString(6, tratta.getGate().getNomeGate());
             statement.execute();
             ResultSet lastInsert = statement.getResultSet();
             if (lastInsert.next())

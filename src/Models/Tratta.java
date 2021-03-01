@@ -16,10 +16,11 @@ public class Tratta{
     private Boolean ritardo;    
     private int maxPrenotazioni;
     
-    public Tratta(String destinazione, CompagniaAerea compagniaAerea, LocalDateTime oraInizioImbarcoStimato, LocalDateTime oraFineImbarcoStimato, int maxPrenotazioni) {
+    public Tratta(String destinazione, CompagniaAerea compagniaAerea, Gate gate, LocalDateTime oraInizioImbarcoStimato, LocalDateTime oraFineImbarcoStimato, int maxPrenotazioni) {
 		super();
 		this.destinazione = destinazione;
 		this.compagniaAerea = compagniaAerea;
+		this.gate = gate;
 		this.oraInizioImbarcoStimato = oraInizioImbarcoStimato;
 		this.oraFineImbarcoStimato = oraFineImbarcoStimato;
 		this.maxPrenotazioni = maxPrenotazioni;

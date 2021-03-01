@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 
 import Controllers.ViewsController;
+import Models.Stato;
 import Models.Tratta;
 import Views.Tables.TableModelTratta;
 
@@ -75,13 +76,15 @@ public class CercaTrattePanel extends JPanel {
 					for (int i = 0; i < table.getColumnCount(); i++) {
 						model.getValueAt(table.getSelectedRow(), i);
 					}
-					showModificaTrattaDialog(model);
+					if (model.getValueAt(table.getSelectedRow(), 8) == Stato.IN_ATTESA)
+						showModificaTrattaDialog(model);
+					else
+						JOptionPane.showMessageDialog(CercaTrattePanel.this, "Non puoi modificare una tratta in corso o già conclusa!", "Errore modifica", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
 					JOptionPane.showMessageDialog(CercaTrattePanel.this, "Seleziona un riga da modificare", "Errore modifica", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-			
 		});
 		eliminaButton = new JButton("Elimina");
 		eliminaButton.setFocusPainted(false);
@@ -97,7 +100,6 @@ public class CercaTrattePanel extends JPanel {
 					if (choice == JOptionPane.YES_OPTION) {
 						TableModelTratta model = (TableModelTratta) table.getModel();
 						model.removeRow(table.getSelectedRow());
-						//table.getSelectedRows(); per eliminare tutte le righe selezionate
 					}
 				}
 				else {
@@ -129,8 +131,9 @@ public class CercaTrattePanel extends JPanel {
 		trattaDialogPanel.setCompagniaAerea(model.getValueAt(table.getSelectedRow(), 2).toString());
 		trattaDialogPanel.setInizioImbarcoStimato(model.getValueAt(table.getSelectedRow(), 3).toString());
 		trattaDialogPanel.setFineImbarcoStimato(model.getValueAt(table.getSelectedRow(), 5).toString());
-		//trattaDialogPanel.setGate(model.getValueAt(table.getSelectedRow(), 7).toString());
+		trattaDialogPanel.setGate(model.getValueAt(table.getSelectedRow(), 7).toString());
 		trattaDialogPanel.setMaxPrenotazioni((int) model.getValueAt(table.getSelectedRow(), 10));
+		trattaDialogPanel.setCode(viewsController.getCodaFromIdTratta((int) model.getValueAt(table.getSelectedRow(), 0)));
 		
 		trattaDialog.add(menuPanel, BorderLayout.NORTH);
 		trattaDialog.add(trattaDialogPanel, BorderLayout.CENTER);

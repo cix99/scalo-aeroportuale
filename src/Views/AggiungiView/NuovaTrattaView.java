@@ -45,6 +45,8 @@ public class NuovaTrattaView extends JPanel {
 	private JTextField destinazioneTextField;
 	private JLabel compagniaLabel;
 	private JComboBox<String> compagniaComboBox;
+	private JLabel gateLabel;
+	private JComboBox<String> gateComboBox;
 	private JLabel dataStartLabel;
 	private JLabel oraInizioLabel;
 	private JLabel dataEndLabel;
@@ -94,6 +96,12 @@ public class NuovaTrattaView extends JPanel {
 		compagniaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		compagniaComboBox = new JComboBox<String>(controller.getCompagnieAeree());
 		compagniaComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		
+		gateLabel = new JLabel ("Gate");
+		gateLabel.setForeground(Color.WHITE);
+		gateLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		gateComboBox = new JComboBox<String>(controller.getGates());
+		gateComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		
 		dataStartLabel = new JLabel("Data");
 		dataStartLabel.setForeground(Color.WHITE);
@@ -192,8 +200,15 @@ public class NuovaTrattaView extends JPanel {
 		compagniaPanel.setBackground(new Color(0, 0, 153));
 		compagniaPanel.add(compagniaLabel, BorderLayout.WEST);
 		compagniaPanel.add(compagniaComboBox, BorderLayout.SOUTH);
+		JPanel gatePanel = new JPanel(new BorderLayout());
+		gatePanel.setBorder(new EmptyBorder(0, 20, 0, 0));
+		gatePanel.setBackground(new Color(0, 0, 153));
+		gatePanel.add(gateLabel, BorderLayout.WEST);
+		gatePanel.add(gateComboBox, BorderLayout.SOUTH);
+		
 		midTopPanel.add(destinazionePanel);
 		midTopPanel.add(compagniaPanel);
+		midTopPanel.add(gatePanel);
 		
 		JPanel midCenterTopPanel = new JPanel();
 		midCenterTopPanel.setBackground(new Color(0, 0, 153));
@@ -303,7 +318,7 @@ public class NuovaTrattaView extends JPanel {
 																		datePickerEnd.getJDateInstantPanel().getModel().getDay(),
 																		Integer.parseInt(hourEndComboBox.getSelectedItem().toString()), 
 																		Integer.parseInt(minuteEndComboBox.getSelectedItem().toString()));
-				controller.saveNuovaTratta(destinazioneTextField.getText(), compagniaComboBox.getSelectedItem().toString(), dataInizio, dataFine, Integer.parseInt(maxPrenotazioniTextField.getText()), codaList);
+				controller.saveNuovaTratta(destinazioneTextField.getText(), compagniaComboBox.getSelectedItem().toString(), gateComboBox.getSelectedItem().toString(), dataInizio, dataFine, maxPrenotazioniTextField.getText(), codaList);
 			}
 		});
 		

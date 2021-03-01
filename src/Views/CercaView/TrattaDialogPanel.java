@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -24,6 +25,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -45,6 +47,8 @@ public class TrattaDialogPanel extends JPanel {
 	private JTextField destinazioneTextField;
 	private JLabel compagniaLabel;
 	private JComboBox<String> compagniaComboBox;
+	private JLabel gateLabel;
+	private JComboBox<String> gateComboBox;
 	private JLabel dataStartLabel;
 	private JDatePanelImpl datePanelStart;
 	private JDatePickerImpl datePickerStart;
@@ -59,9 +63,12 @@ public class TrattaDialogPanel extends JPanel {
 	private JComboBox<String> minuteEndComboBox;
 
 	private JLabel codeLabel;
-	private JComboBox<String> numeroCodeComboBox;
+	private JButton codeButton;
+	private ArrayList<Coda> codaList;
 	private JLabel maxPrenotazioniLabel;
 	private JTextField maxPrenotazioniTextField;
+	
+	private int numeroCodeAttuale;
 	
 	private String[] hours = {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", 
 			  "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
@@ -69,10 +76,14 @@ public class TrattaDialogPanel extends JPanel {
 				"15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", 
 				"30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", 
 				"45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", };
-	private String[] numeroCode = {"1", "2", "3", "4", "5"};
-	private ArrayList<Coda> codaList;
+	
+	private ViewsController viewsController;
+	private CercaView cercaView;
 	
 	public TrattaDialogPanel(ViewsController viewsController, CercaView cercaView) {
+		this.viewsController = viewsController;
+		this.cercaView = cercaView;
+		
 		setBorder(new EmptyBorder(10, 5, 10, 10));
 		setLayout(new BorderLayout());
 		setBackground(new Color(0, 0, 153));
@@ -94,6 +105,12 @@ public class TrattaDialogPanel extends JPanel {
 		compagniaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		compagniaComboBox = new JComboBox<String>(viewsController.getCompagnieAeree());
 		compagniaComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		
+		gateLabel = new JLabel ("Gate");
+		gateLabel.setForeground(Color.WHITE);
+		gateLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		gateComboBox = new JComboBox<String>(viewsController.getGates());
+		gateComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		
 		dataStartLabel = new JLabel("Data");
 		dataStartLabel.setForeground(Color.WHITE);
@@ -135,26 +152,18 @@ public class TrattaDialogPanel extends JPanel {
 		minuteEndComboBox = new JComboBox<String>(minutes);
 		minuteEndComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		
-		codeLabel = new JLabel("Numero Code");
+		codeLabel = new JLabel("Code");
 		codeLabel.setForeground(Color.WHITE);
 		codeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		numeroCodeComboBox = new JComboBox<String>(numeroCode);
-		numeroCodeComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		
-		numeroCodeComboBox.addActionListener(new ActionListener() {
+		codeButton = new JButton ("Vedi code");
+		codeButton.setFocusPainted(false);
+		codeButton.addMouseListener(new MouseAdapter() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				int code;
-		    	try {
-		    	   code = Integer.parseInt(numeroCodeComboBox.getSelectedItem().toString());
-		    	}
-		    	catch (NumberFormatException en) {
-		    	   code = 1;
-		    	}
-		    	showCodaDialog(cercaView, code, viewsController);
+			public void mouseClicked(MouseEvent e) {
+				showCodaDialog();
 			}
 		});
-		
+
 		maxPrenotazioniLabel = new JLabel("Max Prenotazioni");
 		maxPrenotazioniLabel.setForeground(Color.WHITE);
 		maxPrenotazioniLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
@@ -188,8 +197,14 @@ public class TrattaDialogPanel extends JPanel {
 		compagniaPanel.setBackground(new Color(0, 0, 153));
 		compagniaPanel.add(compagniaLabel, BorderLayout.WEST);
 		compagniaPanel.add(compagniaComboBox, BorderLayout.SOUTH);
+		JPanel gatePanel = new JPanel(new BorderLayout());
+		gatePanel.setBorder(new EmptyBorder(0, 20, 0, 0));
+		gatePanel.setBackground(new Color(0, 0, 153));
+		gatePanel.add(gateLabel, BorderLayout.WEST);
+		gatePanel.add(gateComboBox, BorderLayout.SOUTH);
 		midTopPanel.add(destinazionePanel);
 		midTopPanel.add(compagniaPanel);
+		midTopPanel.add(gatePanel);
 		
 		JPanel midCenterTopPanel = new JPanel();
 		midCenterTopPanel.setBackground(new Color(0, 0, 153));
@@ -246,7 +261,7 @@ public class TrattaDialogPanel extends JPanel {
 		JPanel codePanel = new JPanel(new BorderLayout());
 		codePanel.setBackground(new Color(0, 0, 153));
 		codePanel.add(codeLabel, BorderLayout.WEST);
-		codePanel.add(numeroCodeComboBox, BorderLayout.SOUTH);
+		codePanel.add(codeButton, BorderLayout.SOUTH);
 		JPanel maxPrenotazioniPanel = new JPanel(new BorderLayout());
 		maxPrenotazioniPanel.setBackground(new Color(0, 0, 153));
 		maxPrenotazioniPanel.setBorder(new EmptyBorder(0, 20, 0, 0));
@@ -300,7 +315,7 @@ public class TrattaDialogPanel extends JPanel {
 																		datePickerEnd.getJDateInstantPanel().getModel().getDay(),
 																		Integer.parseInt(hourEndComboBox.getSelectedItem().toString()), 
 																		Integer.parseInt(minuteEndComboBox.getSelectedItem().toString()));
-				viewsController.saveNuovaTratta(destinazioneTextField.getText(), compagniaComboBox.getSelectedItem().toString(), dataInizio, dataFine, Integer.parseInt(maxPrenotazioniTextField.getText()), codaList);
+				viewsController.saveNuovaTratta(destinazioneTextField.getText(), compagniaComboBox.getSelectedItem().toString(), gateComboBox.getSelectedItem().toString(),dataInizio, dataFine, maxPrenotazioniTextField.getText(), codaList);
 			}
 		});
 		
@@ -310,10 +325,12 @@ public class TrattaDialogPanel extends JPanel {
 		add(bottomPanel, BorderLayout.SOUTH);
 	}
 	
-	public void showCodaDialog (JFrame cercaFrame, int numeroCode, ViewsController controller) {
+	public void showCodaDialog () {
 		String[] priorities = {"0", "1", "2", "3", "4", "5"};
-	
-		JDialog codaDialog = new JDialog(cercaFrame, "Code", true);
+		
+		int numeroCode = codaList.size();
+		
+		JDialog codaDialog = new JDialog(cercaView, "Code", true);
     	codaDialog.setMinimumSize(new Dimension(650,450));
     	codaDialog.setLayout(new BorderLayout());
     	
@@ -344,10 +361,13 @@ public class TrattaDialogPanel extends JPanel {
 
 		JTextField nomeCoda1TextField = new JTextField();
 		JComboBox<String> priority1ComboBox = new JComboBox<String>(priorities);
+		priority1ComboBox.setSelectedItem(String.valueOf(codaList.get(0).getPriority()));
 		priority1ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		nomeCoda1TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeCoda1TextField.setEnabled(false);
 		nomeCoda1TextField.setColumns(10);
 		nomeCoda1TextField.setMinimumSize(new Dimension(250,30));
+		nomeCoda1TextField.setText(codaList.get(0).getNomeCoda());
 		gc.gridx = 0;     
 		gc.gridy = 1;
 		gc.insets = new Insets(5,0,0,0);
@@ -360,19 +380,34 @@ public class TrattaDialogPanel extends JPanel {
 		mainPanelCD.add(priority1ComboBox, gc);
 		
 		JTextField nomeCoda2TextField = new JTextField();
+		nomeCoda2TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeCoda2TextField.setColumns(10);
+		nomeCoda2TextField.setMinimumSize(new Dimension(250,30));
 		JComboBox<String> priority2ComboBox = new JComboBox<String>(priorities);
+		priority2ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		JTextField nomeCoda3TextField = new JTextField();
+		nomeCoda3TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeCoda3TextField.setColumns(10);
+		nomeCoda3TextField.setMinimumSize(new Dimension(250,30));
 		JComboBox<String> priority3ComboBox = new JComboBox<String>(priorities);
+		priority3ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		JTextField nomeCoda4TextField = new JTextField();
+		nomeCoda4TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeCoda4TextField.setColumns(10);
+		nomeCoda4TextField.setMinimumSize(new Dimension(250,30));
 		JComboBox<String> priority4ComboBox = new JComboBox<String>(priorities);
+		priority4ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		JTextField nomeCoda5TextField = new JTextField();
+		nomeCoda5TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeCoda5TextField.setColumns(10);
+		nomeCoda5TextField.setMinimumSize(new Dimension(250,30));
 		JComboBox<String> priority5ComboBox = new JComboBox<String>(priorities);
+		priority5ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		
 		if (numeroCode >= 2) {
-			priority2ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda2TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda2TextField.setColumns(10);
-			nomeCoda2TextField.setMinimumSize(new Dimension(250,30));
+			nomeCoda2TextField.setText(codaList.get(1).getNomeCoda());
+			nomeCoda2TextField.setEnabled(false);
+			priority2ComboBox.setSelectedItem(String.valueOf(codaList.get(1).getPriority()));
 			gc.gridx = 0;     
 			gc.gridy = 2;
 			gc.insets = new Insets(5,0,0,0);
@@ -385,10 +420,9 @@ public class TrattaDialogPanel extends JPanel {
 			mainPanelCD.add(priority2ComboBox, gc);
 		}
 		if (numeroCode >= 3) {
-			priority3ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda3TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda3TextField.setColumns(10);
-			nomeCoda3TextField.setMinimumSize(new Dimension(250,30));
+			nomeCoda3TextField.setText(codaList.get(2).getNomeCoda());
+			nomeCoda3TextField.setEnabled(false);
+			priority3ComboBox.setSelectedItem(String.valueOf(codaList.get(2).getPriority()));
 			gc.gridx = 0;     
 			gc.gridy = 3;
 			gc.insets = new Insets(5,0,0,0);
@@ -401,10 +435,9 @@ public class TrattaDialogPanel extends JPanel {
 			mainPanelCD.add(priority3ComboBox, gc);
 		}
 		if (numeroCode >= 4) {
-			priority4ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda4TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda4TextField.setColumns(10);
-			nomeCoda4TextField.setMinimumSize(new Dimension(250,30));				
+			nomeCoda4TextField.setText(codaList.get(3).getNomeCoda());
+			nomeCoda4TextField.setEnabled(false);
+			priority4ComboBox.setSelectedItem(String.valueOf(codaList.get(3).getPriority()));
 			gc.gridx = 0;     
 			gc.gridy = 4;
 			gc.insets = new Insets(5,0,0,0);
@@ -417,10 +450,9 @@ public class TrattaDialogPanel extends JPanel {
 			mainPanelCD.add(priority4ComboBox, gc);
 		}
 		if (numeroCode >= 5) {
-			priority5ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda5TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda5TextField.setColumns(10);
-			nomeCoda5TextField.setMinimumSize(new Dimension(250,30));			
+			nomeCoda5TextField.setText(codaList.get(4).getNomeCoda());
+			nomeCoda5TextField.setEnabled(false);
+			priority5ComboBox.setSelectedItem(String.valueOf(codaList.get(4).getPriority()));
 			gc.gridx = 0;     
 			gc.gridy = 5;
 			gc.insets = new Insets(5,0,0,0);
@@ -432,16 +464,92 @@ public class TrattaDialogPanel extends JPanel {
 			gc.anchor = GridBagConstraints.CENTER;
 			mainPanelCD.add(priority5ComboBox, gc);
 		}
-    	
+		
     	codaDialog.add(mainPanelCD, BorderLayout.CENTER);
     	
-    	JPanel buttonPanel = new JPanel();
+    	JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     	buttonPanel.setBackground(new Color(0, 204, 255));
-    	JButton aggiungiButton = new JButton("Aggiungi");
+    	JButton aggiungiButton = new JButton("Aggiungi coda");
+    	aggiungiButton.setFocusPainted(false);
+    	JButton salvaButton = new JButton("Salva");
+    	salvaButton.setFocusPainted(false);
     	buttonPanel.add(aggiungiButton);
+    	buttonPanel.add(salvaButton);
     	codaDialog.add(buttonPanel, BorderLayout.SOUTH);
     	
+    	numeroCodeAttuale = numeroCode;
+    	
     	aggiungiButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (numeroCodeAttuale < 5) {
+					switch (numeroCodeAttuale) {
+						case 1: {
+							gc.gridx = 0;     
+							gc.gridy = 2;
+							gc.insets = new Insets(5,0,0,0);
+							gc.anchor = GridBagConstraints.WEST;
+							mainPanelCD.add(nomeCoda2TextField, gc);
+							gc.gridx = 1;     
+							gc.gridy = 2;
+							gc.insets = new Insets(5,20,0,0);
+							gc.anchor = GridBagConstraints.CENTER;
+							mainPanelCD.add(priority2ComboBox, gc);	
+							mainPanelCD.revalidate();
+							break;
+						}
+						case 2: {
+							gc.gridx = 0;     
+							gc.gridy = 3;
+							gc.insets = new Insets(5,0,0,0);
+							gc.anchor = GridBagConstraints.WEST;
+							mainPanelCD.add(nomeCoda3TextField, gc);
+							gc.gridx = 1;     
+							gc.gridy = 3;
+							gc.insets = new Insets(5,20,0,0);
+							gc.anchor = GridBagConstraints.CENTER;
+							mainPanelCD.add(priority3ComboBox, gc);
+							mainPanelCD.revalidate();
+							break;
+						}
+						case 3: {
+							gc.gridx = 0;     
+							gc.gridy = 4;
+							gc.insets = new Insets(5,0,0,0);
+							gc.anchor = GridBagConstraints.WEST;
+							mainPanelCD.add(nomeCoda4TextField, gc);
+							gc.gridx = 1;     
+							gc.gridy = 4;
+							gc.insets = new Insets(5,20,0,0);
+							gc.anchor = GridBagConstraints.CENTER;
+							mainPanelCD.add(priority4ComboBox, gc);
+							mainPanelCD.revalidate();
+							break;
+						}
+						case 4: {
+							gc.gridx = 0;     
+							gc.gridy = 5;
+							gc.insets = new Insets(5,0,0,0);
+							gc.anchor = GridBagConstraints.WEST;
+							mainPanelCD.add(nomeCoda5TextField, gc);
+							gc.gridx = 1;     
+							gc.gridy = 5;
+							gc.insets = new Insets(5,20,0,0);
+							gc.anchor = GridBagConstraints.CENTER;
+							mainPanelCD.add(priority5ComboBox, gc);
+							mainPanelCD.revalidate();
+							break;
+						}
+					}
+				numeroCodeAttuale++;
+				} else {
+					JOptionPane.showMessageDialog(cercaView, "Limite massimo di code raggiunto", "Errore code", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+    	});
+    	
+    	salvaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				codaList = new ArrayList<Coda>();
@@ -475,7 +583,7 @@ public class TrattaDialogPanel extends JPanel {
 						}		
 					}
 				}
-				if (controller.checkCode(codaList))
+				if (viewsController.checkCode(codaList))
 					codaDialog.dispose();
 			}
 		});
@@ -521,11 +629,16 @@ public class TrattaDialogPanel extends JPanel {
 	}
 
 	public void setGate(String nomeGate) {
-		// TODO Auto-generated method stub
+		gateComboBox.setSelectedItem(nomeGate);
 		
 	}
 
 	public void setMaxPrenotazioni(int maxPrenotazioni) {
 		maxPrenotazioniTextField.setText("" + maxPrenotazioni);
+	}
+
+	public void setCode(LinkedList<Coda> code) {
+		 codaList = new ArrayList<Coda>(code);
+		
 	}
 }

@@ -191,4 +191,19 @@ public class PrenotazioneDAO extends JDBC {
         return PrenotaioneList.get(PrenotaioneList.size() - 1);
     }
 
+	public boolean update(int coda, String id) {
+		String query = "UPDATE " + tableName + " SET coda = ? WHERE id = ?";
+		try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setInt(1, coda);
+            statement.setString(2, id);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
+
 }

@@ -153,6 +153,14 @@ public class ViewsController {
 		return centoKilometri = dbController.getCentoKilometri();
 	}
 	
+	public LinkedList<CentoKilometri> getCentoKilometri(String nomeCompagnia) {
+		return centoKilometri = dbController.getCentoKilometri(nomeCompagnia);
+	}
+	
+	public LinkedList<Prenotazione> getPrenotazioni() {
+		return prenotazioni = dbController.getPrenotazioni();
+	}
+	
 	public LinkedList<Coda> getCodaFromIdTratta(int idTratta) {
 		code = new LinkedList<Coda>();
 		code = dbController.getCodaByIdTratta(idTratta);
@@ -328,22 +336,19 @@ public class ViewsController {
 	}
 	
 	
-	public void saveNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime dataInizio, LocalDateTime dataFine, int maxPrenotazioni, ArrayList<Coda> code) {
-		if (!destinazione.isBlank()) {
-			if (dataFine.isAfter(dataInizio)) {
-				if (dbController.saveNuovaTratta(destinazione, nomeCompagnia, dataInizio, dataFine, maxPrenotazioni, code)) {
-					JOptionPane.showMessageDialog(subFrame, "Tratta per (" + destinazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
-				}
-				else {
-					JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento tratta", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			else {
-				JOptionPane.showMessageDialog(subFrame, "La data di fine imbarco non può essere prima di quella di inizio", "Errore data", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		else {
+	public void saveNuovaTratta(String destinazione, String nomeCompagnia, String gate, LocalDateTime dataInizio, LocalDateTime dataFine, String maxPrenotazioni, ArrayList<Coda> code) {
+		if (destinazione.isBlank()) {
 			JOptionPane.showMessageDialog(subFrame, "Destinazione non valida", "Errore destinazione", JOptionPane.ERROR_MESSAGE);
+		} else if (dataFine.isBefore(dataInizio)) {
+			JOptionPane.showMessageDialog(subFrame, "La data di fine imbarco non può essere prima di quella di inizio", "Errore data", JOptionPane.ERROR_MESSAGE);
+		} else if (maxPrenotazioni.isBlank()) {
+			JOptionPane.showMessageDialog(subFrame, "Inserire un numero per il limite di prenotazioni", "Errore max prenotazione", JOptionPane.ERROR_MESSAGE);
+		} else if (code.isEmpty()) {
+			JOptionPane.showMessageDialog(subFrame, "Non sono state inserite code per la tratta", "Errore code", JOptionPane.ERROR_MESSAGE);
+		} else if (dbController.saveNuovaTratta(destinazione, nomeCompagnia, gate, dataInizio, dataFine, Integer.parseInt(maxPrenotazioni), code)) {
+			JOptionPane.showMessageDialog(subFrame, "Tratta per (" + destinazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+		} else {
+			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento tratta", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -468,6 +473,12 @@ public class ViewsController {
 		}
 	}
 
+	public boolean updatePrenotazione(String coda, int idTratta, String id) {
+		if (dbController.updatePrenotazione(coda, idTratta, id))
+			return true;
+		return false;
+	}
+	
 	public boolean updateCentoKilometri (String codice, String nomeCompagnia, int punti, int id) {
 		if (codice.isBlank()) {
 			JOptionPane.showMessageDialog(subFrame, "Il cento kilometri deve avere un codice", "Errore update", JOptionPane.ERROR_MESSAGE);
@@ -588,6 +599,8 @@ public class ViewsController {
 		LocalDateTime time = LocalDateTime.of(anno, mese, giorno, ora, minuti);
 		return time;
 	}
+
+	
 	
 	
 }

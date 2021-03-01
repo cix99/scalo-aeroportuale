@@ -63,6 +63,10 @@ public class DatabaseController {
     	return centoKilometriDao.find();
 	}
 	
+	public LinkedList<CentoKilometri> getCentoKilometri(String nomeCompagnia) {
+    	return centoKilometriDao.findByCompany(nomeCompagnia);
+	}
+	
 	public CentoKilometri getCentoKilometri(String centoKilometri, String nomeCompagnia) {
 		return centoKilometriDao.findByCodeAndCompany(centoKilometri, nomeCompagnia);
 	}
@@ -98,8 +102,8 @@ public class DatabaseController {
 		return false;
 	}
 
-	public boolean saveNuovaTratta(String destinazione, String nomeCompagnia, LocalDateTime inizioImbarco, LocalDateTime fineImbarco, int maxPrenotazioni, ArrayList<Coda> code) {
-		Tratta tratta = new Tratta(destinazione, new CompagniaAerea(nomeCompagnia), inizioImbarco, fineImbarco, maxPrenotazioni);
+	public boolean saveNuovaTratta(String destinazione, String nomeCompagnia, String gate, LocalDateTime inizioImbarco, LocalDateTime fineImbarco, int maxPrenotazioni, ArrayList<Coda> code) {
+		Tratta tratta = new Tratta(destinazione, new CompagniaAerea(nomeCompagnia), new Gate(gate), inizioImbarco, fineImbarco, maxPrenotazioni);
 		int idTratta = trattaDao.store(tratta);
 		if (idTratta != 0) {
 			if (saveNuoveCode(code, idTratta)) {
@@ -186,6 +190,19 @@ public class DatabaseController {
     	return false;
     }
     
+	public boolean updatePrenotazione(String coda, int idTratta, String id) {
+		int idCoda = codaDao.findByNameAndTratta(coda, idTratta).getId(); 
+		if (prenotazioneDao.update(idCoda, id))
+			return true;
+		return false;
+	} 
+    
+	public boolean updateCentoKilometri(String codice, String nomeCompagnia, int punti, int id) {
+		if (centoKilometriDao.update(codice, nomeCompagnia, punti, id))
+			return true;
+		return false;
+	}
+	
     public boolean updateNomeCompagnia(String nomeCompagnia, String oldNomeCompagnia) {
     	if (compagniaAereaDao.updateNomeCompagnia(nomeCompagnia, oldNomeCompagnia))
     		return true;
@@ -222,10 +239,5 @@ public class DatabaseController {
 		return false;
 	}
 
-	public boolean updateCentoKilometri(String codice, String nomeCompagnia, int punti, int id) {
-		if (centoKilometriDao.update(codice, nomeCompagnia, punti, id))
-			return true;
-		return false;
-	} 
     
 }

@@ -26,6 +26,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 
 import Controllers.ViewsController;
+import Models.CentoKilometri;
 import Models.Coda;
 import Models.Stato;
 import Models.Tratta;
@@ -43,10 +44,10 @@ public class NuovaPrenotazioneView extends JPanel {
 	private JTextField cognomeTextField;
 	private JLabel codicePrenotazioneLabel;
 	private JTextField codicePrenotazioneTextField;
-	private JLabel centoKilometriLabel;
-	private JTextField centoKilometriTextField;
 	private JLabel compagniaCentoKilometriLabel;
 	private JComboBox<String> compagniaCentoKilometriComboBox;
+	private JLabel centoKilometriLabel;
+	private JComboBox<String> centoKilometriComboBox;
 	private JLabel compagniaLabel;
 	private JComboBox<String> compagniaComboBox;
 	private JLabel trattaLabel;
@@ -103,29 +104,38 @@ public class NuovaPrenotazioneView extends JPanel {
 			}
 		});
 		
-		centoKilometriLabel = new JLabel("Cento Kilometri");
-		centoKilometriLabel.setForeground(Color.WHITE);
-		centoKilometriLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		centoKilometriTextField = new JTextField();
-		centoKilometriTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		centoKilometriTextField.setColumns(10);
-		centoKilometriTextField.setMinimumSize(new Dimension(195, 30));
-		centoKilometriTextField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				int pos = centoKilometriTextField.getCaretPosition();
-				centoKilometriTextField.setText(centoKilometriTextField.getText().toUpperCase());
-				centoKilometriTextField.setCaretPosition(pos);
-			}
-		});
-		
-		
 		compagniaCentoKilometriLabel = new JLabel("Compagnia");
 		compagniaCentoKilometriLabel.setForeground(Color.WHITE);
 		compagniaCentoKilometriLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		compagniaCentoKilometriComboBox = new JComboBox<String>(controller.getCompagnieAeree());
 		compagniaCentoKilometriComboBox.setEditable(false);
 		compagniaCentoKilometriComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		compagniaCentoKilometriComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+//				if (compagniaCentoKilometriComboBox.getSelectedIndex() != -1) {
+					LinkedList<CentoKilometri> centoKilometriList = controller.getCentoKilometri(compagniaCentoKilometriComboBox.getSelectedItem().toString());
+					String [] centoKilometriArray = new String[centoKilometriList.size() + 1];
+					ListIterator<CentoKilometri> centoKilometriCursor = centoKilometriList.listIterator();
+					centoKilometriArray[0] = "";
+					int j = 1;
+					while (centoKilometriCursor.hasNext()) {
+						CentoKilometri current = centoKilometriCursor.next();
+						centoKilometriArray[j] = current.getCodiceCompagnia();
+						j++;
+					}
+					UpdateCentoKilometriComboBox(centoKilometriArray);
+//				}
+			}
+		});
+		
+		centoKilometriLabel = new JLabel("Cento Kilometri");
+		centoKilometriLabel.setForeground(Color.WHITE);
+		centoKilometriLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		centoKilometriComboBox = new JComboBox<String>();
+		centoKilometriComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+
+
 		
 		compagniaLabel = new JLabel("Compagnia");
 		compagniaLabel.setForeground(Color.WHITE);
@@ -216,19 +226,19 @@ public class NuovaPrenotazioneView extends JPanel {
 		centerTitleBorder.setTitleColor(Color.WHITE);
 		centerTitleBorder.setTitleFont(new Font("Segoe UI", Font.PLAIN, 18));
 		midCenterPanel.setBorder(centerTitleBorder);
-		JPanel centoKilometriPanel = new JPanel(new BorderLayout());
-		centoKilometriPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
-		centoKilometriPanel.setBackground(new Color(0, 0, 153));
-		centoKilometriPanel.add(centoKilometriLabel, BorderLayout.WEST);
-		centoKilometriPanel.add(centoKilometriTextField, BorderLayout.SOUTH);
 		JPanel compagniaCentoKilometriPanel = new JPanel(new BorderLayout());
-		compagniaCentoKilometriPanel.setBorder(new EmptyBorder(0, 20, 0, 0));
+		compagniaCentoKilometriPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		compagniaCentoKilometriPanel.setBackground(new Color(0, 0, 153));
 		compagniaCentoKilometriPanel.add(compagniaCentoKilometriLabel, BorderLayout.WEST);
 		compagniaCentoKilometriPanel.add(compagniaCentoKilometriComboBox, BorderLayout.SOUTH);
+		JPanel centoKilometriPanel = new JPanel(new BorderLayout());
+		centoKilometriPanel.setBorder(new EmptyBorder(0, 20, 0, 0));
+		centoKilometriPanel.setBackground(new Color(0, 0, 153));
+		centoKilometriPanel.add(centoKilometriLabel, BorderLayout.WEST);
+		centoKilometriPanel.add(centoKilometriComboBox, BorderLayout.SOUTH);
 		
-		midCenterPanel.add(centoKilometriPanel);
 		midCenterPanel.add(compagniaCentoKilometriPanel);
+		midCenterPanel.add(centoKilometriPanel);
 		
 		JPanel midBottomPanel = new JPanel();
 		midBottomPanel.setBackground(new Color(0, 0, 153));
@@ -280,7 +290,7 @@ public class NuovaPrenotazioneView extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				controller.saveNuovaPrenotazione(nomeTextField.getText(), cognomeTextField.getText(), codicePrenotazioneTextField.getText().toString(), 
-						centoKilometriTextField.getText(), compagniaCentoKilometriComboBox.getSelectedItem().toString(), 
+						centoKilometriComboBox.getSelectedItem().toString(), compagniaCentoKilometriComboBox.getSelectedItem().toString(), 
 						compagniaComboBox.getSelectedItem().toString(), idTrattaList[trattaComboBox.getSelectedIndex()], codaComboBox.getSelectedItem().toString());
 				
 			}
@@ -292,6 +302,14 @@ public class NuovaPrenotazioneView extends JPanel {
 		add(mainPanel, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
 		
+	}
+	
+	public void UpdateCentoKilometriComboBox (String[] centoKilometriArray) {
+		centoKilometriComboBox.removeAllItems();
+		for (int i = 0; i < centoKilometriArray.length; i++) {
+			centoKilometriComboBox.addItem(centoKilometriArray[i]);	
+		}
+		mainPanel.repaint();
 	}
 	
 	public void UpdateTrattaComboBox (String[] trattaArray) {

@@ -39,16 +39,21 @@ public class TableModelPrenotazione extends AbstractTableModel {
 		return numberOfColumns;
 	}
 
-//	@Override
-//	public boolean isCellEditable(int rowIndex, int columnIndex) {
-//		switch (columnIndex) {
-//		case 5:
-//			return true;
-//		default:
-//			return false;
-//		}
-//	}
-
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		switch (columnIndex) {
+		case 1:
+			return true;
+		case 4:
+			return true;
+		case 5:
+			return true;
+		case 7:
+			return true;
+		default:
+			return false;
+		}
+	}
 	
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
@@ -76,19 +81,14 @@ public class TableModelPrenotazione extends AbstractTableModel {
 		}
 	}
 
-//	@Override
-//	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-//		if (prenotazioni == null) return;
-//		Prenotazione prenotazione = prenotazioni.get(rowIndex);
-//		switch (columnIndex) {
-//			case 5:
-//				prenotazione.setImbarcato((boolean) aValue);
-//				controller.updateImbarcatoInDatabase((boolean) aValue, prenotazione.getId());
-//				break;
-//			default:
-//				return;
-//		}
-//	}
+	public boolean updateRow(String coda, int row) {         
+		if (controller.updatePrenotazione( coda, prenotazioni.get(row).getIdTratta(), prenotazioni.get(row).getId())) {
+			prenotazioni = controller.getPrenotazioni();
+			fireTableDataChanged();
+			return true;
+		}
+		return false;
+	}
 	
 	public void removeRow(int row) {          //removes a row based on number from the data
 		if (controller.deletePrenotazione(prenotazioni.get(row).getId())) {
