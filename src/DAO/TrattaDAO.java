@@ -3,8 +3,11 @@ package DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
+import Models.Coda;
 import Models.Stato;
 import Models.Tratta;
 
@@ -230,6 +233,24 @@ public class TrattaDAO extends JDBC {
             statement.setInt(3, tratta.getId());
             statement.executeUpdate();
             statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
+	
+	public boolean update(String gate, LocalDateTime dataInizio, LocalDateTime dataFine, int max, int idTratta) {
+		String query = "UPDATE " + tableName + " SET gate = ?, ora_inizio_imbarco_stimato = ?, ora_fine_imbarco_stimato = ?, max_prenotazioni = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, gate);
+            statement.setObject(2, dataInizio);
+            statement.setObject(3, dataFine);
+            statement.setInt(4, max);
+            statement.setInt(5, idTratta);
+            statement.executeUpdate();
+            statement.close();            
         }catch(SQLException e){
             System.out.println(e);
             return false;

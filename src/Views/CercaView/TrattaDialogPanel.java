@@ -65,10 +65,12 @@ public class TrattaDialogPanel extends JPanel {
 	private JLabel codeLabel;
 	private JButton codeButton;
 	private ArrayList<Coda> codaList;
+	private ArrayList<Coda> nuoveCodeList;
 	private JLabel maxPrenotazioniLabel;
 	private JTextField maxPrenotazioniTextField;
 	
 	private int numeroCodeAttuale;
+	private int idTratta;
 	
 	private String[] hours = {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", 
 			  "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
@@ -315,7 +317,7 @@ public class TrattaDialogPanel extends JPanel {
 																		datePickerEnd.getJDateInstantPanel().getModel().getDay(),
 																		Integer.parseInt(hourEndComboBox.getSelectedItem().toString()), 
 																		Integer.parseInt(minuteEndComboBox.getSelectedItem().toString()));
-				viewsController.saveNuovaTratta(destinazioneTextField.getText(), compagniaComboBox.getSelectedItem().toString(), gateComboBox.getSelectedItem().toString(),dataInizio, dataFine, maxPrenotazioniTextField.getText(), codaList);
+				viewsController.updateTratta(idTratta, gateComboBox.getSelectedItem().toString(), dataInizio, dataFine, maxPrenotazioniTextField.getText(), nuoveCodeList, codaList.size());
 			}
 		});
 		
@@ -545,37 +547,36 @@ public class TrattaDialogPanel extends JPanel {
 				} else {
 					JOptionPane.showMessageDialog(cercaView, "Limite massimo di code raggiunto", "Errore code", JOptionPane.ERROR_MESSAGE);
 				}
-				
 			}
     	});
     	
     	salvaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				codaList = new ArrayList<Coda>();
+				nuoveCodeList = new ArrayList<Coda>();
 				if (!nomeCoda1TextField.getText().isBlank())
-					codaList.add(new Coda(nomeCoda1TextField.getText(), Integer.parseInt(priority1ComboBox.getSelectedItem().toString())));
-				if (numeroCode > 1) {
-					for (int i = 2; i <= numeroCode; i++) {
+					nuoveCodeList.add(new Coda(nomeCoda1TextField.getText(), Integer.parseInt(priority1ComboBox.getSelectedItem().toString())));
+				if (numeroCodeAttuale > 1) {
+					for (int i = 1; i <= numeroCodeAttuale; i++) {
 						switch (i) {
 							case 2: {
 								if (!nomeCoda2TextField.getText().isBlank())
-									codaList.add(new Coda(nomeCoda2TextField.getText(),Integer.parseInt(priority2ComboBox.getSelectedItem().toString())));
+									nuoveCodeList.add(new Coda(nomeCoda2TextField.getText(),Integer.parseInt(priority2ComboBox.getSelectedItem().toString())));
 								break;
 							}
 							case 3: {
 								if (!nomeCoda3TextField.getText().isBlank())
-									codaList.add(new Coda(nomeCoda3TextField.getText(),Integer.parseInt(priority3ComboBox.getSelectedItem().toString())));
+									nuoveCodeList.add(new Coda(nomeCoda3TextField.getText(),Integer.parseInt(priority3ComboBox.getSelectedItem().toString())));
 								break;
 							}
 							case 4: {
 								if (!nomeCoda4TextField.getText().isBlank())
-									codaList.add(new Coda(nomeCoda4TextField.getText(),Integer.parseInt(priority4ComboBox.getSelectedItem().toString())));
+									nuoveCodeList.add(new Coda(nomeCoda4TextField.getText(),Integer.parseInt(priority4ComboBox.getSelectedItem().toString())));
 								break;
 							}
 							case 5: {
 								if (!nomeCoda5TextField.getText().isBlank())
-									codaList.add(new Coda(nomeCoda5TextField.getText(),Integer.parseInt(priority5ComboBox.getSelectedItem().toString())));
+									nuoveCodeList.add(new Coda(nomeCoda5TextField.getText(),Integer.parseInt(priority5ComboBox.getSelectedItem().toString())));
 								break;
 							}
 							default:
@@ -583,13 +584,17 @@ public class TrattaDialogPanel extends JPanel {
 						}		
 					}
 				}
-				if (viewsController.checkCode(codaList))
+				if (viewsController.checkCode(nuoveCodeList))
 					codaDialog.dispose();
 			}
 		});
     	
     	codaDialog.setLocationRelativeTo(null);
     	codaDialog.setVisible(true);
+	}
+	
+	public void setIdTratta(int id) {
+		idTratta = id;	
 	}
 	
 	public void setDestinazione(String destinazione) {
@@ -641,4 +646,5 @@ public class TrattaDialogPanel extends JPanel {
 		 codaList = new ArrayList<Coda>(code);
 		
 	}
+
 }

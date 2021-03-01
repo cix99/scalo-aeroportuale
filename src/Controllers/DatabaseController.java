@@ -126,9 +126,7 @@ public class DatabaseController {
     	int puntiValore;
     	try {
     	   puntiValore = Integer.parseInt(punti);
-    	}
-    	catch (NumberFormatException e)
-    	{
+    	} catch (NumberFormatException e) {
     	   puntiValore = 0;
     	}
     	CompagniaAerea compagniaAerea = new CompagniaAerea(nomeCompagnia);
@@ -190,6 +188,34 @@ public class DatabaseController {
     	return false;
     }
     
+	public boolean updateTratta(int idTratta, String gate, LocalDateTime dataInizio, LocalDateTime dataFine, String maxPrenotazione, ArrayList<Coda> nuoveCodeList, int numeroCodeUpdate) {
+		int max;
+    	try {
+    	   max = Integer.parseInt(maxPrenotazione);
+    	} catch (NumberFormatException e) {
+    	   max = 0;
+    	   return false;
+    	}
+		if (trattaDao.update(gate, dataInizio, dataFine, max, idTratta)) {
+			if (updateCode(nuoveCodeList, idTratta, numeroCodeUpdate)) {
+				for (int i = 0; i < numeroCodeUpdate; i++)
+					nuoveCodeList.remove(0);
+				if (!saveNuoveCode(nuoveCodeList, idTratta)) 
+					return false;
+			}
+		}
+		return true;
+	}  
+	
+	public boolean updateCode(ArrayList<Coda> code, int idTratta, int numeroCodeUpdate) {
+		for (int i = 0; i < numeroCodeUpdate; i ++) { 
+			code.get(i).setIdTratta(idTratta);
+			if (!codaDao.update(code.get(i)))
+				return false;
+	    }
+		return true;
+	}
+    
 	public boolean updatePrenotazione(String coda, int idTratta, String id) {
 		int idCoda = codaDao.findByNameAndTratta(coda, idTratta).getId(); 
 		if (prenotazioneDao.update(idCoda, id))
@@ -238,6 +264,5 @@ public class DatabaseController {
 			return true;
 		return false;
 	}
-
     
 }

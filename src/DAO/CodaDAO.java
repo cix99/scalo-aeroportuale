@@ -181,4 +181,19 @@ public class CodaDAO extends JDBC {
         }
         return true;
 	}
+
+	public boolean update(Coda coda) {
+		String query = "UPDATE " + tableName + " SET priority = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setObject(1, coda.getPriority());
+            statement.setInt(2, findByNameAndTratta(coda.getNomeCoda(), coda.getIdTratta()).getId());
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
 }

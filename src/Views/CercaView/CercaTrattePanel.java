@@ -127,6 +127,7 @@ public class CercaTrattePanel extends JPanel {
 		menuPanel.add(menuLabel);
 		
 		TrattaDialogPanel trattaDialogPanel = new TrattaDialogPanel(viewsController, cercaView);
+		trattaDialogPanel.setIdTratta((int) model.getValueAt(table.getSelectedRow(), 0));
 		trattaDialogPanel.setDestinazione(model.getValueAt(table.getSelectedRow(), 1).toString());
 		trattaDialogPanel.setCompagniaAerea(model.getValueAt(table.getSelectedRow(), 2).toString());
 		trattaDialogPanel.setInizioImbarcoStimato(model.getValueAt(table.getSelectedRow(), 3).toString());

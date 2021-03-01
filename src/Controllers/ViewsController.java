@@ -473,49 +473,67 @@ public class ViewsController {
 		}
 	}
 
-	public boolean updatePrenotazione(String coda, int idTratta, String id) {
-		if (dbController.updatePrenotazione(coda, idTratta, id))
+	public boolean updateTratta(int idTratta, String gate, LocalDateTime dataInizio, LocalDateTime dataFine, String maxPrenotazione, ArrayList<Coda> nuoveCodeList, int numeroCodeUpdate) {
+		if (dataFine.isBefore(dataInizio)) {
+			JOptionPane.showMessageDialog(subFrame, "La data di fine imbarco non può essere prima di quella di inizio", "Errore data", JOptionPane.ERROR_MESSAGE);
+		} else if (maxPrenotazione.isBlank()) {
+			JOptionPane.showMessageDialog(subFrame, "Inserire un numero per il limite di prenotazioni", "Errore max prenotazione", JOptionPane.ERROR_MESSAGE);
+		} else if (maxPrenotazione.equals("0") || maxPrenotazione.equals("00") || maxPrenotazione.equals("000")) {
+			JOptionPane.showMessageDialog(subFrame, "Il limite di prenotazioni deve essere maggiore di 0", "Errore max prenotazione", JOptionPane.ERROR_MESSAGE);
+		} else if (!dbController.updateTratta(idTratta, gate, dataInizio, dataFine, maxPrenotazione, nuoveCodeList, numeroCodeUpdate)) {
+			JOptionPane.showMessageDialog(subFrame, "Aggiornamento tratta non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(subFrame, "Tratta aggiornata con successo!", "Update riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 			return true;
+		}
+		return false;
+	}
+	
+	public boolean updatePrenotazione(String coda, int idTratta, String id) {
+		if (!dbController.updatePrenotazione(coda, idTratta, id)) {
+			
+		} else {
+			JOptionPane.showMessageDialog(subFrame, "Prenotazione aggiornata con successo!", "Update riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+			return true;
+		}
 		return false;
 	}
 	
 	public boolean updateCentoKilometri (String codice, String nomeCompagnia, int punti, int id) {
 		if (codice.isBlank()) {
 			JOptionPane.showMessageDialog(subFrame, "Il cento kilometri deve avere un codice", "Errore update", JOptionPane.ERROR_MESSAGE);
-			return false;
 		} else if (!dbController.updateCentoKilometri(codice, nomeCompagnia, punti, id)) {
 			JOptionPane.showMessageDialog(subFrame, "Aggiornamento cento kilometri non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
-			return false;
 		} else {
 			JOptionPane.showMessageDialog(subFrame, "Cento kilometri aggiornato con successo!", "Update riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	public boolean updateNomeCompagnia (String nomeCompagnia, String oldNomeCompagnia) {
 		if (nomeCompagnia.isBlank()) {
 			JOptionPane.showMessageDialog(subFrame, "La compagnia deve avere un nome", "Errore update", JOptionPane.ERROR_MESSAGE);
-			return false;
 		} else if (!dbController.updateNomeCompagnia(nomeCompagnia, oldNomeCompagnia)) {
 			JOptionPane.showMessageDialog(subFrame, "Aggiornamento compagnia non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
-			return false;
+			
 		} else {
 			JOptionPane.showMessageDialog(subFrame, "Compagnia aerea aggiornata con successo!", "Update riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	public boolean updateNomeGate (String nomeGate, String oldNomeGate) {
 		if (nomeGate.isBlank()) {
 			JOptionPane.showMessageDialog(subFrame, "Il gate deve avere un nome", "Errore update", JOptionPane.ERROR_MESSAGE);
-			return false;
 		} else if (!dbController.updateNomeGate(nomeGate, oldNomeGate)) {
 			JOptionPane.showMessageDialog(subFrame, "Aggiornamento gate non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
-			return false;
 		} else {
 			JOptionPane.showMessageDialog(subFrame, "Gate aggiornato con successo!", "Update riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	public void updateInizioImbarco() {
@@ -598,9 +616,7 @@ public class ViewsController {
 	public LocalDateTime convertiIntToDate(int anno, int mese, int giorno, int ora, int minuti) {
 		LocalDateTime time = LocalDateTime.of(anno, mese, giorno, ora, minuti);
 		return time;
-	}
-
-	
+	}	
 	
 	
 }
