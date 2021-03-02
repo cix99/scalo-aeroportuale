@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -58,7 +59,7 @@ public class ViewsController {
     	
 		listaUtenti = utenti.getListaUtenti();
 		ListIterator<Utente> cursor = listaUtenti.listIterator();
-		//TODO: Problema: se viene effettuato il logout e si inseriscono credenziali sbagliate non appare più il JDialog
+		//TODO: Problema: se viene effettuato il logout e si inseriscono credenziali sbagliate non appare piï¿½ il JDialog
 		while (cursor.hasNext()) {
 			Utente current = cursor.next();
 			if (current.getUtenteName().equals(username) && current.getUtentePassword().equals(password)) {
@@ -293,11 +294,11 @@ public class ViewsController {
 	//Save
 	public void saveNuovaPrenotazione(String nome, String cognome, String codicePrenotazione, String centoKilometri, String compagniaCentoKilometri, String compagniaVolo, int idTratta, String coda) {
 		if (nome.isBlank()) {
-			JOptionPane.showMessageDialog(subFrame, "Il campo nome non può essere vuoto", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "Il campo nome non puï¿½ essere vuoto", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
 		} else if (cognome.isBlank()) {
-			JOptionPane.showMessageDialog(subFrame, "Il campo cognome non può essere vuoto", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "Il campo cognome non puï¿½ essere vuoto", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
 		} else if (codicePrenotazione.isBlank()) {
-			JOptionPane.showMessageDialog(subFrame, "Il campo codice non può essere vuoto", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "Il campo codice non puï¿½ essere vuoto", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
 		} else if (codicePrenotazione.length() != 6) {
 			JOptionPane.showMessageDialog(subFrame, "Il campo codice deve avere 6 caratteri", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
 		} else if (dbController.isPrenotazionePossible(idTratta) == false) {
@@ -310,7 +311,7 @@ public class ViewsController {
 						JOptionPane.showMessageDialog(subFrame, "Prenotazione (" + codicePrenotazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 					}
 					else {
-						JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(subFrame, "L\'operazione non ï¿½ andata a buon fine", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				else {
@@ -322,7 +323,7 @@ public class ViewsController {
 					JOptionPane.showMessageDialog(subFrame, "Prenotazione (" + codicePrenotazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 				}
 				else {
-					JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(subFrame, "L\'operazione non ï¿½ andata a buon fine", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
@@ -334,17 +335,17 @@ public class ViewsController {
 		if (destinazione.isBlank()) {
 			JOptionPane.showMessageDialog(subFrame, "Destinazione non valida", "Errore destinazione", JOptionPane.ERROR_MESSAGE);
 		} else if (dataFine.isBefore(dataInizio)) {
-			JOptionPane.showMessageDialog(subFrame, "La data di fine imbarco non può essere prima di quella di inizio", "Errore data", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "La data di fine imbarco non puï¿½ essere prima di quella di inizio", "Errore data", JOptionPane.ERROR_MESSAGE);
 		} else if (maxPrenotazioni.isBlank()) {
 			JOptionPane.showMessageDialog(subFrame, "Inserire un numero per il limite di prenotazioni", "Errore max prenotazione", JOptionPane.ERROR_MESSAGE);
 		} else if (code.isEmpty()) {
 			JOptionPane.showMessageDialog(subFrame, "Non sono state inserite code per la tratta", "Errore code", JOptionPane.ERROR_MESSAGE);
 		} else if (!dbController.isGateAvailable(gate, dataInizio, dataFine)) {
-			JOptionPane.showMessageDialog(subFrame, "Il gate non è libero nell'arco di tempo selezionato", "Errore gate", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "Il gate non ï¿½ libero nell'arco di tempo selezionato", "Errore gate", JOptionPane.ERROR_MESSAGE);
 		} else if (dbController.saveNuovaTratta(destinazione, nomeCompagnia, gate, dataInizio, dataFine, Integer.parseInt(maxPrenotazioni), code)) {
 			JOptionPane.showMessageDialog(subFrame, "Tratta per (" + destinazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		} else {
-			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento tratta", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "L\'operazione non ï¿½ andata a buon fine", "Errore inserimento tratta", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -353,15 +354,15 @@ public class ViewsController {
 		if (codice.isBlank()) {
 			JOptionPane.showMessageDialog(subFrame, "Il cento kilometri deve avere un codice", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
 		} else if (nome.isBlank()) {
-			JOptionPane.showMessageDialog(subFrame, "Il campo nome non può essere vuoto", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "Il campo nome non puï¿½ essere vuoto", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
 		} else if (cognome.isBlank()) {
-			JOptionPane.showMessageDialog(subFrame, "Il campo cognome non può essere vuoto", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "Il campo cognome non puï¿½ essere vuoto", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
 		} else if (dbController.existCentoKilometri(codice, nomeCompagnia)){
-			JOptionPane.showMessageDialog(subFrame, "Il cento kilometri inserito esiste già per la compagnia (" + nomeCompagnia + ")", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "Il cento kilometri inserito esiste giï¿½ per la compagnia (" + nomeCompagnia + ")", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
 		} else if (dbController.saveNuovoCentoKilometri(codice, nomeCompagnia, nome, cognome, punti)) {
 			JOptionPane.showMessageDialog(subFrame, "Cliente (" + codice + ") cento kilometri inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		} else {
-			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "L\'operazione non ï¿½ andata a buon fine", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -372,7 +373,7 @@ public class ViewsController {
 		} else if (dbController.saveNuovoCompagniaAerea(nomeCompagnia)) {
 			JOptionPane.showMessageDialog(subFrame, "Compagnia " + nomeCompagnia + " inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		} else {
-			JOptionPane.showMessageDialog(subFrame, "La compagnia è già stata inserita", "Errore inserimento compagnia", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "La compagnia ï¿½ giï¿½ stata inserita", "Errore inserimento compagnia", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -383,7 +384,7 @@ public class ViewsController {
 		} else if (dbController.saveNuovoGate(nomeGate)) {
 			JOptionPane.showMessageDialog(subFrame, "Gate " + nomeGate + " inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		} else {
-			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento gate", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "L\'operazione non ï¿½ andata a buon fine", "Errore inserimento gate", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -397,7 +398,7 @@ public class ViewsController {
 						return false;
 					}	
 					else if (codeArrayList.get(j).getPriority() == codeArrayList.get(i).getPriority()) {
-						JOptionPane.showMessageDialog(subFrame, "Non possono esserci code con la stessa priorità (" + codeArrayList.get(i).getPriority() +")", "Errore inserimento code", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(subFrame, "Non possono esserci code con la stessa prioritï¿½ (" + codeArrayList.get(i).getPriority() +")", "Errore inserimento code", JOptionPane.ERROR_MESSAGE);
 						return false;
 					}
 				}
@@ -477,13 +478,13 @@ public class ViewsController {
 
 	public boolean updateTratta(int idTratta, String gate, LocalDateTime dataInizio, LocalDateTime dataFine, String maxPrenotazione, ArrayList<Coda> nuoveCodeList, int numeroCodeUpdate) {
 		if (dataFine.isBefore(dataInizio)) {
-			JOptionPane.showMessageDialog(subFrame, "La data di fine imbarco non può essere prima di quella di inizio", "Errore data", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "La data di fine imbarco non puï¿½ essere prima di quella di inizio", "Errore data", JOptionPane.ERROR_MESSAGE);
 		} else if (maxPrenotazione.isBlank()) {
 			JOptionPane.showMessageDialog(subFrame, "Inserire un numero per il limite di prenotazioni", "Errore max prenotazione", JOptionPane.ERROR_MESSAGE);
 		} else if (maxPrenotazione.equals("0") || maxPrenotazione.equals("00") || maxPrenotazione.equals("000")) {
 			JOptionPane.showMessageDialog(subFrame, "Il limite di prenotazioni deve essere maggiore di 0", "Errore max prenotazione", JOptionPane.ERROR_MESSAGE);
 		} else if (!dbController.isGateAvailable(gate, dataInizio, dataFine)) {
-			JOptionPane.showMessageDialog(subFrame, "Il gate non è libero nell'arco di tempo selezionato", "Errore gate", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "Il gate non ï¿½ libero nell'arco di tempo selezionato", "Errore gate", JOptionPane.ERROR_MESSAGE);
 		} else if (!dbController.updateTratta(idTratta, gate, dataInizio, dataFine, maxPrenotazione, nuoveCodeList, numeroCodeUpdate)) {
 			JOptionPane.showMessageDialog(subFrame, "Aggiornamento tratta non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
 		} else {
@@ -589,7 +590,7 @@ public class ViewsController {
 				}
 			}
 			else {
-				JOptionPane.showMessageDialog(subFrame, "La coda " + nomeCoda + " è già stata chiusa", "Errore update", JOptionPane.ERROR_MESSAGE); //questo non dovrebbe mai apparire
+				JOptionPane.showMessageDialog(subFrame, "La coda " + nomeCoda + " ï¿½ giï¿½ stata chiusa", "Errore update", JOptionPane.ERROR_MESSAGE); //questo non dovrebbe mai apparire
 			}	
 		}
 		showCode(tratte.getFirst());
@@ -620,7 +621,11 @@ public class ViewsController {
 	public LocalDateTime convertiIntToDate(int anno, int mese, int giorno, int ora, int minuti) {
 		LocalDateTime time = LocalDateTime.of(anno, mese, giorno, ora, minuti);
 		return time;
-	}	
+	}
+
+	public Map<String, Map> getStatistiche(){
+    	return dbController.getStatistiche();
+	}
 	
 	
 }

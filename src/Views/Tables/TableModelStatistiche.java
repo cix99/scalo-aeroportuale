@@ -1,6 +1,7 @@
 package Views.Tables;
 
 import java.util.LinkedList;
+import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -10,9 +11,9 @@ import Models.Gate;
 @SuppressWarnings("serial")
 public class TableModelStatistiche extends AbstractTableModel {
 
-	private LinkedList<Gate> gates;
-	private int numberOfColumns = 7;
-	private String[] columnNames = {"Nome Gate", "Stimato giornaliero", "Effettivo giornaliero", "Stimato settimanale", "Effettivo settimanale", "Stimato mensile", "Effettivo mensile"};
+	private Map<String, Map> statistiche;
+	private int numberOfColumns = 10;
+	private String[] columnNames = {"Nome Gate", "Voli Ultime 24 ore", "Stimato Ultime 24 ore", "Effettivo Ultime 24 ore", "Voli ultima settimana", "Stimato settimanale", "Effettivo settimanale", "Voli ultimo mese", "Stimato mensile", "Effettivo mensile"};
 	
 	private ViewsController controller;
 	
@@ -20,8 +21,8 @@ public class TableModelStatistiche extends AbstractTableModel {
 		this.controller = controller;
 	}
 	
-	public void setData (LinkedList<Gate> gates) {
-		this.gates = gates;
+	public void setData (Map<String, Map> statistiche) {
+		this.statistiche = statistiche;
 	}
 	
 	@Override
@@ -31,7 +32,7 @@ public class TableModelStatistiche extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return gates.size();
+		return statistiche.size();
 	}
 
 	@Override
@@ -45,17 +46,23 @@ public class TableModelStatistiche extends AbstractTableModel {
 		case 0:
 			return String.class;
 		case 1:
-			return Float.class;
+			return Integer.class;
 		case 2:
-			return Float.class;
+			return Integer.class;
 		case 3:
-			return Float.class;
+			return Integer.class;
 		case 4:
-			return Float.class;
+			return Integer.class;
 		case 5:
-			return Float.class;
+			return Integer.class;
 		case 6:
-			return Float.class;
+			return Integer.class;
+		case 7:
+			return Integer.class;
+		case 8:
+			return Integer.class;
+		case 9:
+			return Integer.class;
 		default:
 			return null;
 		}
@@ -63,10 +70,11 @@ public class TableModelStatistiche extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Gate gate = gates.get(rowIndex);
+		Map<String, Map> gate = statistiche.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			return gate.getNomeGate();
+			//return gate.getNomeGate();
+			return 0.0f
 		case 1:
 			return 0.0f; //utilizzo stimato giornaliero
 		case 2:

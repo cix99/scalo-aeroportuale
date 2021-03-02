@@ -54,7 +54,7 @@ public class StatisticheView extends JFrame{
     	
     	tableModel = new TableModelStatistiche(controller);
 		table = new JTable(tableModel);
-		tableModel.setData(controller.getGatesList());
+		tableModel.setData(controller.getStatistiche());
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBackground(new Color (0, 0, 153));
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();

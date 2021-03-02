@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import Models.Stato;
 import Models.Tratta;
@@ -361,5 +363,115 @@ public class TrattaDAO extends JDBC {
 	    }
 	    return trattaList;
 	}
+
+	/*
+	SELECT
+        tratta.gate,
+
+        SUM(giornaliero.voli) as voli_giornalieri,
+        SUM(giornaliero.utilizzo_stimato) as s_giornaliero,
+        SUM(giornaliero.utilizzo_effettivo) as e_giornaliero,
+
+        SUM(settimanale.voli) as voli_settimanali,
+        SUM(settimanale.utilizzo_stimato) as s_settimanale,
+        SUM(settimanale.utilizzo_effettivo) as e_settimanale,
+
+        SUM(mensile.voli) as voli_mensili,
+        SUM(mensile.utilizzo_stimato) as s_mensile,
+        SUM(mensile.utilizzo_effettivo) as e_mensile
+
+    FROM scalo_aeroportuale.tratta
+
+    LEFT JOIN (
+        SELECT
+            gate,
+            1 as voli,
+            SUM(
+                DATE_PART('day', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) * 24 * 60 +
+                DATE_PART('hour', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) * 60 +
+                DATE_PART('minute', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato)
+            ) AS utilizzo_stimato,
+            SUM(
+                DATE_PART('day', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) * 24 * 60 +
+                DATE_PART('hour', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) * 60 +
+                DATE_PART('minute', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo)
+            ) AS utilizzo_effettivo
+        FROM scalo_aeroportuale.tratta
+        WHERE ora_inizio_imbarco_stimato BETWEEN (now() - interval '1 day') AND (now())
+        GROUP BY gate
+    ) AS giornaliero ON giornaliero.gate = tratta.gate
+
+
+    LEFT JOIN (
+        SELECT
+            gate,
+            1 as voli,
+            SUM(
+                DATE_PART('day', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) * 24 * 60 +
+                DATE_PART('hour', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) * 60 +
+                DATE_PART('minute', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato)
+            ) AS utilizzo_stimato,
+            SUM(
+                DATE_PART('day', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) * 24 * 60 +
+                DATE_PART('Hour', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) * 60 +
+                DATE_PART('minute', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo)
+            ) AS utilizzo_effettivo
+        FROM scalo_aeroportuale.tratta
+        WHERE ora_inizio_imbarco_stimato BETWEEN (now() - interval '1 week') AND (now())
+        GROUP BY gate
+    ) AS settimanale ON settimanale.gate = tratta.gate
+
+    LEFT JOIN (
+        SELECT
+            gate,
+            1 as voli,
+            SUM(
+                DATE_PART('day', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) * 24 * 60 +
+                DATE_PART('hour', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) * 60 +
+                DATE_PART('minute', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato)
+            ) AS utilizzo_stimato,
+            SUM(
+                DATE_PART('day', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) * 24 * 60 +
+                DATE_PART('hour', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) * 60 +
+                DATE_PART('minute', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo)
+            ) AS utilizzo_effettivo
+        FROM scalo_aeroportuale.tratta
+        WHERE ora_inizio_imbarco_stimato BETWEEN (now() - interval '1 month') AND (now())
+        GROUP BY gate
+    ) AS mensile ON mensile.gate = tratta.gate
+
+    GROUP BY tratta.gate
+	 */
+	public Map<String, Map> statistiche() {
+	    String query = "SELECT tratta.gate, SUM(giornaliero.voli) as voli_giornalieri, SUM(giornaliero.utilizzo_stimato) as s_giornaliero, SUM(giornaliero.utilizzo_effettivo) as e_giornaliero, SUM(settimanale.voli) as voli_settimanali, SUM(settimanale.utilizzo_stimato) as s_settimanale, SUM(settimanale.utilizzo_effettivo) as e_settimanale, SUM(mensile.voli) as voli_mensili, SUM(mensile.utilizzo_stimato) as s_mensile, SUM(mensile.utilizzo_effettivo) as e_mensile FROM scalo_aeroportuale.tratta LEFT JOIN( SELECT gate, 1 as voli, SUM( DATE_PART('day', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) * 24 * 60 + DATE_PART('hour', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) * 60 + DATE_PART('minute', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato)) AS utilizzo_stimato, SUM( DATE_PART('day', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) * 24 * 60 + DATE_PART('hour', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) * 60 + DATE_PART('minute', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) ) AS utilizzo_effettivo FROM scalo_aeroportuale.tratta WHERE ora_inizio_imbarco_stimato BETWEEN (now() - interval '1 day') AND (now()) GROUP BY gate ) AS giornaliero ON giornaliero.gate = tratta.gate LEFT JOIN ( SELECT gate, 1 as voli, SUM( DATE_PART('day', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) * 24 * 60 + DATE_PART('hour', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) * 60 + DATE_PART('minute', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) ) AS utilizzo_stimato, SUM( DATE_PART('day', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) * 24 * 60 + DATE_PART('Hour', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) * 60 + DATE_PART('minute', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) ) AS utilizzo_effettivo FROM scalo_aeroportuale.tratta WHERE ora_inizio_imbarco_stimato BETWEEN (now() - interval '1 week') AND (now()) GROUP BY gate ) AS settimanale ON settimanale.gate = tratta.gate LEFT JOIN ( SELECT gate, 1 as voli, SUM( DATE_PART('day', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) * 24 * 60 + DATE_PART('hour', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) * 60 + DATE_PART('minute', tratta.ora_fine_imbarco_stimato - tratta.ora_inizio_imbarco_stimato) ) AS utilizzo_stimato, SUM( DATE_PART('day', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) * 24 * 60 + DATE_PART('hour', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) * 60 + DATE_PART('minute', tratta.ora_fine_imbarco_effettivo - tratta.ora_inizio_imbarco_effettivo) ) AS utilizzo_effettivo FROM scalo_aeroportuale.tratta WHERE ora_inizio_imbarco_stimato BETWEEN (now() - interval '1 month') AND (now()) GROUP BY gate ) AS mensile ON mensile.gate = tratta.gate GROUP BY tratta.gate";
+
+        Map<String, Map> statisticheGate = new HashMap<String, Map>();
+
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                // Crea la mappa statistiche del singolo gate
+                Map<String, Integer> statisticheMap = new HashMap<String, Integer>();
+                statisticheMap.put("voli_giornalieri" , resultSet.getInt("voli_giornalieri"));
+                statisticheMap.put("s_giornaliero" , resultSet.getInt("s_giornaliero"));
+                statisticheMap.put("e_giornaliero" , resultSet.getInt("e_giornaliero"));
+                statisticheMap.put("voli_settimanali" , resultSet.getInt("voli_settimanali"));
+                statisticheMap.put("s_settimanale" , resultSet.getInt("s_settimanale"));
+                statisticheMap.put("e_settiamanale" , resultSet.getInt("e_settimanale"));
+                statisticheMap.put("voli_mensili" , resultSet.getInt("voli_mensili"));
+                statisticheMap.put("s_mensile" , resultSet.getInt("s_mensile"));
+                statisticheMap.put("e_mensile" , resultSet.getInt("e_mensile"));
+
+                // Aggiungi il gate con le relative statistiche nella mappa generale
+                statisticheGate.put(resultSet.getString("gate"), statisticheMap);
+            }
+            resultSet.close();
+            statement.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        return statisticheGate;
+    }
 
 }

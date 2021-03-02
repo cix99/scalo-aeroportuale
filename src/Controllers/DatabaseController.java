@@ -3,6 +3,7 @@ package Controllers;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Map;
 
 import DAO.*;
 import Models.*;
@@ -305,6 +306,10 @@ public class DatabaseController {
 			}
 		}
 		return false;
+	}
+
+	public Map<String, Map> getStatistiche(){
+		return trattaDao.statistiche();
 	}
     
 }
