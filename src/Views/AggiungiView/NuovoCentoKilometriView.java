@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 import Controllers.ViewsController;
 
@@ -29,6 +30,10 @@ public class NuovoCentoKilometriView extends JPanel {
 	private JComboBox<String> compagniaComboBox;
 	private JLabel codiceLabel;
 	private JTextField codiceTextField;
+	private JLabel nomeLabel;
+	private JTextField nomeTextField;
+	private JLabel cognomeLabel;
+	private JTextField cognomeTextField;
 	private JLabel puntiLabel;
 	private JTextField puntiTextField;
 	
@@ -41,7 +46,7 @@ public class NuovoCentoKilometriView extends JPanel {
 		menuLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
 		menuLabel.setForeground(Color.WHITE);
 		
-		mainPanel = new JPanel(new BorderLayout());
+		mainPanel = new JPanel(new GridBagLayout());
 		mainPanel.setBackground(new Color(0, 0, 153));
 		
 		compagniaLabel = new JLabel("Nome Compagnia");
@@ -70,6 +75,34 @@ public class NuovoCentoKilometriView extends JPanel {
 			}
 		});
 		
+		nomeLabel = new JLabel("Nome");
+		nomeLabel.setForeground(Color.WHITE);
+		nomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeLabel.setMinimumSize(new Dimension(100, 30));
+		nomeTextField = new JTextField();
+		nomeTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeTextField.setColumns(10);
+		nomeTextField.setMinimumSize(new Dimension(50,30));
+		
+		cognomeLabel = new JLabel("Cognome");
+		cognomeLabel.setForeground(Color.WHITE);
+		cognomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		cognomeLabel.setMinimumSize(new Dimension(100, 30));
+		cognomeTextField = new JTextField();
+		cognomeTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		cognomeTextField.setColumns(10);
+		cognomeTextField.setMinimumSize(new Dimension(50,30));
+		
+		cognomeTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!Character.isAlphabetic(c)) {
+					e.consume();
+				}
+			}
+		});
+		
 		puntiLabel = new JLabel("Punti");
 		puntiLabel.setForeground(Color.WHITE);
 		puntiLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
@@ -89,22 +122,58 @@ public class NuovoCentoKilometriView extends JPanel {
 			}
 		});
 		
-		JPanel centerPanel = new JPanel (new GridBagLayout());
-		centerPanel.setBackground(new Color (0, 0, 153));
+		JPanel topPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
+		topPanel.setBackground(new Color (0, 0, 153));
+		TitledBorder topTitleBorder = new TitledBorder("Info compagnia");
+		topTitleBorder.setTitleColor(Color.WHITE);
+		topTitleBorder.setTitleFont(new Font("Segoe UI", Font.PLAIN, 18));
+		topPanel.setBorder(topTitleBorder);
 		JPanel compagniaPanel = new JPanel(new BorderLayout());
 		compagniaPanel.setBackground(new Color(0, 0, 153));
 		compagniaPanel.add(compagniaLabel, BorderLayout.WEST);
 		compagniaPanel.add(compagniaComboBox, BorderLayout.SOUTH);
 		JPanel codicePanel = new JPanel(new BorderLayout());
 		codicePanel.setBackground(new Color(0, 0, 153));
-		codicePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		codicePanel.setBorder(new EmptyBorder(0, 30, 0, 0));
 		codicePanel.add(codiceLabel, BorderLayout.WEST);
 		codicePanel.add(codiceTextField, BorderLayout.SOUTH);
+		
+		topPanel.add(compagniaPanel);
+		topPanel.add(codicePanel);
+		
+		JPanel centerPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
+		centerPanel.setBackground(new Color (0, 0, 153));
+		TitledBorder centerTitleBorder = new TitledBorder("Info cliente");
+		centerTitleBorder.setTitleColor(Color.WHITE);
+		centerTitleBorder.setTitleFont(new Font("Segoe UI", Font.PLAIN, 18));
+		centerPanel.setBorder(centerTitleBorder);
+		JPanel nomePanel = new JPanel(new BorderLayout());
+		nomePanel.setBackground(new Color(0, 0, 153));
+		nomePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		nomePanel.add(nomeLabel, BorderLayout.WEST);
+		nomePanel.add(nomeTextField, BorderLayout.SOUTH);
+		JPanel cognomePanel = new JPanel(new BorderLayout());
+		cognomePanel.setBackground(new Color(0, 0, 153));
+		cognomePanel.setBorder(new EmptyBorder(0, 15, 0, 0));
+		cognomePanel.add(cognomeLabel, BorderLayout.WEST);
+		cognomePanel.add(cognomeTextField, BorderLayout.SOUTH);
+		
+		centerPanel.add(nomePanel);
+		centerPanel.add(cognomePanel);
+		
+		JPanel bottomPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
+		bottomPanel.setBackground(new Color (0, 0, 153));
+		TitledBorder bottomTitleBorder = new TitledBorder("Info extra");
+		bottomTitleBorder.setTitleColor(Color.WHITE);
+		bottomTitleBorder.setTitleFont(new Font("Segoe UI", Font.PLAIN, 18));
+		bottomPanel.setBorder(bottomTitleBorder);
 		JPanel puntiPanel = new JPanel(new BorderLayout());
 		puntiPanel.setBackground(new Color(0, 0, 153));
 		puntiPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		puntiPanel.add(puntiLabel, BorderLayout.WEST);
 		puntiPanel.add(puntiTextField, BorderLayout.SOUTH);
+		
+		bottomPanel.add(puntiPanel);
 		
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.gridx = 0;  
@@ -112,35 +181,34 @@ public class NuovoCentoKilometriView extends JPanel {
 		//gc.gridwidth = 1;
 		//gc.insets = new Insets(10,20,0,0);
 		gc.anchor = GridBagConstraints.WEST;
-		centerPanel.add(compagniaPanel, gc);
+		mainPanel.add(topPanel, gc);
 		gc.gridx = 0;  
 		gc.gridy = 1;
 		gc.insets = new Insets(20,0,0,0);
-		centerPanel.add(codicePanel, gc);
+		mainPanel.add(centerPanel, gc);
 		gc.gridx = 0;  
 		gc.gridy = 2;
 		gc.insets = new Insets(20,0,0,0);
-		centerPanel.add(puntiPanel, gc);
+		mainPanel.add(bottomPanel, gc);
 		
-		mainPanel.add(centerPanel, BorderLayout.CENTER);
 
-		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		bottomPanel.setBackground(new Color(0, 0, 153));
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		buttonPanel.setBackground(new Color(0, 0, 153));
 		
 		JButton salvaButton = new JButton("Salva");
 		salvaButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		salvaButton.setFocusPainted(false);
 		
-		bottomPanel.add(salvaButton);
+		buttonPanel.add(salvaButton);
 		
 		add(menuLabel, BorderLayout.NORTH);
 		add(mainPanel, BorderLayout.CENTER);
-		add(bottomPanel, BorderLayout.SOUTH);
+		add(buttonPanel, BorderLayout.SOUTH);
 
 		salvaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				controller.saveNuovoCentoKilometri(codiceTextField.getText(), compagniaComboBox.getSelectedItem().toString(), puntiTextField.getText());
+				controller.saveNuovoCentoKilometri(codiceTextField.getText(), compagniaComboBox.getSelectedItem().toString(), nomeTextField.getText(), cognomeTextField.getText(), puntiTextField.getText());
 			}
 		});
 	}

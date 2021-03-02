@@ -1,6 +1,5 @@
 package Views.Tables;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.table.AbstractTableModel;
@@ -12,7 +11,6 @@ import Models.CentoKilometri;
 public class TableModelCentoKilometri extends AbstractTableModel {
 
 	private LinkedList<CentoKilometri> centoKilometri;
-	private ArrayList<String> clientiCKList;
 	private int numberOfColumns = 6;
 	private String[] columnNames = {"ID", "Compagnia", "Codice", "Nome", "Cognome", "Punti"};
 	
@@ -22,9 +20,8 @@ public class TableModelCentoKilometri extends AbstractTableModel {
 		this.controller = controller;
 	}
 	
-	public void setData (LinkedList<CentoKilometri> centoKilometri, ArrayList<String> clientiCKList) {
+	public void setData (LinkedList<CentoKilometri> centoKilometri) {
 		this.centoKilometri = centoKilometri;
-		this.clientiCKList = clientiCKList;
 	}
 	
 	@Override
@@ -40,20 +37,6 @@ public class TableModelCentoKilometri extends AbstractTableModel {
 	@Override
 	public int getColumnCount() {
 		return numberOfColumns;
-	}
-
-	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		switch (columnIndex) {
-		case 1:
-			return true;
-		case 2:
-			return true;
-		case 5:
-			return true;
-		default:
-			return false;
-		}
 	}
 	
 	@Override
@@ -76,14 +59,14 @@ public class TableModelCentoKilometri extends AbstractTableModel {
 		}
 	}
 
-	public boolean updateRow(String codice, String nomeCompagnia, String punti, int row) {    
+	public boolean updateRow(String codice, String nomeCompagnia, String nome, String cognome, String punti, int row) {    
 		int puntiValore;
     	try {
     	   puntiValore = Integer.parseInt(punti);
     	} catch (NumberFormatException e) {
     	   puntiValore = 0;
     	}
-		if (controller.updateCentoKilometri(codice, nomeCompagnia, puntiValore, centoKilometri.get(row).getId())) {
+		if (controller.updateCentoKilometri(codice, nomeCompagnia, nome, cognome, puntiValore, centoKilometri.get(row).getId())) {
 			controller.loadCercaCenterPanel("Cento Kilometri");
 			return true;
 		}
@@ -108,9 +91,9 @@ public class TableModelCentoKilometri extends AbstractTableModel {
 		case 2:
 			return centoKilometriCell.getCodiceCompagnia();
 		case 3:
-			return clientiCKList.get(2*rowIndex);
+			return centoKilometriCell.getNome();
 		case 4:
-			return clientiCKList.get(2*rowIndex+1);
+			return centoKilometriCell.getCognome();
 		case 5:	
 			return centoKilometriCell.getPunti();
 		default:

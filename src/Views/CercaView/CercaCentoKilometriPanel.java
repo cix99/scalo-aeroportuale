@@ -13,7 +13,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 @SuppressWarnings("serial")
@@ -30,7 +29,7 @@ public class CercaCentoKilometriPanel extends JPanel {
 	private CercaView cercaView;
 	private ViewsController viewsController;
 	
-    public CercaCentoKilometriPanel(LinkedList<CentoKilometri> centoKilometri, ArrayList<String> clientiCKList, ViewsController controller, CercaView cercaView) {
+    public CercaCentoKilometriPanel(LinkedList<CentoKilometri> centoKilometri, ViewsController controller, CercaView cercaView) {
     	this.cercaView = cercaView;
     	this.viewsController = controller;
     	
@@ -39,7 +38,7 @@ public class CercaCentoKilometriPanel extends JPanel {
     	
     	tableModelCentoKilometri = new TableModelCentoKilometri(controller);
 		table = new JTable(tableModelCentoKilometri);
-		tableModelCentoKilometri.setData(centoKilometri, clientiCKList);
+		tableModelCentoKilometri.setData(centoKilometri);
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBackground(new Color (0, 0, 153));
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
@@ -103,7 +102,7 @@ public class CercaCentoKilometriPanel extends JPanel {
     
     public void showModificaCentoKilometriDialog(TableModelCentoKilometri model) {
 		JDialog centoKilometriDialog = new JDialog(cercaView, "Modifica", true);
-		centoKilometriDialog.setSize(new Dimension(400,400));
+		centoKilometriDialog.setSize(new Dimension(600,500));
 		centoKilometriDialog.setResizable(false);
 		centoKilometriDialog.setLayout(new BorderLayout());
 		
@@ -145,6 +144,24 @@ public class CercaCentoKilometriPanel extends JPanel {
 			}
 		});
 		
+		JLabel nomeLabel = new JLabel("Codice");
+		nomeLabel.setForeground(Color.WHITE);
+		nomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeLabel.setMinimumSize(new Dimension(100, 30));
+		JTextField nomeTextField = new JTextField();
+		nomeTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeTextField.setColumns(10);
+		nomeTextField.setText(model.getValueAt(table.getSelectedRow(), 3).toString());
+		
+		JLabel cognomeLabel = new JLabel("Codice");
+		cognomeLabel.setForeground(Color.WHITE);
+		cognomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		cognomeLabel.setMinimumSize(new Dimension(100, 30));
+		JTextField cognomeTextField = new JTextField();
+		cognomeTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		cognomeTextField.setColumns(10);
+		cognomeTextField.setText(model.getValueAt(table.getSelectedRow(), 4).toString());
+		
 		JLabel puntiLabel = new JLabel("Punti");
 		puntiLabel.setForeground(Color.WHITE);
 		puntiLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
@@ -175,6 +192,16 @@ public class CercaCentoKilometriPanel extends JPanel {
 		codicePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		codicePanel.add(codiceLabel, BorderLayout.WEST);
 		codicePanel.add(codiceTextField, BorderLayout.SOUTH);
+		JPanel nomePanel = new JPanel(new BorderLayout());
+		nomePanel.setBackground(new Color(0, 0, 153));
+		nomePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		nomePanel.add(nomeLabel, BorderLayout.WEST);
+		nomePanel.add(nomeTextField, BorderLayout.SOUTH);
+		JPanel cognomePanel = new JPanel(new BorderLayout());
+		cognomePanel.setBackground(new Color(0, 0, 153));
+		cognomePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		cognomePanel.add(cognomeLabel, BorderLayout.WEST);
+		cognomePanel.add(cognomeTextField, BorderLayout.SOUTH);
 		JPanel puntiPanel = new JPanel(new BorderLayout());
 		puntiPanel.setBackground(new Color(0, 0, 153));
 		puntiPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -188,10 +215,18 @@ public class CercaCentoKilometriPanel extends JPanel {
 		//gc.insets = new Insets(10,20,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		centerPanel.add(compagniaPanel, gc);
+		gc.gridx = 1;  
+		gc.gridy = 0;
+		gc.insets = new Insets(0,20,0,0);
+		centerPanel.add(codicePanel, gc);
 		gc.gridx = 0;  
 		gc.gridy = 1;
 		gc.insets = new Insets(20,0,0,0);
-		centerPanel.add(codicePanel, gc);
+		centerPanel.add(nomePanel, gc);
+		gc.gridx = 1;  
+		gc.gridy = 1;
+		gc.insets = new Insets(20,15,0,0);
+		centerPanel.add(cognomePanel, gc);
 		gc.gridx = 0;  
 		gc.gridy = 2;
 		gc.insets = new Insets(20,0,0,0);
@@ -206,7 +241,7 @@ public class CercaCentoKilometriPanel extends JPanel {
 		aggiornaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (model.updateRow(codiceTextField.getText(), compagniaComboBox.getSelectedItem().toString(), puntiTextField.getText(), table.getSelectedRow()))
+				if (model.updateRow(codiceTextField.getText(), compagniaComboBox.getSelectedItem().toString(), nomeTextField.getText(), cognomeTextField.getText(), puntiTextField.getText(), table.getSelectedRow()))
 						centoKilometriDialog.dispose();
 			}
 		});

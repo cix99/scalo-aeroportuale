@@ -269,15 +269,7 @@ public class ViewsController {
 			case "Cento Kilometri":
 			{
 				centoKilometri = dbController.getCentoKilometri();
-				ArrayList<String> clientiCKList = new ArrayList<String>();
-				
-				ListIterator<CentoKilometri> cursor = centoKilometri.listIterator();
-				while (cursor.hasNext()) {
-					CentoKilometri current = cursor.next();
-					dbController.getClientiCK(clientiCKList, current.getId());
-				}
-				
-				((CercaView) subFrame).showListaCentoKilometri(centoKilometri, clientiCKList);
+				((CercaView) subFrame).showListaCentoKilometri(centoKilometri);
 				break;
 			}
 			case "Compagnie Aeree":
@@ -308,10 +300,12 @@ public class ViewsController {
 			JOptionPane.showMessageDialog(subFrame, "Il campo codice non può essere vuoto", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
 		} else if (codicePrenotazione.length() != 6) {
 			JOptionPane.showMessageDialog(subFrame, "Il campo codice deve avere 6 caratteri", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
+		} else if (dbController.isPrenotazionePossible(idTratta) == false) {
+			JOptionPane.showMessageDialog(subFrame, "Raggiunto il limite di prenotazioni per questa tratta", "Errore inserimento prenotazione", JOptionPane.ERROR_MESSAGE);
 		} else {
 			if (!centoKilometri.isBlank()) {
 				CentoKilometri ck = dbController.getCentoKilometri(centoKilometri, compagniaCentoKilometri);
-				if (ck.getCodiceCompagnia() != null) {
+				if (dbController.checkCentoKilometri(ck, nome, cognome)) {
 					if (dbController.saveNuovaPrenotazione(nome, cognome, codicePrenotazione, centoKilometri, compagniaCentoKilometri, compagniaVolo, idTratta, coda)) {
 						JOptionPane.showMessageDialog(subFrame, "Prenotazione (" + codicePrenotazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 					}
@@ -320,7 +314,7 @@ public class ViewsController {
 					}
 				}
 				else {
-					JOptionPane.showMessageDialog(subFrame, "Cento kilometri (" + centoKilometri + ") inesistente per la compagnia (" + compagniaCentoKilometri + ")", "Cento Kilometri non trovato", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(subFrame, "Il cento kilometri selezionato appartiene ad un altro cliente", "Errore Cento Kilometri", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			else {
@@ -353,10 +347,16 @@ public class ViewsController {
 	}
 	
 	
-	public void saveNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
+	public void saveNuovoCentoKilometri(String codice, String nomeCompagnia, String nome, String cognome, String punti) {
 		if (codice.isBlank()) {
 			JOptionPane.showMessageDialog(subFrame, "Il cento kilometri deve avere un codice", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
-		} else if (dbController.saveNuovoCentoKilometri(codice, nomeCompagnia, punti)) {
+		} else if (nome.isBlank()) {
+			JOptionPane.showMessageDialog(subFrame, "Il campo nome non può essere vuoto", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
+		} else if (cognome.isBlank()) {
+			JOptionPane.showMessageDialog(subFrame, "Il campo cognome non può essere vuoto", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
+		} else if (dbController.existCentoKilometri(codice, nomeCompagnia)){
+			JOptionPane.showMessageDialog(subFrame, "Il cento kilometri inserito esiste già per la compagnia (" + nomeCompagnia + ")", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
+		} else if (dbController.saveNuovoCentoKilometri(codice, nomeCompagnia, nome, cognome, punti)) {
 			JOptionPane.showMessageDialog(subFrame, "Cliente (" + codice + ") cento kilometri inserito con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		} else {
 			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento cento kilometri", JOptionPane.ERROR_MESSAGE);
@@ -370,7 +370,7 @@ public class ViewsController {
 		} else if (dbController.saveNuovoCompagniaAerea(nomeCompagnia)) {
 			JOptionPane.showMessageDialog(subFrame, "Compagnia " + nomeCompagnia + " inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		} else {
-			JOptionPane.showMessageDialog(subFrame, "L\'operazione non è andata a buon fine", "Errore inserimento compagnia", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(subFrame, "La compagnia è già stata inserita", "Errore inserimento compagnia", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -499,10 +499,10 @@ public class ViewsController {
 		return false;
 	}
 	
-	public boolean updateCentoKilometri (String codice, String nomeCompagnia, int punti, int id) {
+	public boolean updateCentoKilometri (String codice, String nomeCompagnia, String nome, String cognome, int punti, int id) {
 		if (codice.isBlank()) {
 			JOptionPane.showMessageDialog(subFrame, "Il cento kilometri deve avere un codice", "Errore update", JOptionPane.ERROR_MESSAGE);
-		} else if (!dbController.updateCentoKilometri(codice, nomeCompagnia, punti, id)) {
+		} else if (!dbController.updateCentoKilometri(codice, nomeCompagnia, nome, cognome, punti, id)) {
 			JOptionPane.showMessageDialog(subFrame, "Aggiornamento cento kilometri non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
 		} else {
 			JOptionPane.showMessageDialog(subFrame, "Cento kilometri aggiornato con successo!", "Update riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));

@@ -134,8 +134,8 @@ public class NuovaPrenotazioneView extends JPanel {
 		centoKilometriLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		centoKilometriComboBox = new JComboBox<String>();
 		centoKilometriComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-
-
+		String [] array = {""};
+		UpdateCentoKilometriComboBox(array);
 		
 		compagniaLabel = new JLabel("Compagnia");
 		compagniaLabel.setForeground(Color.WHITE);
@@ -309,6 +309,7 @@ public class NuovaPrenotazioneView extends JPanel {
 		for (int i = 0; i < centoKilometriArray.length; i++) {
 			centoKilometriComboBox.addItem(centoKilometriArray[i]);	
 		}
+		centoKilometriComboBox.setSelectedIndex(0);
 		mainPanel.repaint();
 	}
 	

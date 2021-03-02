@@ -4,10 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
-import Models.Coda;
 import Models.Stato;
 import Models.Tratta;
 
@@ -73,6 +71,40 @@ public class TrattaDAO extends JDBC {
         }
         return TrattaList;
     }
+    
+    public Tratta findById(int idTratta) {
+    	String query = "SELECT * FROM " + tableName + " WHERE id = ?";
+        Tratta tratta = new Tratta();
+        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        GateDAO gateDAO = new GateDAO();
+
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setInt(1, idTratta);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                tratta.setId(resultSet.getInt("id"));
+                tratta.setDestinazione(resultSet.getString("destinazione"));
+                tratta.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                tratta.setOraInizioImbarcoStimato(resultSet.getTimestamp("ora_inizio_imbarco_stimato").toLocalDateTime());
+                if (resultSet.getTimestamp("ora_inizio_imbarco_effettivo") != null)
+                	tratta.setOraInizioImbarcoEffettivo(resultSet.getTimestamp("ora_inizio_imbarco_effettivo").toLocalDateTime());
+                if (resultSet.getTimestamp("ora_fine_imbarco_stimato") != null)
+                	tratta.setOraFineImbarcoStimato(resultSet.getTimestamp("ora_fine_imbarco_stimato").toLocalDateTime());
+                if (resultSet.getTimestamp("ora_fine_imbarco_effettivo") != null)
+                	tratta.setOraFineImbarcoEffettivo(resultSet.getTimestamp("ora_fine_imbarco_effettivo").toLocalDateTime());
+                tratta.setStatoImbarco(Stato.valueOf(resultSet.getString("stato_imbarco")));
+                tratta.setRitardo(resultSet.getBoolean("ritardo"));
+                tratta.setGate(gateDAO.findByName(resultSet.getString("gate")));
+                tratta.setMaxPrenotazioni(resultSet.getInt("max_prenotazioni"));
+            }
+            resultSet.close();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return tratta;
+	}
     
     public LinkedList<Tratta> findTrattaByGate(String nomeGate){
         String query = "SELECT * FROM " + tableName + " WHERE gate = ? AND stato_imbarco <> ? ORDER BY ora_inizio_imbarco_stimato ASC";
@@ -257,4 +289,5 @@ public class TrattaDAO extends JDBC {
         }
         return true;
 	}
+
 }

@@ -12,7 +12,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.*;
@@ -111,8 +110,8 @@ public class CercaView extends JFrame {
 		//mainPanel.revalidate();
 	}
 	
-	public void showListaCentoKilometri(LinkedList<CentoKilometri> centoKilometri, ArrayList<String> clientiCKList) {
-		cercaCentoKilometriPanel = new CercaCentoKilometriPanel(centoKilometri, clientiCKList, viewsController, CercaView.this);
+	public void showListaCentoKilometri(LinkedList<CentoKilometri> centoKilometri) {
+		cercaCentoKilometriPanel = new CercaCentoKilometriPanel(centoKilometri, viewsController, CercaView.this);
 		centerPanel.add(cercaCentoKilometriPanel, BorderLayout.CENTER);
 		buttonsPanel = cercaCentoKilometriPanel.getButtonsPanel();
 		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);

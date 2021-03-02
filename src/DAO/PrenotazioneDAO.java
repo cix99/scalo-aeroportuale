@@ -206,4 +206,26 @@ public class PrenotazioneDAO extends JDBC {
         return true;
 	}
 
+	public boolean isPrenotazionePossible(int idTratta) {
+		String query = "SELECT COUNT (*) AS num FROM " + tableName + " WHERE id_tratta = ?";
+		int count = 0;	     
+
+        TrattaDAO trattaDao = new TrattaDAO();
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setInt(1, idTratta);
+            ResultSet resultSet = statement.executeQuery();  
+        	while (resultSet.next()) {
+        		count = resultSet.getInt("num");
+            }
+            resultSet.close();
+            statement.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        if (count >= trattaDao.findById(idTratta).getMaxPrenotazioni())
+        	return false;
+        return true;
+	}
+
 }

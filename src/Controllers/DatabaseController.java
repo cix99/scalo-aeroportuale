@@ -122,7 +122,7 @@ public class DatabaseController {
 		return true;
 	}
     
-    public boolean saveNuovoCentoKilometri(String codice, String nomeCompagnia, String punti) {
+    public boolean saveNuovoCentoKilometri(String codice, String nomeCompagnia, String nome, String cognome, String punti) {
     	int puntiValore;
     	try {
     	   puntiValore = Integer.parseInt(punti);
@@ -130,7 +130,7 @@ public class DatabaseController {
     	   puntiValore = 0;
     	}
     	CompagniaAerea compagniaAerea = new CompagniaAerea(nomeCompagnia);
-    	CentoKilometri centoKilometri = new CentoKilometri(codice, compagniaAerea, puntiValore);
+    	CentoKilometri centoKilometri = new CentoKilometri(codice, compagniaAerea, nome, cognome, puntiValore);
     	if (centoKilometriDao.store(centoKilometri))
     		return true;
     	return false;
@@ -223,8 +223,8 @@ public class DatabaseController {
 		return false;
 	} 
     
-	public boolean updateCentoKilometri(String codice, String nomeCompagnia, int punti, int id) {
-		if (centoKilometriDao.update(codice, nomeCompagnia, punti, id))
+	public boolean updateCentoKilometri(String codice, String nomeCompagnia, String nome, String cognome, int punti, int id) {
+		if (centoKilometriDao.update(codice, nomeCompagnia, nome, cognome, punti, id))
 			return true;
 		return false;
 	}
@@ -261,6 +261,24 @@ public class DatabaseController {
 	
 	public boolean updateFineImbarco(Tratta tratta) {
 		if (trattaDao.updateFineImbarco(tratta))
+			return true;
+		return false;
+	}
+
+	public boolean existCentoKilometri(String codice, String nomeCompagnia) {
+		if (centoKilometriDao.exist(codice, nomeCompagnia))
+			return true;
+		return false;
+	}
+
+	public boolean checkCentoKilometri(CentoKilometri ck, String nome, String cognome) {
+		if (centoKilometriDao.isCorrect(ck, nome, cognome))
+			return true;
+		return false;
+	}
+
+	public boolean isPrenotazionePossible(int idTratta) {
+		if (prenotazioneDao.isPrenotazionePossible(idTratta))
 			return true;
 		return false;
 	}
