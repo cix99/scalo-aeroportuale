@@ -339,6 +339,8 @@ public class ViewsController {
 			JOptionPane.showMessageDialog(subFrame, "Inserire un numero per il limite di prenotazioni", "Errore max prenotazione", JOptionPane.ERROR_MESSAGE);
 		} else if (code.isEmpty()) {
 			JOptionPane.showMessageDialog(subFrame, "Non sono state inserite code per la tratta", "Errore code", JOptionPane.ERROR_MESSAGE);
+		} else if (!dbController.isGateAvailable(gate, dataInizio, dataFine)) {
+			JOptionPane.showMessageDialog(subFrame, "Il gate non è libero nell'arco di tempo selezionato", "Errore gate", JOptionPane.ERROR_MESSAGE);
 		} else if (dbController.saveNuovaTratta(destinazione, nomeCompagnia, gate, dataInizio, dataFine, Integer.parseInt(maxPrenotazioni), code)) {
 			JOptionPane.showMessageDialog(subFrame, "Tratta per (" + destinazione + ") inserita con successo!", "Inserimento riuscito", JOptionPane.INFORMATION_MESSAGE, new ImageIcon (this.getClass().getResource("/checkmark.png")));
 		} else {
@@ -480,6 +482,8 @@ public class ViewsController {
 			JOptionPane.showMessageDialog(subFrame, "Inserire un numero per il limite di prenotazioni", "Errore max prenotazione", JOptionPane.ERROR_MESSAGE);
 		} else if (maxPrenotazione.equals("0") || maxPrenotazione.equals("00") || maxPrenotazione.equals("000")) {
 			JOptionPane.showMessageDialog(subFrame, "Il limite di prenotazioni deve essere maggiore di 0", "Errore max prenotazione", JOptionPane.ERROR_MESSAGE);
+		} else if (!dbController.isGateAvailable(gate, dataInizio, dataFine)) {
+			JOptionPane.showMessageDialog(subFrame, "Il gate non è libero nell'arco di tempo selezionato", "Errore gate", JOptionPane.ERROR_MESSAGE);
 		} else if (!dbController.updateTratta(idTratta, gate, dataInizio, dataFine, maxPrenotazione, nuoveCodeList, numeroCodeUpdate)) {
 			JOptionPane.showMessageDialog(subFrame, "Aggiornamento tratta non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
 		} else {

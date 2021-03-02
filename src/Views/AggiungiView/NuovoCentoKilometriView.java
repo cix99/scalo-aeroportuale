@@ -93,16 +93,6 @@ public class NuovoCentoKilometriView extends JPanel {
 		cognomeTextField.setColumns(10);
 		cognomeTextField.setMinimumSize(new Dimension(50,30));
 		
-		cognomeTextField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char c = e.getKeyChar();
-				if (!Character.isAlphabetic(c)) {
-					e.consume();
-				}
-			}
-		});
-		
 		puntiLabel = new JLabel("Punti");
 		puntiLabel.setForeground(Color.WHITE);
 		puntiLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));

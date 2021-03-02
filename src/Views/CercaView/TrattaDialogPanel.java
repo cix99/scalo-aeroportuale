@@ -641,7 +641,7 @@ public class TrattaDialogPanel extends JPanel {
 
 	public void setCode(LinkedList<Coda> code) {
 		 codaList = new ArrayList<Coda>(code);
-		
+		 nuoveCodeList = new ArrayList<Coda>(code);
 	}
 
 }

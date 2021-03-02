@@ -282,5 +282,29 @@ public class DatabaseController {
 			return true;
 		return false;
 	}
+
+	public boolean isGateAvailable(String gate, LocalDateTime dataInizio, LocalDateTime dataFine) {
+		LinkedList<Tratta> tratte1 = trattaDao.isGateAvailableAfter(gate, dataInizio);
+		LinkedList<Tratta> tratte2 = trattaDao.isGateAvailableBefore(gate, dataInizio);
+		if (tratte1.isEmpty() && tratte2.isEmpty())
+			return true;
+		else if (tratte1.isEmpty() && !tratte2.isEmpty()) {
+			if (tratte2.getFirst().getOraInizioImbarcoStimato().isAfter(dataFine))
+				return true;
+			else
+				return false;
+		} else if (!tratte1.isEmpty() && tratte2.isEmpty()) {
+			if (tratte1.getFirst().getOraFineImbarcoStimato().isBefore(dataInizio))
+				return true;
+			else
+				return false;
+		} else {
+			if (tratte1.getFirst().getOraFineImbarcoStimato().isBefore(dataInizio)) {
+				if (tratte2.getFirst().getOraInizioImbarcoStimato().isAfter(dataFine))
+					return true;
+			}
+		}
+		return false;
+	}
     
 }

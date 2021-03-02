@@ -115,7 +115,6 @@ public class NuovaTrattaView extends JPanel {
 		JDatePanelImpl datePanelStart = new JDatePanelImpl(model, p);
 		JDatePickerImpl datePickerStart = new JDatePickerImpl(datePanelStart, new DateLabelFormatter());
 		
-		
 		oraInizioLabel = new JLabel("Ora");
 		oraInizioLabel.setForeground(Color.WHITE);
 		oraInizioLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
