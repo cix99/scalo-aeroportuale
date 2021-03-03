@@ -7,11 +7,11 @@ import java.util.LinkedList;
 
 import Models.CompagniaAerea;
 
-public class CompagniaAereaDAO {
+public class CompagniaAereaDAO extends JDBC {
 
 	private String tableName = "compagnia_aerea";
 	
-	public CompagniaAerea store(CompagniaAerea compagniaAerea){
+	public boolean store(CompagniaAerea compagniaAerea){
         String query = "INSERT INTO " + tableName + " VALUES (?)";
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -20,12 +20,13 @@ public class CompagniaAereaDAO {
             statement.close();
         }catch(SQLException e){
             System.out.println(e);
+            return false;
         }
-        return compagniaAerea;
+        return true;
     }
 
     public CompagniaAerea findByName(String nome){
-        String query = "SELECT * FROM " + tableName + " WHERE nome_compagnia = ?";
+        String query = "SELECT * FROM " + tableName + " WHERE nome_compagnia = (?)";
         CompagniaAerea compagniaAerea = new CompagniaAerea();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -44,8 +45,8 @@ public class CompagniaAereaDAO {
         return compagniaAerea;
     }
 
-    public LinkedList<CompagniaAerea> get(){
-        String query = "SELECT * FROM " + tableName;
+    public LinkedList<CompagniaAerea> find(){
+        String query = "SELECT * FROM " + tableName + " ORDER BY nome_compagnia ASC";
         LinkedList<CompagniaAerea> compagniaAereaList = new LinkedList<CompagniaAerea>();
         try {
             PreparedStatement statement = JDBC
@@ -64,15 +65,45 @@ public class CompagniaAereaDAO {
         }
         return compagniaAereaList;
     }
+    
+	public boolean delete(String nomeCompagnia) {
+		String query = "DELETE FROM " + tableName + " WHERE nome_compagnia = ?";
+
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, nomeCompagnia);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
 
     public CompagniaAerea first(String nome){
-    	LinkedList<CompagniaAerea> compagniaAereaList = get();
+    	LinkedList<CompagniaAerea> compagniaAereaList = find();
         return compagniaAereaList.get(0);
     }
 
     public CompagniaAerea last(String nome){
-    	LinkedList<CompagniaAerea> compagniaAereaList = get();
+    	LinkedList<CompagniaAerea> compagniaAereaList = find();
         return compagniaAereaList.get(compagniaAereaList.size() - 1);
     }
 
+    public boolean updateNomeCompagnia(String nomeCompagnia, String oldNomeCompagnia) {
+		String query = "UPDATE " + tableName + " SET nome_compagnia = ? WHERE nome_compagnia = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, nomeCompagnia);
+            statement.setString(2, oldNomeCompagnia);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
+    
 }

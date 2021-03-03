@@ -3,9 +3,10 @@ package Views.CercaView;
 import javax.swing.*;
 import java.awt.*;
 
-public class CercaCodeView extends JPanel {
+@SuppressWarnings("serial")
+public class CercaCodePanel extends JPanel {
 
-    public CercaCodeView() {
+    public CercaCodePanel() {
         this.setLayout(new BorderLayout());
         this.setBackground(Color.red);
 

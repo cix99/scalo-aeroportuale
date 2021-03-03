@@ -1,4 +1,4 @@
-package Views;
+package Views.HomeView;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -7,10 +7,10 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -29,9 +29,9 @@ public class HomeSidePanel extends JPanel {
 	private JLabel cercaLabel;
 	private JPanel statistichePanel;
 	private JLabel statisticheLabel;
-	private JPanel logoutPanel;
+	private JPanel userPanel;
 	
-	public HomeSidePanel (ViewsController controller) {
+	public HomeSidePanel (ViewsController controller, String username) {
 		
 		setPreferredSize(new Dimension (200,650));
 		setBackground(new Color(0, 153, 255));
@@ -199,25 +199,20 @@ public class HomeSidePanel extends JPanel {
 			}
 		});
 		
-		logoutPanel = new JPanel();
-		logoutPanel.setBackground(new Color(0, 153, 255));
-		logoutPanel.setBounds(0, 105, 200, 85);
-		logoutPanel.setLayout(new BorderLayout(0,0));
+		userPanel = new JPanel();
+		userPanel.setBackground(new Color(0, 153, 255));
+		userPanel.setBounds(0, 105, 200, 85);
+		userPanel.setLayout(new BorderLayout(0,0));
+		userPanel.setBorder(new EmptyBorder(0,5,5,0));
 		
-		add(logoutPanel);
-		
-		JButton logoutButton = new JButton("Logout");
-		//JButton buttonTest2 = new JButton("Test2");
-		//gc.anchor = GridBagConstraints.PAGE_END;
-		/* In questo modo bisogna creare un altro panel se si vogliono inserire altre cose all'interno */
-		logoutPanel.add(logoutButton, BorderLayout.SOUTH);
-		
-		logoutButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked (MouseEvent e) {
-				controller.logout();
-			}
-		});
-		//gc.anchor = GridBagConstraints.CENTER;
+		ImageIcon userImage = new ImageIcon(new ImageIcon("img/user.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+		JLabel userLabel = new JLabel();
+		userLabel.setIcon(userImage);
+		userLabel.setText(username);
+		userLabel.setForeground(Color.WHITE);
+		userLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+
+		userPanel.add(userLabel, BorderLayout.SOUTH);
+		add(userPanel);
 	}
 }

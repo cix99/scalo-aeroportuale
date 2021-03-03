@@ -2,25 +2,28 @@ package Models;
 
 import java.time.LocalDateTime;
 
-
 public class Tratta{
 
     private int id;
     private String destinazione;
     private CompagniaAerea compagniaAerea;
-    private LocalDateTime oraInizioImbarco;
+    private LocalDateTime oraInizioImbarcoStimato;
+    private LocalDateTime oraInizioImbarcoEffettivo;
     private LocalDateTime oraFineImbarcoStimato;
     private LocalDateTime oraFineImbarcoEffettivo;
     private Gate gate;
     private Stato statoImbarco;
-    private Boolean ritardo;
+    private Boolean ritardo;    
+    private int maxPrenotazioni;
     
-    
-    public Tratta(String destinazione, CompagniaAerea compagniaAerea, LocalDateTime oraInizioImbarco) {
+    public Tratta(String destinazione, CompagniaAerea compagniaAerea, Gate gate, LocalDateTime oraInizioImbarcoStimato, LocalDateTime oraFineImbarcoStimato, int maxPrenotazioni) {
 		super();
 		this.destinazione = destinazione;
 		this.compagniaAerea = compagniaAerea;
-		this.oraInizioImbarco = oraInizioImbarco;
+		this.gate = gate;
+		this.oraInizioImbarcoStimato = oraInizioImbarcoStimato;
+		this.oraFineImbarcoStimato = oraFineImbarcoStimato;
+		this.maxPrenotazioni = maxPrenotazioni;
 	}
 
 	public Tratta() {
@@ -38,8 +41,12 @@ public class Tratta{
 		return compagniaAerea;
 	}
 
-	public LocalDateTime getOraInizioImbarco() {
-		return oraInizioImbarco;
+	public LocalDateTime getOraInizioImbarcoStimato() {
+		return oraInizioImbarcoStimato;
+	}
+	
+	public LocalDateTime getOraInizioImbarcoEffettivo() {
+		return oraInizioImbarcoEffettivo;
 	}
 	
 	public LocalDateTime getOraFineImbarcoStimato() {
@@ -62,6 +69,10 @@ public class Tratta{
 		return ritardo;
 	}
 
+	public int getMaxPrenotazioni() {
+		return maxPrenotazioni;
+	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -74,8 +85,12 @@ public class Tratta{
 		this.compagniaAerea = compagniaAerea;
 	}
 
-	public void setOraInizioImbarco(LocalDateTime oraInizioImbarco) {
-		this.oraInizioImbarco = oraInizioImbarco;
+	public void setOraInizioImbarcoStimato(LocalDateTime oraInizioImbarcoStimato) {
+		this.oraInizioImbarcoStimato = oraInizioImbarcoStimato;
+	}
+	
+	public void setOraInizioImbarcoEffettivo(LocalDateTime oraInizioImbarcoEffettivo) {
+		this.oraInizioImbarcoEffettivo = oraInizioImbarcoEffettivo;
 	}
 
 	public void setOraFineImbarcoStimato(LocalDateTime oraFineImbarcoStimato) {
@@ -96,6 +111,10 @@ public class Tratta{
 
 	public void setRitardo(Boolean ritardo) {
 		this.ritardo = ritardo;
+	}
+	
+	public void setMaxPrenotazioni(int maxPrenotazioni) {
+		this.maxPrenotazioni = maxPrenotazioni;
 	}
     
 }

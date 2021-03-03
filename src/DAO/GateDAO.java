@@ -10,7 +10,7 @@ public class GateDAO extends JDBC {
 
     private String tableName = "gate";
 
-    public Gate store(Gate gate){
+    public boolean store(Gate gate){
         String query = "INSERT INTO " + tableName + " VALUES (?)";
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -18,21 +18,8 @@ public class GateDAO extends JDBC {
             statement.executeUpdate();
         }catch(SQLException e){
             System.out.println(e);
-        }
-        return gate;
-    }
-    
-    public boolean delete (String nomeGate) {
-    	String query = "DELETE FROM " + tableName + " WHERE nome_gate = (?)";
-        try {
-            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setString(1, nomeGate);
-            statement.executeUpdate();
-        }catch(SQLException e){
-            System.out.println(e);
             return false;
         }
-
         return true;
     }
 
@@ -55,8 +42,8 @@ public class GateDAO extends JDBC {
         return gate;
     }
 
-    public LinkedList<Gate> get(){
-        String query = "SELECT * FROM gate";
+    public LinkedList<Gate> find(){
+        String query = "SELECT * FROM " + tableName + " ORDER BY nome_gate ASC";
         LinkedList<Gate> gateList = new LinkedList<Gate>();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -74,13 +61,41 @@ public class GateDAO extends JDBC {
         return gateList;
     }
 
+    public boolean delete (String nomeGate) {
+    	String query = "DELETE FROM " + tableName + " WHERE nome_gate = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, nomeGate);
+            statement.executeUpdate();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+    }
+    
     public Gate first(){
-    	LinkedList<Gate> gateList = get();
+    	LinkedList<Gate> gateList = find();
         return gateList.get(0);
     }
 
     public Gate last(){
-    	LinkedList<Gate> gateList = get();
+    	LinkedList<Gate> gateList = find();
         return gateList.get(gateList.size() - 1);
     }
+
+	public boolean updateNomeGate(String nomeGate, String oldNomeGate) {
+		String query = "UPDATE " + tableName + " SET nome_gate = ? WHERE nome_gate = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, nomeGate);
+            statement.setString(2, oldNomeGate);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
 }

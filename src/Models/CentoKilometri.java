@@ -5,14 +5,23 @@ public class CentoKilometri{
     private int id;
     private String codiceCompagnia;
     private CompagniaAerea compagniaAerea;
+    private String nome;
+    private String cognome;
     private int punti;
 	
-    public CentoKilometri (int id, String codiceCompagnia, CompagniaAerea compagniaAerea, int punti) {
+    public CentoKilometri (String codiceCompagnia, CompagniaAerea compagniaAerea, String nome, String cognome, int punti) {
     	super();
-    	//this.id = id;
     	this.codiceCompagnia = codiceCompagnia;
     	this.compagniaAerea = compagniaAerea;
+    	this.nome = nome;
+    	this.cognome = cognome;
     	this.punti = punti;
+    }
+    
+    public CentoKilometri (String codiceCompagnia, CompagniaAerea compagniaAerea) {
+    	super();
+    	this.codiceCompagnia = codiceCompagnia;
+    	this.compagniaAerea = compagniaAerea;
     }
     
 	public CentoKilometri() {
@@ -42,6 +51,22 @@ public class CentoKilometri{
 		this.compagniaAerea = compagniaAerea;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+	
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	
+	public String getCognome() {
+		return cognome;
+	}
+	
+	public void setCognome(String cognome) {
+		this.cognome = cognome;
+	}
+	
 	public int getPunti() {
 		return punti;
 	}
@@ -49,5 +74,7 @@ public class CentoKilometri{
 	public void setPunti(int punti) {
 		this.punti = punti;
 	}
+
+
     
 }

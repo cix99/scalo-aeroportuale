@@ -1,19 +1,24 @@
-package Views;
+package Views.Tables;
 
 import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 
+import Controllers.ViewsController;
 import Models.Prenotazione;
 
-public class TableModel extends AbstractTableModel {
+@SuppressWarnings("serial")
+public class TableModelImbarco extends AbstractTableModel {
 
 	private LinkedList<Prenotazione> prenotati;
 	private int numberOfColumns = 6;
 	private String[] columnNames = {"Coda", "Nome", "Cognome", "Codice", "Cento Kilometri", "Imbarcato"};
 	
-	public TableModel () {
+	private ViewsController controller;
+	
+	public TableModelImbarco (ViewsController controller) {
+		this.controller = controller;
 	}
 	
 	public void setData (LinkedList<Prenotazione> prenotati) {
@@ -73,10 +78,10 @@ public class TableModel extends AbstractTableModel {
 		if (prenotati == null) return;
 		Prenotazione prenotazione = prenotati.get(rowIndex);
 		switch (columnIndex) {
-			case 1:
-				break;
 			case 5:
-				//save the checkmark in Imbarcato
+				prenotazione.setImbarcato((boolean) aValue);
+				controller.updateImbarcatoInDatabase((boolean) aValue, prenotazione.getId());
+				break;
 			default:
 				return;
 		}
@@ -85,7 +90,6 @@ public class TableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Prenotazione prenotazione = prenotati.get(rowIndex);
-		
 		switch (columnIndex) {
 		case 0:
 			return prenotazione.getCoda().getNomeCoda();
@@ -102,9 +106,8 @@ public class TableModel extends AbstractTableModel {
 				else
 					return "-";
 			}
-			
-		case 5:
-			return false;
+		case 5:;
+			return prenotazione.getImbarcato();
 		default:
 			return null;
 		}
