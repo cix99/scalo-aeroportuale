@@ -144,7 +144,7 @@ public class CercaCentoKilometriPanel extends JPanel {
 			}
 		});
 		
-		JLabel nomeLabel = new JLabel("Codice");
+		JLabel nomeLabel = new JLabel("Nome");
 		nomeLabel.setForeground(Color.WHITE);
 		nomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		nomeLabel.setMinimumSize(new Dimension(100, 30));
@@ -153,7 +153,7 @@ public class CercaCentoKilometriPanel extends JPanel {
 		nomeTextField.setColumns(10);
 		nomeTextField.setText(model.getValueAt(table.getSelectedRow(), 3).toString());
 		
-		JLabel cognomeLabel = new JLabel("Codice");
+		JLabel cognomeLabel = new JLabel("Cognome");
 		cognomeLabel.setForeground(Color.WHITE);
 		cognomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		cognomeLabel.setMinimumSize(new Dimension(100, 30));
