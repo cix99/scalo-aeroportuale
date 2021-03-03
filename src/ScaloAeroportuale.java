@@ -1,5 +1,4 @@
 import Controllers.*;
-
 import java.util.Locale;
 
 public class ScaloAeroportuale {

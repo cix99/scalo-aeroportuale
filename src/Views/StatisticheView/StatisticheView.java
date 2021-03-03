@@ -54,7 +54,7 @@ public class StatisticheView extends JFrame{
     	
     	tableModel = new TableModelStatistiche(controller);
 		table = new JTable(tableModel);
-		tableModel.setData(controller.getGatesList());
+		tableModel.setData(controller.getStatistiche());
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBackground(new Color (0, 0, 153));
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
@@ -62,12 +62,15 @@ public class StatisticheView extends JFrame{
 		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer); //Nome Gate
 		table.getColumnModel().getColumn(0).setMinWidth(30);
 		table.getColumnModel().getColumn(0).setMaxWidth(80);
-		table.getColumnModel().getColumn(1).setCellRenderer(tableRenderer);	//Utilizzo stimato giornaliero
-		table.getColumnModel().getColumn(2).setCellRenderer(tableRenderer); //Utilizzo effettivo giornaliero
-		table.getColumnModel().getColumn(3).setCellRenderer(tableRenderer); //Utilizzo stimato settimanale
-		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer);	//Utilizzo effettivo settimanale
-		table.getColumnModel().getColumn(5).setCellRenderer(tableRenderer); //Utilizzo stimato mensile
-		table.getColumnModel().getColumn(6).setCellRenderer(tableRenderer);	//Utilizzo effettivo mensile
+		table.getColumnModel().getColumn(1).setCellRenderer(tableRenderer);	//Voli giornalieri
+		table.getColumnModel().getColumn(2).setCellRenderer(tableRenderer); //Utilizzo stimato giornaliero
+		table.getColumnModel().getColumn(3).setCellRenderer(tableRenderer); //Utilizzo effettivo giornaliero
+		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer);	//Voli settimanali
+		table.getColumnModel().getColumn(5).setCellRenderer(tableRenderer); //Utilizzo stimato settimanale
+		table.getColumnModel().getColumn(6).setCellRenderer(tableRenderer);	//Utilizzo effettivo settimanale
+		table.getColumnModel().getColumn(7).setCellRenderer(tableRenderer);	//Voli mensili
+		table.getColumnModel().getColumn(8).setCellRenderer(tableRenderer); //Utilizzo stimato mensile
+		table.getColumnModel().getColumn(9).setCellRenderer(tableRenderer);	//Utilizzo effettivo mensile
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		//table.setFillsViewportHeight(false);
 			

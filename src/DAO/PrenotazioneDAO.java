@@ -228,4 +228,37 @@ public class PrenotazioneDAO extends JDBC {
         return true;
 	}
 
+	public LinkedList<Prenotazione> findForPunti(int idTratta, String nomeCompagnia){
+        String query = "SELECT * FROM " + tableName + " WHERE id_tratta = ? AND compagnia_aerea = ? AND imbarcato = ?";
+        LinkedList<Prenotazione> PrenotazioneList = new LinkedList<Prenotazione>();
+        CodaDAO codaDAO = new CodaDAO();
+        CentoKilometriDAO centoKilometriDAO = new CentoKilometriDAO();
+        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setInt(1, idTratta);
+            statement.setString(2, nomeCompagnia);
+            statement.setBoolean(3, true);
+            ResultSet resultSet = statement.executeQuery();  
+        	 while (resultSet.next()) {
+                 Prenotazione prenotazione = new Prenotazione();
+                 prenotazione.setId(resultSet.getString("id"));
+                 prenotazione.setIdTratta(resultSet.getInt("id_tratta"));
+                 prenotazione.setCodicePrenotazione(resultSet.getString("codice_prenotazione"));
+                 prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
+                 prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
+                 prenotazione.setCoda(codaDAO.findById(resultSet.getInt("coda")));  //da sistemare
+                 prenotazione.setCentoKilometri(centoKilometriDAO.findById(resultSet.getInt("cento_kilometri")));
+                 prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                 prenotazione.setImbarcato(resultSet.getBoolean("imbarcato"));
+                 PrenotazioneList.add(prenotazione);
+             }
+            resultSet.close();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return PrenotazioneList;
+    }
+
 }

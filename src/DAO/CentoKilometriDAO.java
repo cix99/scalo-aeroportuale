@@ -210,5 +210,20 @@ public class CentoKilometriDAO extends JDBC {
         }
         return exists;
 	}
+
+	public boolean updatePunti(CentoKilometri centoKilometri) {
+		String query = "UPDATE " + tableName + " SET punti = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setInt(1, centoKilometri.getPunti() + 10);
+            statement.setInt(2, centoKilometri.getId());
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
     
 }
