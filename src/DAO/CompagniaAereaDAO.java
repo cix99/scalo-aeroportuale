@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 import Models.CompagniaAerea;
 
-public class CompagniaAereaDAO {
+public class CompagniaAereaDAO extends JDBC {
 
 	private String tableName = "compagnia_aerea";
 	

@@ -40,27 +40,6 @@ public class TableModelTratta extends AbstractTableModel {
 	public int getColumnCount() {
 		return numberOfColumns;
 	}
-
-//	@Override
-//	public boolean isCellEditable(int rowIndex, int columnIndex) {
-//		if (tratte.get(rowIndex).getStatoImbarco() == Stato.IN_ATTESA) {
-//			switch (columnIndex) {
-//			case 3:
-//				return true;
-//			case 5:
-//				return true;
-//			case 7:
-//				return true;
-//			case 10:
-//				return true;
-//			default:
-//				return false;
-//			}
-//		}
-//		else
-//			return false;
-//		
-//	}
 	
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
@@ -153,8 +132,12 @@ public class TableModelTratta extends AbstractTableModel {
 			}
 		case 8:
 			return tratta.getStatoImbarco();
-		case 9:
-			return tratta.getRitardo();
+		case 9: {
+			if (LocalDateTime.now().isAfter(tratta.getOraFineImbarcoStimato()))
+				return true;
+			else
+				return tratta.getRitardo();	
+		}
 		case 10:
 			return tratta.getMaxPrenotazioni();
 		default:

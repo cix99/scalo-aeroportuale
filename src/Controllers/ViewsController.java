@@ -59,7 +59,6 @@ public class ViewsController {
     	
 		listaUtenti = utenti.getListaUtenti();
 		ListIterator<Utente> cursor = listaUtenti.listIterator();
-		//TODO: Problema: se viene effettuato il logout e si inseriscono credenziali sbagliate non appare pi� il JDialog
 		while (cursor.hasNext()) {
 			Utente current = cursor.next();
 			if (current.getUtenteName().equals(username) && current.getUtentePassword().equals(password)) {
@@ -78,6 +77,7 @@ public class ViewsController {
 	public void logout(){
 		loginFrame.getUsername().setText("");
 		loginFrame.getPassword().setText("");
+		logedIn = false;
     	homeFrame.setVisible(false);
     	loginFrame.setVisible(true);
     }
@@ -206,7 +206,7 @@ public class ViewsController {
 	}
 	
 	
-	public void loadPrenotatiImbarcoPerCoda(String nomeCoda) { 
+	public boolean loadPrenotatiImbarcoPerCoda(String nomeCoda) { 
 		prenotati = dbController.getPrenotatiFromTratta(tratte.getFirst().getId());
 			
 		if (!prenotati.isEmpty()) {
@@ -231,9 +231,11 @@ public class ViewsController {
 					JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questa coda", "Nessuno in coda", JOptionPane.ERROR_MESSAGE);
 				}
 			}
+			return true;
 		}	
 		else {
 			JOptionPane.showMessageDialog(subFrame, "Non ci sono prenotazioni per questo volo", "Nessuna prenotazione", JOptionPane.ERROR_MESSAGE);
+			return false;
 		}
 	}
 	

@@ -63,8 +63,8 @@ public class TrattaInfoPanel extends JPanel{
 			public void mouseClicked(MouseEvent e) {
 				viewsController.updateInizioImbarco();
 				viewsController.showCode(tratta);
-				viewsController.loadPrenotatiImbarcoPerCoda("Tutte");
-				iniziaImbarcoButton.setVisible(false);
+				if (viewsController.loadPrenotatiImbarcoPerCoda("Tutte"))
+					iniziaImbarcoButton.setVisible(false);
 			}
 		});
 		trattaPanel.add(iniziaImbarcoButton);
