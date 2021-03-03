@@ -11,7 +11,8 @@ import Models.Gate;
 @SuppressWarnings("serial")
 public class TableModelStatistiche extends AbstractTableModel {
 
-	private Map<String, Map> statistiche;
+	private LinkedList<Gate> gates;
+	private Map<String, Map<String, Integer>> statistiche;
 	private int numberOfColumns = 10;
 	private String[] columnNames = {"Nome Gate", "Voli Ultime 24 ore", "Stimato Ultime 24 ore", "Effettivo Ultime 24 ore", "Voli ultima settimana", "Stimato settimanale", "Effettivo settimanale", "Voli ultimo mese", "Stimato mensile", "Effettivo mensile"};
 	
@@ -21,8 +22,9 @@ public class TableModelStatistiche extends AbstractTableModel {
 		this.controller = controller;
 	}
 	
-	public void setData (Map<String, Map> statistiche) {
+	public void setData (Map<String, Map<String, Integer>> statistiche) {
 		this.statistiche = statistiche;
+		gates = controller.getGatesList();
 	}
 	
 	@Override
@@ -70,23 +72,29 @@ public class TableModelStatistiche extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Map<String, Map> gate = statistiche.get(rowIndex);
+		String key = gates.get(rowIndex).getNomeGate();
+		Map<String, Integer> gate = statistiche.get(key);
 		switch (columnIndex) {
 		case 0:
-			//return gate.getNomeGate();
-			return 0.0f
+			return key;
 		case 1:
-			return 0.0f; //utilizzo stimato giornaliero
+			return gate.get("voli_giornalieri"); 
 		case 2:
-			return 0.0f; //utilizzo effettivo giornaliero
+			return gate.get("s_giornaliero"); 
 		case 3:
-			return 0.0f; //utilizzo stimato settimanale
+			return gate.get("e_giornaliero"); 
 		case 4:
-			return 0.0f; //utilizzo effettivo settimanale
+			return gate.get("voli_settimanali"); 
 		case 5:
-			return 0.0f; //utilizzo stimato mensile
+			return gate.get("s_settimanale"); 
 		case 6:
-			return 0.0f; //utilizzo effettivo mensile
+			return gate.get("e_settiamanale"); 
+		case 7:
+			return gate.get("voli_mensili"); 
+		case 8:
+			return gate.get("s_mensile"); 
+		case 9:
+			return gate.get("e_mensile"); 
 		default:
 			return null;
 		}

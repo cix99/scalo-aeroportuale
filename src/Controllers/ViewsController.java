@@ -608,9 +608,17 @@ public class ViewsController {
 			if (!dbController.updateFineImbarco(tratta)) {
 				JOptionPane.showMessageDialog(subFrame, "Aggiornamento orario fine imbarco non riuscito", "Errore update", JOptionPane.ERROR_MESSAGE);
 				return false;
-			}
-			else {
-				JOptionPane.showMessageDialog(subFrame, "Imbarco chiuso con successo", "Chiuso Imbarco", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				if (tratta.getOraFineImbarcoEffettivo().isAfter(tratta.getOraFineImbarcoStimato())) {
+					if (!dbController.updatePunti(tratta.getId(), tratta.getCompagniaAerea().getNomeCompagnia())) {
+						JOptionPane.showMessageDialog(subFrame, "Imbarco chiuso ma punti non aggiornati", "Errore update punti", JOptionPane.ERROR_MESSAGE);
+						return false;
+					} else {
+						JOptionPane.showMessageDialog(subFrame, "Imbarco chiuso con successo", "Chiuso Imbarco", JOptionPane.INFORMATION_MESSAGE);
+					}				
+				} else {
+					JOptionPane.showMessageDialog(subFrame, "Imbarco chiuso con successo", "Chiuso Imbarco", JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		}
 		return true;
@@ -623,7 +631,7 @@ public class ViewsController {
 		return time;
 	}
 
-	public Map<String, Map> getStatistiche(){
+	public Map<String, Map<String, Integer>> getStatistiche(){
     	return dbController.getStatistiche();
 	}
 	

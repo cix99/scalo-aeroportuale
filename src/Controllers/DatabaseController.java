@@ -3,6 +3,7 @@ package Controllers;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Map;
 
 import DAO.*;
@@ -308,8 +309,23 @@ public class DatabaseController {
 		return false;
 	}
 
-	public Map<String, Map> getStatistiche(){
+	public Map<String, Map<String, Integer>> getStatistiche(){
 		return trattaDao.statistiche();
+	}
+
+	public boolean updatePunti(int idTratta, String nomeCompagnia) {
+		LinkedList<Prenotazione> prenotatiCk = prenotazioneDao.findForPunti(idTratta, nomeCompagnia);
+		ListIterator<Prenotazione> cursor = prenotatiCk.listIterator();
+		while (cursor.hasNext()) {
+			Prenotazione current = cursor.next();
+			CentoKilometri ck = centoKilometriDao.findById(current.getCentoKilometri().getId());
+			if (!centoKilometriDao.updatePunti(ck)) {
+				break;
+			}
+		}
+		if (!cursor.hasNext())
+			return true;
+		return false;
 	}
     
 }
