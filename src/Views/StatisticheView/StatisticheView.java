@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,7 +31,11 @@ public class StatisticheView extends JFrame{
 	private JTable table;
 	private JScrollPane scrollPane;
 	
-	public StatisticheView (ViewsController controller) {	
+	private ViewsController controller;
+	
+	public StatisticheView (ViewsController viewsController) {	
+		controller = viewsController;
+		
 		setTitle("Scalo Aeroportuale - Statistiche");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
@@ -71,9 +74,7 @@ public class StatisticheView extends JFrame{
 		table.getColumnModel().getColumn(7).setCellRenderer(tableRenderer);	//Voli mensili
 		table.getColumnModel().getColumn(8).setCellRenderer(tableRenderer); //Utilizzo stimato mensile
 		table.getColumnModel().getColumn(9).setCellRenderer(tableRenderer);	//Utilizzo effettivo mensile
-		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-		//table.setFillsViewportHeight(false);
-			
+		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));	
 		add(topPanel, BorderLayout.NORTH);
 		add(scrollPane, BorderLayout.CENTER);
 		

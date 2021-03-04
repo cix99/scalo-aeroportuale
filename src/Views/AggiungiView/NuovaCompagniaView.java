@@ -21,15 +21,24 @@ import Controllers.ViewsController;
 public class NuovaCompagniaView extends JPanel {
 
 	private JPanel mainPanel;
+	private JLabel menuLabel;
+	private JPanel centerPanel;
+	private JPanel bottomPanel;
+	private JButton salvaButton;
+	private JPanel compagniaPanel;
 	private JLabel compagniaLabel;
 	private JTextField compagniaTextField;
+	
+	private ViewsController controller;
 
-	public NuovaCompagniaView (ViewsController controller) {			
+	public NuovaCompagniaView (ViewsController viewsController) {			
+		controller = viewsController;
+		
 		setBorder(new EmptyBorder(10, 5, 10, 10));
 		setLayout(new BorderLayout());
 		setBackground(new Color(0, 0, 153));
 		
-		JLabel menuLabel = new JLabel("   Nuova Compagnia Aerea");
+		menuLabel = new JLabel("   Nuova Compagnia Aerea");
 		menuLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
 		menuLabel.setForeground(Color.WHITE);
 		
@@ -45,9 +54,9 @@ public class NuovaCompagniaView extends JPanel {
 		compagniaTextField.setColumns(15);
 		compagniaTextField.setMinimumSize(new Dimension(150,30));
 		
-		JPanel centerPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
+		centerPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
 		centerPanel.setBackground(new Color (0, 0, 153));
-		JPanel compagniaPanel = new JPanel(new BorderLayout());
+		compagniaPanel = new JPanel(new BorderLayout());
 		compagniaPanel.setBackground(new Color(0, 0, 153));
 		compagniaPanel.add(compagniaLabel, BorderLayout.WEST);
 		compagniaPanel.add(compagniaTextField, BorderLayout.SOUTH);
@@ -57,15 +66,13 @@ public class NuovaCompagniaView extends JPanel {
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.gridx = 0;  
 		gc.gridy = 0;
-		//gc.gridwidth = 1;
-		//gc.insets = new Insets(10,20,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(centerPanel, gc);
 
-		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		bottomPanel.setBackground(new Color(0, 0, 153));
 		
-		JButton salvaButton = new JButton("Salva");
+		salvaButton = new JButton("Salva");
 		salvaButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		salvaButton.setFocusPainted(false);
 		
@@ -82,5 +89,4 @@ public class NuovaCompagniaView extends JPanel {
 			}
 		});
 	}
-
 }

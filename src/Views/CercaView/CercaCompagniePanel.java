@@ -3,15 +3,14 @@ package Views.CercaView;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-
-import Controllers.ViewsController;
-import Models.CompagniaAerea;
-import Views.Tables.TableModelCompagnia;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
+
+import Controllers.ViewsController;
+import Models.CompagniaAerea;
+import Views.Tables.TableModelCompagnia;
 
 @SuppressWarnings("serial")
 public class CercaCompagniePanel extends JPanel {
@@ -19,17 +18,17 @@ public class CercaCompagniePanel extends JPanel {
 	private JScrollPane scrollPane;
 	private JTable table;
 	private TableModelCompagnia tableModelCompagnia;
-	
 	private JPanel buttonsPanel;
 	private JButton modificaButton;
 	private JButton eliminaButton;
 	
 	private CercaView cercaView;
-//	private ViewsController viewsController;
+	private ViewsController controller;
 	
-    public CercaCompagniePanel(LinkedList<CompagniaAerea> compagnie, ViewsController controller, CercaView cercaView) {
+    public CercaCompagniePanel(LinkedList<CompagniaAerea> compagnie, ViewsController viewsController, CercaView cercaView) {
     	this.cercaView = cercaView;
-//    	this.viewsController = controller;
+    	controller = viewsController;
+    	
     	setLayout(new BorderLayout());
     	setBackground(new Color(0, 0, 153));
     	
@@ -42,8 +41,6 @@ public class CercaCompagniePanel extends JPanel {
 		tableRenderer.setHorizontalAlignment(JLabel.CENTER);
 		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer);
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-		//table.setFillsViewportHeight(true);
-		
 		add(scrollPane, BorderLayout.CENTER);
     }
     
@@ -66,7 +63,6 @@ public class CercaCompagniePanel extends JPanel {
 					JOptionPane.showMessageDialog(CercaCompagniePanel.this, "Seleziona un riga da modificare", "Errore modifica", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-			
 		});
 		eliminaButton = new JButton("Elimina");
 		eliminaButton.setFocusPainted(false);
@@ -137,7 +133,6 @@ public class CercaCompagniePanel extends JPanel {
 		
 		compagniaDialog.setLocationRelativeTo(null);
 		compagniaDialog.setVisible(true);
-		
 	}	
     
 }

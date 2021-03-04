@@ -2,7 +2,6 @@ package Views.Tables;
 
 import java.util.LinkedList;
 import java.util.Map;
-
 import javax.swing.table.AbstractTableModel;
 
 import Controllers.ViewsController;
@@ -14,7 +13,8 @@ public class TableModelStatistiche extends AbstractTableModel {
 	private LinkedList<Gate> gates;
 	private Map<String, Map<String, Integer>> statistiche;
 	private int numberOfColumns = 10;
-	private String[] columnNames = {"Nome Gate", "Voli Ultime 24 ore", "Stimato Ultime 24 ore", "Effettivo Ultime 24 ore", "Voli ultima settimana", "Stimato settimanale", "Effettivo settimanale", "Voli ultimo mese", "Stimato mensile", "Effettivo mensile"};
+	private String[] columnNames = {"Nome Gate", "Voli Ultime 24 ore", "Stimato Ultime 24 ore", "Effettivo Ultime 24 ore", 
+									"Voli ultima settimana", "Stimato settimanale", "Effettivo settimanale", "Voli ultimo mese", "Stimato mensile", "Effettivo mensile"};
 	
 	private ViewsController controller;
 	

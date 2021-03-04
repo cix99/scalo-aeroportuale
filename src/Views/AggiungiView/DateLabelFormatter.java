@@ -6,7 +6,6 @@ import java.util.Calendar;
 
 import javax.swing.JFormattedTextField.AbstractFormatter;
 
-
 @SuppressWarnings("serial")
 public class DateLabelFormatter extends AbstractFormatter {
 
@@ -24,7 +23,6 @@ public class DateLabelFormatter extends AbstractFormatter {
 	            Calendar cal = (Calendar) value;
 	            return dateFormatter.format(cal.getTime());
 	        }
-
 	        return "";
 	    }
 

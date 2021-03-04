@@ -32,8 +32,11 @@ public class LoginView extends JFrame {
 	private JLabel loginLabel;
 	private JLabel sfondoLabel;
 
-	public LoginView(ViewsController controller) {
-
+	private ViewsController controller;
+	
+	public LoginView(ViewsController viewsController) {
+		controller = viewsController;
+		
 		setResizable(false);
 		setTitle("Scalo Aeroportuale - Login");
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
@@ -51,15 +54,14 @@ public class LoginView extends JFrame {
 		accedi.setContentAreaFilled(false);
 		accedi.setBorder(null);
 		accedi.setIcon(null);
-		
+		accedi.setFont(new Font("Century Schoolbook", Font.PLAIN, 20));
+		accedi.setBounds(600, 351, 105, 28);
 		accedi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			controller.login(usernameField.getText(), passwordField.getPassword());
 			}
 		});
-		accedi.setFont(new Font("Century Schoolbook", Font.PLAIN, 20));
-		accedi.setBounds(600, 351, 105, 28);
 		contentPane.add(accedi);
 		
 		username = new JLabel("Username");
@@ -78,6 +80,9 @@ public class LoginView extends JFrame {
 		contentPane.add(password);
 		
 		usernameField = new JTextField();
+		usernameField.setBounds(540, 226, 207, 26);
+		usernameField.setColumns(10);
+		usernameField.setBorder(null);
 		usernameField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -86,12 +91,11 @@ public class LoginView extends JFrame {
 				}
 			}
 		});
-		usernameField.setBounds(540, 226, 207, 26);
 		contentPane.add(usernameField);
-		usernameField.setColumns(10);
-		usernameField.setBorder(null);
 		
 		passwordField = new JPasswordField();
+		passwordField.setBounds(540, 290, 207, 26);
+		passwordField.setBorder(null);
 		passwordField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -100,9 +104,7 @@ public class LoginView extends JFrame {
 			}
 			}
 		});
-		passwordField.setBounds(540, 290, 207, 26);
 		contentPane.add(passwordField);
-		passwordField.setBorder(null);
 		
 		loginLabel = new JLabel("LOGIN");
 		loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -110,7 +112,7 @@ public class LoginView extends JFrame {
 		loginLabel.setForeground(new Color(255, 255, 255));
 		loginLabel.setBounds(575, 135, 118, 28);
 		contentPane.add(loginLabel);
-		//Maiandra GD
+
 		sfondoLabel = new JLabel("");
 		Image sfondoImage = new ImageIcon (this.getClass().getResource("/bello.png")).getImage();
 		sfondoLabel.setIcon(new ImageIcon(sfondoImage));
@@ -125,5 +127,4 @@ public class LoginView extends JFrame {
 	public JPasswordField getPassword () {
 		return passwordField;
 	}
-
 }

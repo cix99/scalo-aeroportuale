@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.format.DateTimeFormatter;
-
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,13 +18,17 @@ import Models.Tratta;
 @SuppressWarnings("serial")
 public class TrattaInfoPanel extends JPanel{
 
+	private JPanel trattaPanel;
 	private JLabel destinazioneLabel;
 	private JLabel compagniaLabel;
 	private JLabel dataLabel;
 	private JLabel oraLabel;
+	private JButton iniziaImbarcoButton;
 	
+	private ViewsController controller;
 	
 	public TrattaInfoPanel (Tratta tratta, ViewsController viewsController) { 	
+		controller = viewsController;
 		setLayout(new BorderLayout());
 		setBackground(new Color(0, 153, 255));
 		
@@ -44,9 +47,8 @@ public class TrattaInfoPanel extends JPanel{
 		oraLabel.setForeground(Color.WHITE);
 		oraLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		
-		JPanel trattaPanel = new JPanel (new FlowLayout());
+		trattaPanel = new JPanel (new FlowLayout());
 		trattaPanel.setBackground(new Color(0, 153, 255));
-		
 		trattaPanel.add(destinazioneLabel);
 		trattaPanel.add(Box.createHorizontalStrut(50));
 		trattaPanel.add(compagniaLabel);
@@ -56,14 +58,14 @@ public class TrattaInfoPanel extends JPanel{
 		trattaPanel.add(oraLabel);
 		trattaPanel.add(Box.createHorizontalStrut(50));
 		
-		JButton iniziaImbarcoButton = new JButton("Inizia Imbarco");
+		iniziaImbarcoButton = new JButton("Inizia Imbarco");
 		iniziaImbarcoButton.setFocusPainted(false);
 		iniziaImbarcoButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				viewsController.updateInizioImbarco();
-				viewsController.showCode(tratta);
-				if (viewsController.loadPrenotatiImbarcoPerCoda("Tutte"))
+				controller.updateInizioImbarco();
+				controller.showCode(tratta);
+				if (controller.loadPrenotatiImbarcoPerCoda("Tutte"))
 					iniziaImbarcoButton.setVisible(false);
 			}
 		});

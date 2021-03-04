@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -18,10 +17,14 @@ public class TopPanel extends JPanel{
 	private JButton backButton;
 	private JButton logoutButton;
 	
-	public TopPanel (ViewsController viewController, boolean isInHomeFrame) {
+	private ViewsController controller;
+	
+	public TopPanel (ViewsController viewsController, boolean isInHomeFrame) {
+		controller = viewsController;
+		
 		setLayout(new BorderLayout());
-
 		add(new CalendarPanel(), BorderLayout.WEST);
+		
 		backButtonPanel = new JPanel();
 		if (isInHomeFrame == false) { 
 			ImageIcon backImage = new ImageIcon(new ImageIcon("img/back_arrow.png").getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH));
@@ -33,7 +36,7 @@ public class TopPanel extends JPanel{
 			backButton.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					viewController.backToHomeView();
+					controller.backToHomeView();
 				}
 			});
 		}
@@ -44,7 +47,7 @@ public class TopPanel extends JPanel{
 			logoutButton.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					viewController.logout();
+					controller.logout();
 				}
 			});
 		}

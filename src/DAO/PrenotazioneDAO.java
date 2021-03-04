@@ -26,7 +26,7 @@ public class PrenotazioneDAO extends JDBC {
             statement.setInt(6, prenotazione.getCoda().getId());
             statement.setInt(7, prenotazione.getCentoKilometri().getId());
             statement.setString(8, prenotazione.getCompagniaAerea().getNomeCompagnia());
-            statement.setBoolean(9, prenotazione.getImbarcato()); //inutile?
+            statement.setBoolean(9, prenotazione.getImbarcato());
             statement.executeUpdate();
             statement.close();
         }catch(SQLException e){
@@ -49,7 +49,7 @@ public class PrenotazioneDAO extends JDBC {
             statement.setString(5, prenotazione.getCognomePasseggero());
             statement.setInt(6, prenotazione.getCoda().getId());
             statement.setString(7, prenotazione.getCompagniaAerea().getNomeCompagnia());
-            statement.setBoolean(8, prenotazione.getImbarcato()); //inutile?
+            statement.setBoolean(8, prenotazione.getImbarcato());
             statement.executeUpdate();
             statement.close();
         }catch(SQLException e){
@@ -59,37 +59,7 @@ public class PrenotazioneDAO extends JDBC {
         return true;
     }
 
-    public LinkedList<Prenotazione> find(){
-        String query = "SELECT * FROM " + tableName;
-        LinkedList<Prenotazione> PrenotaioneList = new LinkedList<Prenotazione>();
-        CodaDAO codaDAO = new CodaDAO();
-        CentoKilometriDAO centoKilometriDAO = new CentoKilometriDAO();
-        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
-        try {
-            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Prenotazione prenotazione = new Prenotazione();
-                prenotazione.setId(resultSet.getString("id"));
-                prenotazione.setIdTratta(resultSet.getInt("id_tratta"));
-                prenotazione.setCodicePrenotazione(resultSet.getString("codice_prenotazione"));
-                prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
-                prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
-                prenotazione.setCoda(codaDAO.findById(resultSet.getInt("coda")));
-                prenotazione.setCentoKilometri(centoKilometriDAO.findById(resultSet.getInt("cento_kilometri")));
-                prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
-                prenotazione.setImbarcato(resultSet.getBoolean("imbarcato"));
-                PrenotaioneList.add(prenotazione);
-            }
-            resultSet.close();
-            statement.close();
-        }catch(SQLException e){
-            System.out.println(e);
-        }
-        return PrenotaioneList;
-    }
-    
-    public LinkedList<Prenotazione> findByTrattaId(int trattaId){
+	public LinkedList<Prenotazione> findByTrattaId(int trattaId){
         String query = "SELECT * FROM " + tableName + " LEFT JOIN coda ON coda.id = " + tableName + ".coda WHERE coda.id_tratta = ? ORDER BY coda.priority DESC"; 
         LinkedList<Prenotazione> PrenotazioneList = new LinkedList<Prenotazione>();
         CodaDAO codaDAO = new CodaDAO();
@@ -150,62 +120,37 @@ public class PrenotazioneDAO extends JDBC {
         }
         return PrenotazioneList;
     }
-    
-    public boolean updateImbarcato (boolean value, String id) {
-    	String query = "UPDATE " + tableName + " SET imbarcato = ? WHERE id = ?";
-		try {
-			PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-			statement.setBoolean(1, value); 
-			statement.setString(2, id);
-			statement.executeUpdate();
-			statement.close();
-		}catch(SQLException e){
-			System.out.println(e);
-			return false;
-		}
-		return true;
-    }
-    
-	public boolean delete(String idPrenotazione) {
-		String query = "DELETE FROM " + tableName + " WHERE id = ?";
-
+	
+    public LinkedList<Prenotazione> find(){
+        String query = "SELECT * FROM " + tableName;
+        LinkedList<Prenotazione> PrenotaioneList = new LinkedList<Prenotazione>();
+        CodaDAO codaDAO = new CodaDAO();
+        CentoKilometriDAO centoKilometriDAO = new CentoKilometriDAO();
+        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setString(1, idPrenotazione);
-            statement.executeUpdate();
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Prenotazione prenotazione = new Prenotazione();
+                prenotazione.setId(resultSet.getString("id"));
+                prenotazione.setIdTratta(resultSet.getInt("id_tratta"));
+                prenotazione.setCodicePrenotazione(resultSet.getString("codice_prenotazione"));
+                prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
+                prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
+                prenotazione.setCoda(codaDAO.findById(resultSet.getInt("coda")));
+                prenotazione.setCentoKilometri(centoKilometriDAO.findById(resultSet.getInt("cento_kilometri")));
+                prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                prenotazione.setImbarcato(resultSet.getBoolean("imbarcato"));
+                PrenotaioneList.add(prenotazione);
+            }
+            resultSet.close();
             statement.close();
         }catch(SQLException e){
             System.out.println(e);
-            return false;
         }
-        return true;
-	}
-
-    public Prenotazione first(){
-    	LinkedList<Prenotazione> PrenotaioneList = find();
-        return PrenotaioneList.get(0);
+        return PrenotaioneList;
     }
-
-    public Prenotazione last(){
-    	LinkedList<Prenotazione> PrenotaioneList = find();
-        return PrenotaioneList.get(PrenotaioneList.size() - 1);
-    }
-
-	public boolean update(int coda, String id) {
-		String query = "UPDATE " + tableName + " SET coda = ? WHERE id = ?";
-		try {
-            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setInt(1, coda);
-            statement.setString(2, id);
-            statement.executeUpdate();
-            statement.close();
-        }catch(SQLException e){
-            System.out.println(e);
-            return false;
-        }
-        return true;
-	}
-
+    
 	public boolean isPrenotazionePossible(int idTratta) {
 		String query = "SELECT COUNT (*) AS num FROM " + tableName + " WHERE id_tratta = ?";
 		int count = 0;	     
@@ -260,5 +205,59 @@ public class PrenotazioneDAO extends JDBC {
         }
         return PrenotazioneList;
     }
+    
+	public boolean delete(String idPrenotazione) {
+		String query = "DELETE FROM " + tableName + " WHERE id = ?";
 
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, idPrenotazione);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
+	
+	public boolean update(int coda, String id) {
+		String query = "UPDATE " + tableName + " SET coda = ? WHERE id = ?";
+		try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setInt(1, coda);
+            statement.setString(2, id);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
+    
+    public boolean updateImbarcato (boolean value, String id) {
+    	String query = "UPDATE " + tableName + " SET imbarcato = ? WHERE id = ?";
+		try {
+			PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+			statement.setBoolean(1, value); 
+			statement.setString(2, id);
+			statement.executeUpdate();
+			statement.close();
+		}catch(SQLException e){
+			System.out.println(e);
+			return false;
+		}
+		return true;
+    }
+
+    public Prenotazione first(){
+    	LinkedList<Prenotazione> PrenotaioneList = find();
+        return PrenotaioneList.get(0);
+    }
+
+    public Prenotazione last(){
+    	LinkedList<Prenotazione> PrenotaioneList = find();
+        return PrenotaioneList.get(PrenotaioneList.size() - 1);
+    }
 }

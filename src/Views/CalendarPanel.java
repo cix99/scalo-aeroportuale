@@ -9,7 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -31,7 +30,6 @@ public class CalendarPanel extends JPanel {
 	public CalendarPanel () {
 		setPreferredSize(new Dimension (1150, 35));
 		setLayout(new FlowLayout(FlowLayout.LEFT));
-		//setBackground(new Color(255, 255, 255));
 		
 		oraLabel = new JLabel("ORA");
 		oraLabel.setEnabled(false);
@@ -74,10 +72,8 @@ public class CalendarPanel extends JPanel {
 	public void UpdateTime () {
 		date = LocalDate.now();
 		hour = LocalTime.now();
-
 		hourString = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM).format(hour);
 		dateString =  DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(date);
-		
 		clockLabel.setText(hourString);
 		calendarLabel.setText(dateString);
 	}

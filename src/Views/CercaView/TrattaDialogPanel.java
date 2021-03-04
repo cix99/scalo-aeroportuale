@@ -17,7 +17,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Properties;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -35,6 +34,7 @@ import org.jdatepicker.impl.UtilDateModel;
 import Controllers.ViewsController;
 import Models.Coda;
 import Views.AggiungiView.DateLabelFormatter;
+import Views.Tables.TableModelTratta;
 
 @SuppressWarnings("serial")
 public class TrattaDialogPanel extends JPanel {
@@ -58,7 +58,6 @@ public class TrattaDialogPanel extends JPanel {
 	private JLabel oraFineLabel;
 	private JComboBox<String> hourEndComboBox;
 	private JComboBox<String> minuteEndComboBox;
-
 	private JLabel codeLabel;
 	private JButton codeButton;
 	private ArrayList<Coda> codaList;
@@ -76,12 +75,12 @@ public class TrattaDialogPanel extends JPanel {
 				"30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", 
 				"45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", };
 	
-	private ViewsController viewsController;
 	private CercaView cercaView;
+	private ViewsController controller;
 	
-	public TrattaDialogPanel(ViewsController viewsController, CercaView cercaView) {
-		this.viewsController = viewsController;
+	public TrattaDialogPanel(ViewsController viewsController, CercaView cercaView, JDialog trattaDialog, TableModelTratta model) {
 		this.cercaView = cercaView;
+		controller = viewsController;
 		
 		setBorder(new EmptyBorder(10, 5, 10, 10));
 		setLayout(new BorderLayout());
@@ -102,13 +101,13 @@ public class TrattaDialogPanel extends JPanel {
 		compagniaLabel = new JLabel("Compagnia");
 		compagniaLabel.setForeground(Color.WHITE);
 		compagniaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		compagniaComboBox = new JComboBox<String>(viewsController.getCompagnieAeree());
+		compagniaComboBox = new JComboBox<String>(controller.getCompagnieAeree());
 		compagniaComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		
 		gateLabel = new JLabel ("Gate");
 		gateLabel.setForeground(Color.WHITE);
 		gateLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		gateComboBox = new JComboBox<String>(viewsController.getGates());
+		gateComboBox = new JComboBox<String>(controller.getGates());
 		gateComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		
 		dataStartLabel = new JLabel("Data");
@@ -298,23 +297,25 @@ public class TrattaDialogPanel extends JPanel {
 		bottomPanel.setBackground(new Color(0, 0, 153));
 		
 		JButton aggiornaButton = new JButton("Aggiorna");
-		aggiornaButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		//aggiornaButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		aggiornaButton.setFocusPainted(false);
-
 		aggiornaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				LocalDateTime dataInizio = viewsController.convertiIntToDate(datePickerStart.getJDateInstantPanel().getModel().getYear(), 
+				LocalDateTime dataInizio = controller.convertiIntToDate(datePickerStart.getJDateInstantPanel().getModel().getYear(), 
 																		datePickerStart.getJDateInstantPanel().getModel().getMonth()+1,
 																		datePickerStart.getJDateInstantPanel().getModel().getDay(),
 																		Integer.parseInt(hourStartComboBox.getSelectedItem().toString()), 
 																		Integer.parseInt(minuteStartComboBox.getSelectedItem().toString()));
-				LocalDateTime dataFine = viewsController.convertiIntToDate(datePickerEnd.getJDateInstantPanel().getModel().getYear(), 
+				LocalDateTime dataFine = controller.convertiIntToDate(datePickerEnd.getJDateInstantPanel().getModel().getYear(), 
 																		datePickerEnd.getJDateInstantPanel().getModel().getMonth()+1,
 																		datePickerEnd.getJDateInstantPanel().getModel().getDay(),
 																		Integer.parseInt(hourEndComboBox.getSelectedItem().toString()), 
 																		Integer.parseInt(minuteEndComboBox.getSelectedItem().toString()));
-				viewsController.updateTratta(idTratta, gateComboBox.getSelectedItem().toString(), dataInizio, dataFine, maxPrenotazioniTextField.getText(), nuoveCodeList, codaList.size());
+				if (model.updateRow(idTratta, gateComboBox.getSelectedItem().toString(), dataInizio, dataFine, 
+											 maxPrenotazioniTextField.getText(), nuoveCodeList, codaList.size())) {
+					trattaDialog.dispose();
+				}
 			}
 		});
 		
@@ -326,7 +327,6 @@ public class TrattaDialogPanel extends JPanel {
 	
 	public void showCodaDialog () {
 		String[] priorities = {"0", "1", "2", "3", "4", "5"};
-		
 		int numeroCode = codaList.size();
 		
 		JDialog codaDialog = new JDialog(cercaView, "Code", true);
@@ -581,7 +581,7 @@ public class TrattaDialogPanel extends JPanel {
 						}		
 					}
 				}
-				if (viewsController.checkCode(nuoveCodeList))
+				if (controller.checkCode(nuoveCodeList))
 					codaDialog.dispose();
 			}
 		});
@@ -632,7 +632,6 @@ public class TrattaDialogPanel extends JPanel {
 
 	public void setGate(String nomeGate) {
 		gateComboBox.setSelectedItem(nomeGate);
-		
 	}
 
 	public void setMaxPrenotazioni(int maxPrenotazioni) {

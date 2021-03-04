@@ -9,7 +9,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,15 +21,24 @@ import Controllers.ViewsController;
 public class NuovoGateView extends JPanel {
 	
 	private JPanel mainPanel;
+	private JLabel menuLabel;
+	private JPanel centerPanel;
+	private JPanel bottomPanel;
+	private JButton salvaButton;
+	private JPanel gatePanel;
 	private JLabel gateLabel;
 	private JTextField gateTextField;
+	
+	private ViewsController controller;
 
-	public NuovoGateView (ViewsController controller) {			
+	public NuovoGateView (ViewsController viewsController) {			
+		controller = viewsController;
+		
 		setBorder(new EmptyBorder(10, 5, 10, 10));
 		setLayout(new BorderLayout());
 		setBackground(new Color(0, 0, 153));
 		
-		JLabel menuLabel = new JLabel("   Nuovo Gate");
+		menuLabel = new JLabel("   Nuovo Gate");
 		menuLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
 		menuLabel.setForeground(Color.WHITE);
 		
@@ -46,9 +54,9 @@ public class NuovoGateView extends JPanel {
 		gateTextField.setColumns(5);
 		gateTextField.setMinimumSize(new Dimension(50,30));
 		
-		JPanel centerPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
+		centerPanel = new JPanel (new FlowLayout(FlowLayout.LEFT));
 		centerPanel.setBackground(new Color (0, 0, 153));
-		JPanel gatePanel = new JPanel(new BorderLayout());
+		gatePanel = new JPanel(new BorderLayout());
 		gatePanel.setBackground(new Color(0, 0, 153));
 		gatePanel.add(gateLabel, BorderLayout.WEST);
 		gatePanel.add(gateTextField, BorderLayout.SOUTH);
@@ -58,15 +66,13 @@ public class NuovoGateView extends JPanel {
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.gridx = 0;  
 		gc.gridy = 0;
-		//gc.gridwidth = 1;
-		//gc.insets = new Insets(10,20,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(centerPanel, gc);
 
-		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		bottomPanel.setBackground(new Color(0, 0, 153));
 		
-		JButton salvaButton = new JButton("Salva");
+		salvaButton = new JButton("Salva");
 		salvaButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		salvaButton.setFocusPainted(false);
 		

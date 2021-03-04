@@ -34,21 +34,19 @@ public class ImbarcoView extends JFrame{
 	private JLabel gateLabel;
 	private JComboBox<String> gateComboBox;
 	private JButton okButton;
-	
 	private JPanel centerPanel;
 	private TrattaInfoPanel trattaInfoPanel;
 	private CodeOptionsPanel codeOptionsPanel;
 	private PrenotatiPanel prenotatiPanel;
-	
 	private JPanel chiudiImbarcoCodaPanel;
 	private JButton chiudiImbarcoCodaButton;
 	private JPanel chiudiImbarcoPanel;
 	private JButton chiudiImbarcoButton;
 	
-	private ViewsController viewsController;
+	private ViewsController controller;
 
-	public ImbarcoView (ViewsController controller) {	
-		this.viewsController = controller;
+	public ImbarcoView (ViewsController viewsController) {	
+		controller = viewsController;
 		
 		setTitle("Scalo Aeroportuale - Inizia Imbarco");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,7 +60,7 @@ public class ImbarcoView extends JFrame{
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		setContentPane(mainPanel);
 		
-		topPanel = new TopPanel(viewsController, false);
+		topPanel = new TopPanel(controller, false);
 		
 		gateSelectionPanel = new JPanel();
 		gateSelectionPanel.setBackground(new Color(0, 204, 255));
@@ -71,14 +69,14 @@ public class ImbarcoView extends JFrame{
 		gateLabel = new JLabel("Gate ");
 		gateLabel.setForeground(Color.WHITE);
 		gateLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		gateComboBox = new JComboBox<String>(viewsController.getGates());
+		gateComboBox = new JComboBox<String>(controller.getGates());
 		gateComboBox.setSize(new Dimension (20,10));	
 		okButton = new JButton("Ok");
 		okButton.setFocusPainted(false);
 		okButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				viewsController.loadTrattaInfo(gateComboBox.getSelectedItem().toString());
+				controller.loadTrattaInfo(gateComboBox.getSelectedItem().toString());
 			}
 		});
 		gateSelectionPanel.add(gateLabel);
@@ -100,16 +98,9 @@ public class ImbarcoView extends JFrame{
 		});
 	}
 	
-	public void emptyCenterPanel () {
-		if (centerPanel != null) {
-			centerPanel.removeAll();
-			centerPanel.repaint();
-		}
-	}
-	
 	public void showTrattaInfo(Tratta tratta) {
 		emptyCenterPanel();
-		trattaInfoPanel = new TrattaInfoPanel(tratta, viewsController);
+		trattaInfoPanel = new TrattaInfoPanel(tratta, controller);
 		centerPanel.add(trattaInfoPanel, BorderLayout.NORTH);
 	}
 	
@@ -118,7 +109,7 @@ public class ImbarcoView extends JFrame{
 			centerPanel.remove(codeOptionsPanel);
 			topPanel.UpdateBackButton();
 		}
-		codeOptionsPanel = new CodeOptionsPanel(codeList, viewsController, topPanel);
+		codeOptionsPanel = new CodeOptionsPanel(codeList, controller, topPanel);
 		centerPanel.add(codeOptionsPanel, BorderLayout.WEST);
 	}
 	
@@ -127,7 +118,7 @@ public class ImbarcoView extends JFrame{
 			centerPanel.remove(prenotatiPanel);
 			topPanel.UpdateBackButton();
 		}
-		prenotatiPanel = new PrenotatiPanel(prenotati, viewsController);	
+		prenotatiPanel = new PrenotatiPanel(prenotati, controller);	
 		centerPanel.add(prenotatiPanel, BorderLayout.CENTER);
 		
 		if (chiudiImbarcoButton == null && chiudiImbarcoCodaButton == null) {
@@ -157,7 +148,7 @@ public class ImbarcoView extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (chiudiImbarcoCodaButton.isEnabled()) {
-					viewsController.updateFineImbarcoCoda(codeOptionsPanel.getSelectedCoda());
+					controller.updateFineImbarcoCoda(codeOptionsPanel.getSelectedCoda());
 					chiudiImbarcoCodaButton.setEnabled(false);
 				}		
 			}
@@ -173,8 +164,8 @@ public class ImbarcoView extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (chiudiImbarcoButton.isEnabled()) {
-					if (viewsController.updateFineImbarco()) {
-						viewsController.loadTrattaInfo(gateComboBox.getSelectedItem().toString());
+					if (controller.updateFineImbarco()) {
+						controller.loadTrattaInfo(gateComboBox.getSelectedItem().toString());
 						chiudiImbarcoButton = null;
 						chiudiImbarcoCodaButton = null;
 					}
@@ -188,6 +179,13 @@ public class ImbarcoView extends JFrame{
 		
 		centerPanel.add(chiudiImbarcoCodaPanel, BorderLayout.EAST);
 		centerPanel.add(chiudiImbarcoPanel, BorderLayout.SOUTH);
+	}
+	
+	public void emptyCenterPanel () {
+		if (centerPanel != null) {
+			centerPanel.removeAll();
+			centerPanel.repaint();
+		}
 	}
 	
 	public void emptyPrenotatiPanelTable() {

@@ -18,12 +18,6 @@ import java.awt.event.ComponentEvent;
 import Controllers.ViewsController;
 import Views.TopPanel;
 
-import javax.swing.JPopupMenu;
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-
 @SuppressWarnings("serial")
 public class HomeView extends JFrame {
 
@@ -34,9 +28,12 @@ public class HomeView extends JFrame {
 	public JFrame newCenterPanel;
 	private JLabel benvenutoLabel;
 	private JLabel menuLabel;
-	private JPopupMenu popupMenu;
 	
-	public HomeView(ViewsController controller, String username) {
+	private ViewsController controller;
+	
+	public HomeView(ViewsController viewsController, String username) {
+		controller = viewsController;
+		
 		setTitle("Scalo Aeroportuale - Home");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
@@ -48,9 +45,6 @@ public class HomeView extends JFrame {
 		mainPanel.setBorder(new EmptyBorder(0, 5, 5, 5));
 		mainPanel.setLayout(new BorderLayout());
 		setContentPane(mainPanel);
-		
-//		Border border = new LineBorder(Color.WHITE, 5, true);
-//		mainPanel.setBorder(border);
 		
 		topPanel = new TopPanel(controller, true);
 
@@ -78,9 +72,6 @@ public class HomeView extends JFrame {
 		
 		centerPanel.add(benvenutoLabel);
 		
-		popupMenu = new JPopupMenu();
-		addPopup(benvenutoLabel, popupMenu);
-		
 		mainPanel.add(topPanel, BorderLayout.NORTH);
 		mainPanel.add(sidePanel, BorderLayout.WEST);
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
@@ -92,21 +83,4 @@ public class HomeView extends JFrame {
 		});
 	}
 
-	private static void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
-	}
 }

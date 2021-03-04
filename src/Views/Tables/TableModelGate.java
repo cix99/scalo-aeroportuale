@@ -1,7 +1,6 @@
 package Views.Tables;
 
 import java.util.LinkedList;
-
 import javax.swing.table.AbstractTableModel;
 
 import Controllers.ViewsController;
@@ -38,15 +37,6 @@ public class TableModelGate extends AbstractTableModel {
 	public int getColumnCount() {
 		return numberOfColumns;
 	}
-
-	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		switch (columnIndex) {
-		default:
-			return true;
-		}
-	}
-
 	
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
@@ -67,10 +57,10 @@ public class TableModelGate extends AbstractTableModel {
 		return false;
 	}
 	
-	public void removeRow(int row) {          //removes a row based on number from the data
+	public void removeRow(int row) {         
 		if (controller.deleteGate(gates.get(row).getNomeGate())) {
 			gates.remove(row);
-			fireTableRowsDeleted(row, row);    //updates the table
+			fireTableRowsDeleted(row, row);    
 		}
 	}
 

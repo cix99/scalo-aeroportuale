@@ -2,10 +2,12 @@ package Views.Tables;
  
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.swing.table.AbstractTableModel;
 
 import Controllers.ViewsController;
+import Models.Coda;
 import Models.Stato;
 import Models.Tratta;
 
@@ -14,7 +16,8 @@ public class TableModelTratta extends AbstractTableModel {
 
 	private LinkedList<Tratta> tratte;
 	private int numberOfColumns = 11;
-	private String[] columnNames = {"ID", "Destinazione", "Compagnia Aerea", "Inizio Imbarco Stimato", "Inizio Imbarco Effettivo", "Fine Imbarco Stimato", "Fine Imbarco Effettivo", "Gate", "Stato Imbarco", "Ritardo", "Max Prenotazioni"};
+	private String[] columnNames = {"ID", "Destinazione", "Compagnia Aerea", "Inizio Imbarco Stimato", "Inizio Imbarco Effettivo", 
+									"Fine Imbarco Stimato", "Fine Imbarco Effettivo", "Gate", "Stato Imbarco", "Ritardo", "Max Prenotazioni"};
 	
 	private ViewsController controller;
 	
@@ -70,20 +73,14 @@ public class TableModelTratta extends AbstractTableModel {
 			return null;
 		}
 	}
-
-	@Override
-	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		if (tratte == null) return;
-		Tratta tratta = tratte.get(rowIndex);
-		switch (columnIndex) {
-			case 5: {
-				tratta.setOraInizioImbarcoStimato((LocalDateTime) aValue);
-				//controller.updateInizioImbarcoStimato((LocalDateTime) aValue, tratta.getId());
-				break;
-			}
-			default:
-				return;
+	
+	public boolean updateRow(int idTratta, String gate, LocalDateTime dataInizio, LocalDateTime dataFine, String maxPrenotazione, ArrayList<Coda> nuoveCodeList, int numeroCodeUpdate) {
+		if (controller.updateTratta(idTratta, gate, dataInizio, dataFine, maxPrenotazione, nuoveCodeList, numeroCodeUpdate)) {
+			tratte = controller.getTratte();
+			fireTableDataChanged();
+			return true;
 		}
+		return false;
 	}
 	
 	public void removeRow(int row) {        
@@ -93,7 +90,6 @@ public class TableModelTratta extends AbstractTableModel {
 		}
 	}
 	
-
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Tratta tratta = tratte.get(rowIndex);

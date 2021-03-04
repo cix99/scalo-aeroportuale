@@ -37,10 +37,10 @@ import org.jdatepicker.impl.*;
 @SuppressWarnings("serial")
 public class NuovaTrattaView extends JPanel {
 		
-	int[] idList;
-	private ArrayList<Coda> codaList;
-	
 	private JPanel mainPanel;
+	private JLabel menuLabel;
+	private JPanel bottomPanel;
+	private JButton salvaButton;
 	private JLabel destinazioneLabel;
 	private JTextField destinazioneTextField;
 	private JLabel compagniaLabel;
@@ -63,19 +63,23 @@ public class NuovaTrattaView extends JPanel {
 								"45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", };
 	private JLabel codeLabel;
 	private JComboBox<String> numeroCodeComboBox;
+	private String[] numeroCode = {"1", "2", "3", "4", "5"};
 	private JLabel maxPrenotazioniLabel;
 	private JTextField maxPrenotazioniTextField;
-	private String[] numeroCode = {"1", "2", "3", "4", "5"};
-	
 	private JDialog codaDialog;
 	
-	public NuovaTrattaView (ViewsController controller, JFrame aggiungiFrame) {	
+	private ArrayList<Coda> codaList;
 	
+	private ViewsController controller;
+	
+	public NuovaTrattaView (ViewsController viewsController, JFrame aggiungiFrame) {	
+		controller = viewsController;
+		
 		setBorder(new EmptyBorder(10, 5, 10, 10));
 		setLayout(new BorderLayout());
 		setBackground(new Color(0, 0, 153));
 		
-		JLabel menuLabel = new JLabel("   Nuova Tratta");
+		menuLabel = new JLabel("   Nuova Tratta");
 		menuLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
 		menuLabel.setForeground(Color.WHITE);
 		
@@ -147,8 +151,7 @@ public class NuovaTrattaView extends JPanel {
 		codeLabel.setForeground(Color.WHITE);
 		codeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		numeroCodeComboBox = new JComboBox<String>(numeroCode);
-		numeroCodeComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		
+		numeroCodeComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));	
 		numeroCodeComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -204,7 +207,6 @@ public class NuovaTrattaView extends JPanel {
 		gatePanel.setBackground(new Color(0, 0, 153));
 		gatePanel.add(gateLabel, BorderLayout.WEST);
 		gatePanel.add(gateComboBox, BorderLayout.SOUTH);
-		
 		midTopPanel.add(destinazionePanel);
 		midTopPanel.add(compagniaPanel);
 		midTopPanel.add(gatePanel);
@@ -297,13 +299,12 @@ public class NuovaTrattaView extends JPanel {
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(midBottomPanel, gc);
 		
-		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		bottomPanel.setBackground(new Color(0, 0, 153));
 		
-		JButton salvaButton = new JButton("Salva");
+		salvaButton = new JButton("Salva");
 		salvaButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		salvaButton.setFocusPainted(false);
-
 		salvaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -317,16 +318,15 @@ public class NuovaTrattaView extends JPanel {
 																		datePickerEnd.getJDateInstantPanel().getModel().getDay(),
 																		Integer.parseInt(hourEndComboBox.getSelectedItem().toString()), 
 																		Integer.parseInt(minuteEndComboBox.getSelectedItem().toString()));
-				controller.saveNuovaTratta(destinazioneTextField.getText(), compagniaComboBox.getSelectedItem().toString(), gateComboBox.getSelectedItem().toString(), dataInizio, dataFine, maxPrenotazioniTextField.getText(), codaList);
+				controller.saveNuovaTratta(destinazioneTextField.getText(), compagniaComboBox.getSelectedItem().toString(), gateComboBox.getSelectedItem().toString(), 
+										   dataInizio, dataFine, maxPrenotazioniTextField.getText(), codaList);
 			}
 		});
 		
 		bottomPanel.add(salvaButton);
-		
 		add(menuLabel, BorderLayout.NORTH);
 		add(mainPanel, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
-		
 	}
 
 	public void showCodaDialog (JFrame aggiungiFrame, int numeroCode, ViewsController controller) {
@@ -379,19 +379,31 @@ public class NuovaTrattaView extends JPanel {
 		mainPanelCD.add(priority1ComboBox, gc);
 		
 		JTextField nomeCoda2TextField = new JTextField();
+		nomeCoda2TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeCoda2TextField.setColumns(10);
+		nomeCoda2TextField.setMinimumSize(new Dimension(250,30));
 		JComboBox<String> priority2ComboBox = new JComboBox<String>(priorities);
+		priority2ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		JTextField nomeCoda3TextField = new JTextField();
+		nomeCoda3TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeCoda3TextField.setColumns(10);
+		nomeCoda3TextField.setMinimumSize(new Dimension(250,30));
 		JComboBox<String> priority3ComboBox = new JComboBox<String>(priorities);
+		priority3ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		JTextField nomeCoda4TextField = new JTextField();
+		nomeCoda4TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeCoda4TextField.setColumns(10);
+		nomeCoda4TextField.setMinimumSize(new Dimension(250,30));		
 		JComboBox<String> priority4ComboBox = new JComboBox<String>(priorities);
+		priority4ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		JTextField nomeCoda5TextField = new JTextField();
+		nomeCoda5TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		nomeCoda5TextField.setColumns(10);
+		nomeCoda5TextField.setMinimumSize(new Dimension(250,30));			
 		JComboBox<String> priority5ComboBox = new JComboBox<String>(priorities);
+		priority5ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		
 		if (numeroCode >= 2) {
-			priority2ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda2TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda2TextField.setColumns(10);
-			nomeCoda2TextField.setMinimumSize(new Dimension(250,30));
 			gc.gridx = 0;     
 			gc.gridy = 2;
 			gc.insets = new Insets(5,0,0,0);
@@ -404,10 +416,6 @@ public class NuovaTrattaView extends JPanel {
 			mainPanelCD.add(priority2ComboBox, gc);
 		}
 		if (numeroCode >= 3) {
-			priority3ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda3TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda3TextField.setColumns(10);
-			nomeCoda3TextField.setMinimumSize(new Dimension(250,30));
 			gc.gridx = 0;     
 			gc.gridy = 3;
 			gc.insets = new Insets(5,0,0,0);
@@ -419,11 +427,7 @@ public class NuovaTrattaView extends JPanel {
 			gc.anchor = GridBagConstraints.CENTER;
 			mainPanelCD.add(priority3ComboBox, gc);
 		}
-		if (numeroCode >= 4) {
-			priority4ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda4TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda4TextField.setColumns(10);
-			nomeCoda4TextField.setMinimumSize(new Dimension(250,30));				
+		if (numeroCode >= 4) {		
 			gc.gridx = 0;     
 			gc.gridy = 4;
 			gc.insets = new Insets(5,0,0,0);
@@ -436,10 +440,6 @@ public class NuovaTrattaView extends JPanel {
 			mainPanelCD.add(priority4ComboBox, gc);
 		}
 		if (numeroCode >= 5) {
-			priority5ComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda5TextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-			nomeCoda5TextField.setColumns(10);
-			nomeCoda5TextField.setMinimumSize(new Dimension(250,30));			
 			gc.gridx = 0;     
 			gc.gridy = 5;
 			gc.insets = new Insets(5,0,0,0);
@@ -502,6 +502,5 @@ public class NuovaTrattaView extends JPanel {
     	codaDialog.setLocationRelativeTo(null);
     	codaDialog.setVisible(true);
 	}
-	
 	
 }

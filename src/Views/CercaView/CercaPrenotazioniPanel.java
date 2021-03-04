@@ -3,6 +3,11 @@ package Views.CercaView;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 import Controllers.ViewsController;
 import Models.CentoKilometri;
@@ -10,29 +15,22 @@ import Models.Coda;
 import Models.Prenotazione;
 import Views.Tables.TableModelPrenotazione;
 
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.LinkedList;
-import java.util.ListIterator;
-
 @SuppressWarnings("serial")
 public class CercaPrenotazioniPanel extends JPanel {
 
 	private JScrollPane scrollPane;
 	private JTable table;
 	private TableModelPrenotazione tableModelPrenotazione;
-	
 	private JPanel buttonsPanel;
 	private JButton modificaButton;
 	private JButton eliminaButton;
 	
 	private CercaView cercaView;
-	private ViewsController viewsController;
+	private ViewsController controller;
 	
-    public CercaPrenotazioniPanel(LinkedList<Prenotazione> prenotazioni, ViewsController controller, CercaView cercaView) {
+    public CercaPrenotazioniPanel(LinkedList<Prenotazione> prenotazioni, ViewsController viewsController, CercaView cercaView) {
     	this.cercaView = cercaView;
-    	this.viewsController = controller;
+    	controller = viewsController;
     	
     	setLayout(new BorderLayout());
     	setBackground(new Color(0, 0, 153));
@@ -67,8 +65,6 @@ public class CercaPrenotazioniPanel extends JPanel {
 		table.getColumnModel().getColumn(8).setMinWidth(40);
 		table.getColumnModel().getColumn(8).setMaxWidth(65);
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-		//table.setFillsViewportHeight(true);
-		
 		add(scrollPane, BorderLayout.CENTER);
     }
     
@@ -91,7 +87,6 @@ public class CercaPrenotazioniPanel extends JPanel {
 					JOptionPane.showMessageDialog(CercaPrenotazioniPanel.this, "Seleziona un riga da modificare", "Errore modifica", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-			
 		});
 		eliminaButton = new JButton("Elimina");
 		eliminaButton.setFocusPainted(false);
@@ -187,7 +182,6 @@ public class CercaPrenotazioniPanel extends JPanel {
 		
 		JTextField idTextField = new JTextField();
 		idTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		//idTextField.setEnabled(false);
 		idTextField.setEditable(false);
 		idTextField.setForeground(new Color(184,207,229));
 		idTextField.setColumns(10);
@@ -217,7 +211,7 @@ public class CercaPrenotazioniPanel extends JPanel {
 		cognomeTextField.setEnabled(false);
 		cognomeTextField.setColumns(10);
 		cognomeTextField.setText(model.getValueAt(table.getSelectedRow(), 5).toString());
-		LinkedList<CentoKilometri> centoKilometriList = viewsController.getCentoKilometri(model.getValueAt(table.getSelectedRow(), 2).toString());
+		LinkedList<CentoKilometri> centoKilometriList = controller.getCentoKilometri(model.getValueAt(table.getSelectedRow(), 2).toString());
 		String [] centoKilometriArray = new String[centoKilometriList.size() + 1];
 		ListIterator<CentoKilometri> centoKilometriCursor = centoKilometriList.listIterator();
 		centoKilometriArray[0] = "-";
@@ -234,7 +228,7 @@ public class CercaPrenotazioniPanel extends JPanel {
 			centoKilometriComboBox.setSelectedItem(model.getValueAt(table.getSelectedRow(), 6).toString());
 		else
 			centoKilometriComboBox.setSelectedItem(model.getValueAt(table.getSelectedRow(), 6).toString().substring(0, model.getValueAt(table.getSelectedRow(), 6).toString().indexOf(" ")));
-		LinkedList<Coda> codeList = viewsController.getCodaFromIdTratta((int) model.getValueAt(table.getSelectedRow(), 3));
+		LinkedList<Coda> codeList = controller.getCodaFromIdTratta((int) model.getValueAt(table.getSelectedRow(), 3));
 		String [] codeArray = new String[codeList.size()];
 		ListIterator<Coda> cursor = codeList.listIterator();
 		int i = 0;
@@ -259,53 +253,44 @@ public class CercaPrenotazioniPanel extends JPanel {
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.gridx = 0;  
 		gc.gridy = 0;
-		//gc.gridwidth = 3;
 		gc.insets = new Insets(0,0,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(idPanel, gc);
 		gc.gridx = 1;     
 		gc.gridy = 0;
-		//gc.gridwidth = 1;
 		gc.insets = new Insets(0,100,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(idTrattaPanel, gc);
 		gc.gridx = 0;     
 		gc.gridy = 1;
-		//gc.gridwidth = 2;
 		gc.insets = new Insets(20,0,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(compagniaPanel, gc);
 		gc.gridx = 1;     
 		gc.gridy = 1;
-		//gc.gridwidth = 2;
 		gc.insets = new Insets(20,100,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(codicePanel, gc);
 		gc.gridx = 0;     
 		gc.gridy = 2;
-		//gc.gridwidth = 2;
 		gc.insets = new Insets(20,0,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(nomePanel, gc);
 		gc.gridx = 1;     
 		gc.gridy = 2;
-		//gc.gridwidth = 2;
 		gc.insets = new Insets(20,100,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(cognomePanel, gc);
 		gc.gridx = 0;     
 		gc.gridy = 3;
-		//gc.gridwidth = 2;
 		gc.insets = new Insets(20,0,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(centoKilometriPanel, gc);
 		gc.gridx = 1;     
 		gc.gridy = 3;
-		//gc.gridwidth = 2;
 		gc.insets = new Insets(20,100,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		mainPanel.add(codaPanel, gc);
-		
 		
 		JPanel bottomPanel = new JPanel(new FlowLayout());
 		bottomPanel.setBackground(new Color (0, 153, 255));
@@ -327,7 +312,6 @@ public class CercaPrenotazioniPanel extends JPanel {
 		
 		prenotazioneDialog.setLocationRelativeTo(null);
 		prenotazioneDialog.setVisible(true);
-		
 	}	
 
 }

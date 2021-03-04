@@ -13,7 +13,6 @@ public class CodaDAO extends JDBC {
 	
 	public boolean store(Coda coda){
         String query = "INSERT INTO " + tableName + " (id_tratta, nome_coda, priority) VALUES  (?, ?, ?)";
-
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setInt(1, coda.getIdTratta());
@@ -48,12 +47,37 @@ public class CodaDAO extends JDBC {
             }
             resultSet.close();
             statement.close();
-
         }catch(SQLException e){
             System.out.println(e);
         }
-
         return coda;
+    }
+    
+    public LinkedList<Coda> findByTratta(int idTratta){
+        String query = "SELECT * FROM " + tableName + " WHERE id_tratta = ? ORDER BY priority DESC";
+        LinkedList<Coda> codaList = new LinkedList<Coda>();
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setInt(1, idTratta);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Coda coda = new Coda();
+                coda.setId(resultSet.getInt("id"));
+            	coda.setIdTratta(resultSet.getInt("id_tratta"));
+                coda.setNomeCoda(resultSet.getString("nome_coda"));
+                if (resultSet.getTimestamp("inizio_imbarco_coda") != null)
+                	coda.setInizioImbarcoCoda(resultSet.getTimestamp("inizio_imbarco_coda").toLocalDateTime());
+                if (resultSet.getTimestamp("fine_imbarco_coda") != null)
+                	coda.setFineImbarcoCoda(resultSet.getTimestamp("fine_imbarco_coda").toLocalDateTime());
+                coda.setPriority(resultSet.getInt("priority"));
+                codaList.add(coda);
+            }
+            resultSet.close();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return codaList;
     }
     
     public Coda findByNameAndTratta(String nomeCoda, int idTratta){
@@ -77,41 +101,10 @@ public class CodaDAO extends JDBC {
             }
             resultSet.close();
             statement.close();
-
         }catch(SQLException e){
             System.out.println(e);
         }
-
         return coda;
-    }
-    
-    public LinkedList<Coda> findCodaByIdTratta(int idTratta){
-        String query = "SELECT * FROM " + tableName + " WHERE id_tratta = ? ORDER BY priority DESC";
-        LinkedList<Coda> codaList = new LinkedList<Coda>();
-        try {
-            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setInt(1, idTratta);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Coda coda = new Coda();
-                coda.setId(resultSet.getInt("id"));
-            	coda.setIdTratta(resultSet.getInt("id_tratta"));
-                coda.setNomeCoda(resultSet.getString("nome_coda"));
-                if (resultSet.getTimestamp("inizio_imbarco_coda") != null)
-                	coda.setInizioImbarcoCoda(resultSet.getTimestamp("inizio_imbarco_coda").toLocalDateTime());
-                if (resultSet.getTimestamp("fine_imbarco_coda") != null)
-                	coda.setFineImbarcoCoda(resultSet.getTimestamp("fine_imbarco_coda").toLocalDateTime());
-                coda.setPriority(resultSet.getInt("priority"));
-                codaList.add(coda);
-            }
-            resultSet.close();
-            statement.close();
-
-        }catch(SQLException e){
-            System.out.println(e);
-        }
-
-        return codaList;
     }
     
     public LinkedList<Coda> find(){
@@ -134,24 +127,27 @@ public class CodaDAO extends JDBC {
             }
             resultSet.close();
             statement.close();
-
         }catch(SQLException e){
             System.out.println(e);
         }
-
         return codaList;
     }
-
-    public Coda first(){
-    	LinkedList<Coda> codaList = find();
-        return codaList.get(0);
-    }
-
-    public Coda last(){
-    	LinkedList<Coda> codaList = find();
-        return codaList.get(codaList.size() - 1);
-    }
-
+    
+	public boolean update(Coda coda) {
+		String query = "UPDATE " + tableName + " SET priority = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setObject(1, coda.getPriority());
+            statement.setInt(2, findByNameAndTratta(coda.getNomeCoda(), coda.getIdTratta()).getId());
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
+	
 	public boolean updateInizioImbarco(Coda coda) {
 		String query = "UPDATE " + tableName + " SET inizio_imbarco_coda = ? WHERE id = ?";
         try {
@@ -182,18 +178,13 @@ public class CodaDAO extends JDBC {
         return true;
 	}
 
-	public boolean update(Coda coda) {
-		String query = "UPDATE " + tableName + " SET priority = ? WHERE id = ?";
-        try {
-            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setObject(1, coda.getPriority());
-            statement.setInt(2, findByNameAndTratta(coda.getNomeCoda(), coda.getIdTratta()).getId());
-            statement.executeUpdate();
-            statement.close();
-        }catch(SQLException e){
-            System.out.println(e);
-            return false;
-        }
-        return true;
-	}
+    public Coda first(){
+    	LinkedList<Coda> codaList = find();
+        return codaList.get(0);
+    }
+
+    public Coda last(){
+    	LinkedList<Coda> codaList = find();
+        return codaList.get(codaList.size() - 1);
+    }
 }

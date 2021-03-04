@@ -34,10 +34,8 @@ import Models.Tratta;
 @SuppressWarnings("serial")
 public class NuovaPrenotazioneView extends JPanel {
 	   
-	private int[] idTrattaList;
-	private int trattaIndex;
-	
 	private JPanel mainPanel;
+	private JLabel menuLabel;
 	private JLabel nomeLabel;
 	private JTextField nomeTextField;
 	private JLabel cognomeLabel;
@@ -56,14 +54,20 @@ public class NuovaPrenotazioneView extends JPanel {
 	private JComboBox<String> codaComboBox;
 	private JPanel bottomPanel;
 	private JButton salvaButton;
+	
+	private int[] idTrattaList;
+	private int trattaIndex;
 
-	public NuovaPrenotazioneView (ViewsController controller) {
+	private ViewsController controller;
+	
+	public NuovaPrenotazioneView (ViewsController viewsController) {
+		controller = viewsController;
 		
 		setBorder(new EmptyBorder(10, 5, 10, 10));
 		setLayout(new BorderLayout());
 		setBackground(new Color(0, 0, 153));
 		
-		JLabel menuLabel = new JLabel("   Nuova Prenotazione");
+		menuLabel = new JLabel("   Nuova Prenotazione");
 		menuLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
 		menuLabel.setForeground(Color.WHITE);
 		
@@ -113,19 +117,17 @@ public class NuovaPrenotazioneView extends JPanel {
 		compagniaCentoKilometriComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				if (compagniaCentoKilometriComboBox.getSelectedIndex() != -1) {
-					LinkedList<CentoKilometri> centoKilometriList = controller.getCentoKilometri(compagniaCentoKilometriComboBox.getSelectedItem().toString());
-					String [] centoKilometriArray = new String[centoKilometriList.size() + 1];
-					ListIterator<CentoKilometri> centoKilometriCursor = centoKilometriList.listIterator();
-					centoKilometriArray[0] = "";
-					int j = 1;
-					while (centoKilometriCursor.hasNext()) {
-						CentoKilometri current = centoKilometriCursor.next();
-						centoKilometriArray[j] = current.getCodiceCompagnia();
-						j++;
-					}
-					UpdateCentoKilometriComboBox(centoKilometriArray);
-//				}
+				LinkedList<CentoKilometri> centoKilometriList = controller.getCentoKilometri(compagniaCentoKilometriComboBox.getSelectedItem().toString());
+				String [] centoKilometriArray = new String[centoKilometriList.size() + 1];
+				ListIterator<CentoKilometri> centoKilometriCursor = centoKilometriList.listIterator();
+				centoKilometriArray[0] = "";
+				int j = 1;
+				while (centoKilometriCursor.hasNext()) {
+					CentoKilometri current = centoKilometriCursor.next();
+					centoKilometriArray[j] = current.getCodiceCompagnia();
+					j++;
+				}
+				UpdateCentoKilometriComboBox(centoKilometriArray);
 			}
 		});
 		
@@ -292,16 +294,13 @@ public class NuovaPrenotazioneView extends JPanel {
 				controller.saveNuovaPrenotazione(nomeTextField.getText(), cognomeTextField.getText(), codicePrenotazioneTextField.getText().toString(), 
 						centoKilometriComboBox.getSelectedItem().toString(), compagniaCentoKilometriComboBox.getSelectedItem().toString(), 
 						compagniaComboBox.getSelectedItem().toString(), idTrattaList[trattaComboBox.getSelectedIndex()], codaComboBox.getSelectedItem().toString());
-				
 			}
 		});
 		
 		bottomPanel.add(salvaButton);
-		
 		add(menuLabel, BorderLayout.NORTH);
 		add(mainPanel, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
-		
 	}
 	
 	public void UpdateCentoKilometriComboBox (String[] centoKilometriArray) {

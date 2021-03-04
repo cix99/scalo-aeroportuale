@@ -1,7 +1,6 @@
 package Views.Tables;
 
 import java.util.LinkedList;
-
 import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 

@@ -2,7 +2,6 @@ package Models;
 
 import java.lang.String;
 
-
 public class Gate{
 
     private String nomeGate;

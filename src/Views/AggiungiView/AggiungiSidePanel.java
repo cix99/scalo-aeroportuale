@@ -9,7 +9,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,10 +30,12 @@ public class AggiungiSidePanel extends JPanel {
 	private JLabel compagniaAereaLabel;
 	private JPanel gatePanel;
 	private JLabel gateLabel;
-	
 	private JPanel centerPanel;
 	
-	public AggiungiSidePanel (ViewsController controller, JPanel centerPanelRef, JFrame aggiungiFrame) {
+	private ViewsController controller;
+	
+	public AggiungiSidePanel (ViewsController viewsController, JPanel centerPanelRef, JFrame aggiungiFrame) {
+		controller = viewsController;
 		
 		setPreferredSize(new Dimension (200,650));
 		setBackground(new Color(0, 153, 255));
@@ -63,7 +64,6 @@ public class AggiungiSidePanel extends JPanel {
 				centerPanel.removeAll();
 				prenotazionePanel = new NuovaPrenotazioneView(controller);
 				centerPanel.add(prenotazionePanel, BorderLayout.CENTER);
-				//centerPanel.repaint();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -93,7 +93,7 @@ public class AggiungiSidePanel extends JPanel {
 		trattaLabel = new JLabel("Tratta");
 		trattaLabel.setForeground(Color.WHITE);
 		trattaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
-
+		
 		trattaPanel.add(trattaLabel, gc);
 		
 		trattaPanel.addMouseListener(new MouseAdapter() {
@@ -102,7 +102,6 @@ public class AggiungiSidePanel extends JPanel {
 				centerPanel.removeAll();
 				trattaPanel = new NuovaTrattaView(controller, aggiungiFrame);
 				centerPanel.add(trattaPanel, BorderLayout.CENTER);
-				//centerPanel.repaint();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -124,13 +123,11 @@ public class AggiungiSidePanel extends JPanel {
 			}
 		});
 		
-		/* Aggiungi option */
 		centoKilometriPanel = new JPanel();
 		centoKilometriPanel.setBackground(new Color(0, 204, 255));
 		centoKilometriPanel.setBounds(0, 105, 200, 85);
 		centoKilometriPanel.setLayout(new GridBagLayout());
 		add(centoKilometriPanel);
-		
 		centoKilometriLabel = new JLabel("CentoKilometri");
 		centoKilometriLabel.setForeground(Color.WHITE);
 		centoKilometriLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
@@ -143,7 +140,6 @@ public class AggiungiSidePanel extends JPanel {
 				centerPanel.removeAll();
 				centoKilometriPanel = new NuovoCentoKilometriView(controller);
 				centerPanel.add(centoKilometriPanel, BorderLayout.CENTER);
-				//centerPanel.repaint();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -165,13 +161,11 @@ public class AggiungiSidePanel extends JPanel {
 			}
 		});
 		
-		/* Cerca option */
 		compagniaAereaPanel = new JPanel();
 		compagniaAereaPanel.setBackground(new Color(0, 204, 255));
 		compagniaAereaPanel.setBounds(0, 200, 200, 85);
 		compagniaAereaPanel.setLayout(new GridBagLayout());
-		add(compagniaAereaPanel);
-		
+		add(compagniaAereaPanel);	
 		compagniaAereaLabel = new JLabel("Compagnia Aerea");
 		compagniaAereaLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		compagniaAereaLabel.setForeground(Color.WHITE);
@@ -185,7 +179,6 @@ public class AggiungiSidePanel extends JPanel {
 				centerPanel.removeAll();
 				compagniaAereaPanel = new NuovaCompagniaView(controller);
 				centerPanel.add(compagniaAereaPanel, BorderLayout.CENTER);
-				//centerPanel.repaint();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -207,14 +200,11 @@ public class AggiungiSidePanel extends JPanel {
 			}
 		});
 		
-		/* Elimina option */
 		gatePanel = new JPanel();
-		
 		gatePanel.setBackground(new Color(0, 204, 255));
 		gatePanel.setBounds(0, 295, 200, 85);
 		gatePanel.setLayout(new GridBagLayout());
 		add(gatePanel);
-		
 		gateLabel = new JLabel("Gate");
 		gateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		gateLabel.setForeground(Color.WHITE);
@@ -228,7 +218,6 @@ public class AggiungiSidePanel extends JPanel {
 				centerPanel.removeAll();
 				gatePanel = new NuovoGateView(controller);
 				centerPanel.add(gatePanel, BorderLayout.CENTER);
-				//centerPanel.repaint();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -249,12 +238,5 @@ public class AggiungiSidePanel extends JPanel {
 				gatePanel.setBackground(new Color(0, 204, 255));
 			}
 		});
-
-	}
-	
-	public void emptyCenterPanel () {
-		if (centerPanel != null) {
-			
-		}
 	}
 }

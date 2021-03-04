@@ -31,14 +31,15 @@ public class HomeSidePanel extends JPanel {
 	private JLabel statisticheLabel;
 	private JPanel userPanel;
 	
-	public HomeSidePanel (ViewsController controller, String username) {
+	private ViewsController controller;
+	
+	public HomeSidePanel (ViewsController viewsController, String username) {
+		controller = viewsController;
 		
 		setPreferredSize(new Dimension (200,650));
 		setBackground(new Color(0, 153, 255));
 		setBorder(new EmptyBorder(10, 0, 0, 0));
 		setLayout(new GridLayout(5, 1, 0, 10));
-		
-		/* Imbarco option */
 		
 		imbarcoPanel = new JPanel();
 		imbarcoPanel.setBackground(new Color(0, 204, 255));
@@ -51,12 +52,10 @@ public class HomeSidePanel extends JPanel {
 
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.anchor = GridBagConstraints.CENTER;
-		imbarcoPanel.add(imbarcoLabel, gc);
-		
+		imbarcoPanel.add(imbarcoLabel, gc);	
 		imbarcoPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//Chiama imbarco view
 				controller.imbarcoView();
 			}
 			@Override
@@ -79,7 +78,6 @@ public class HomeSidePanel extends JPanel {
 			}
 		});
 		
-		/* Aggiungi option */
 		aggiungiPanel = new JPanel();
 		aggiungiPanel.setBackground(new Color(0, 204, 255));
 		aggiungiPanel.setBounds(0, 105, 200, 85);
@@ -90,12 +88,10 @@ public class HomeSidePanel extends JPanel {
 		aggiungiLabel.setForeground(Color.WHITE);
 		aggiungiLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		
-		aggiungiPanel.add(aggiungiLabel, gc);
-		
+		aggiungiPanel.add(aggiungiLabel, gc);	
 		aggiungiPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//Chiama aggiungi view
 				controller.aggiungiView();
 			}
 			@Override
@@ -118,7 +114,6 @@ public class HomeSidePanel extends JPanel {
 			}
 		});
 		
-		/* Cerca option */
 		cercaPanel = new JPanel();
 		cercaPanel.setBackground(new Color(0, 204, 255));
 		cercaPanel.setBounds(0, 200, 200, 85);
@@ -131,11 +126,9 @@ public class HomeSidePanel extends JPanel {
 		cercaLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		
 		cercaPanel.add(cercaLabel, gc);
-		
 		cercaPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//Chiama cerca view
 				controller.cercaView();
 			}
 			@Override
@@ -158,9 +151,7 @@ public class HomeSidePanel extends JPanel {
 			}
 		});
 		
-		/* Elimina option */
-		statistichePanel = new JPanel();
-		
+		statistichePanel = new JPanel();		
 		statistichePanel.setBackground(new Color(0, 204, 255));
 		statistichePanel.setBounds(0, 295, 200, 85);
 		statistichePanel.setLayout(new GridBagLayout());
@@ -171,12 +162,10 @@ public class HomeSidePanel extends JPanel {
 		statisticheLabel.setForeground(Color.WHITE);
 		statisticheLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		
-		statistichePanel.add(statisticheLabel, gc);
-		
+		statistichePanel.add(statisticheLabel, gc);	
 		statistichePanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			//Chiama elimina view
 				controller.statisticheView();
 			}
 			@Override

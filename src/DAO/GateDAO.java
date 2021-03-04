@@ -1,4 +1,5 @@
 package DAO;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,7 +62,7 @@ public class GateDAO extends JDBC {
         return gateList;
     }
 
-    public boolean delete (String nomeGate) {
+    public boolean delete(String nomeGate) {
     	String query = "DELETE FROM " + tableName + " WHERE nome_gate = ?";
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -74,17 +75,7 @@ public class GateDAO extends JDBC {
         return true;
     }
     
-    public Gate first(){
-    	LinkedList<Gate> gateList = find();
-        return gateList.get(0);
-    }
-
-    public Gate last(){
-    	LinkedList<Gate> gateList = find();
-        return gateList.get(gateList.size() - 1);
-    }
-
-	public boolean updateNomeGate(String nomeGate, String oldNomeGate) {
+	public boolean update(String nomeGate, String oldNomeGate) {
 		String query = "UPDATE " + tableName + " SET nome_gate = ? WHERE nome_gate = ?";
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -98,4 +89,14 @@ public class GateDAO extends JDBC {
         }
         return true;
 	}
+    
+    public Gate first(){
+    	LinkedList<Gate> gateList = find();
+        return gateList.get(0);
+    }
+
+    public Gate last(){
+    	LinkedList<Gate> gateList = find();
+        return gateList.get(gateList.size() - 1);
+    }
 }

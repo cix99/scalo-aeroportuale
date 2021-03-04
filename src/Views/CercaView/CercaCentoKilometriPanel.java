@@ -3,11 +3,6 @@ package Views.CercaView;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-
-import Controllers.ViewsController;
-import Models.CentoKilometri;
-import Views.Tables.TableModelCentoKilometri;
-
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -15,23 +10,26 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 
+import Controllers.ViewsController;
+import Models.CentoKilometri;
+import Views.Tables.TableModelCentoKilometri;
+
 @SuppressWarnings("serial")
 public class CercaCentoKilometriPanel extends JPanel {
 
 	private JScrollPane scrollPane;
 	private JTable table;
 	private TableModelCentoKilometri tableModelCentoKilometri;
-	
 	private JPanel buttonsPanel;
 	private JButton modificaButton;
 	private JButton eliminaButton;
 	
 	private CercaView cercaView;
-	private ViewsController viewsController;
+	private ViewsController controller;
 	
-    public CercaCentoKilometriPanel(LinkedList<CentoKilometri> centoKilometri, ViewsController controller, CercaView cercaView) {
+    public CercaCentoKilometriPanel(LinkedList<CentoKilometri> centoKilometri, ViewsController viewsController, CercaView cercaView) {
     	this.cercaView = cercaView;
-    	this.viewsController = controller;
+    	controller = viewsController;
     	
     	setLayout(new BorderLayout());
     	setBackground(new Color(0, 0, 153));
@@ -50,8 +48,6 @@ public class CercaCentoKilometriPanel extends JPanel {
 		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer);
 		table.getColumnModel().getColumn(5).setCellRenderer(tableRenderer);
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-		//table.setFillsViewportHeight(true);
-
 		add(scrollPane, BorderLayout.CENTER);
     }
     
@@ -83,8 +79,8 @@ public class CercaCentoKilometriPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				Object[] options = {"Sì", "No"};
 				if (table.getSelectedRow() != -1) {
-					int choice = JOptionPane.showOptionDialog(CercaCentoKilometriPanel.this, "Vuoi davvero eliminare il cento kilometri selezionato?", "Conferma cancellazione", 
-															  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]); 
+					int choice = JOptionPane.showOptionDialog(CercaCentoKilometriPanel.this, "Vuoi davvero eliminare il cento kilometri selezionato?", 
+										"Conferma cancellazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]); 
 					if (choice == JOptionPane.YES_OPTION) {
 						TableModelCentoKilometri model = (TableModelCentoKilometri) table.getModel();
 						model.removeRow(table.getSelectedRow());
@@ -121,7 +117,7 @@ public class CercaCentoKilometriPanel extends JPanel {
 		compagniaLabel.setForeground(Color.WHITE);
 		compagniaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		compagniaLabel.setMinimumSize(new Dimension(100, 30));
-		JComboBox<String> compagniaComboBox = new JComboBox<String>(viewsController.getCompagnieAeree());
+		JComboBox<String> compagniaComboBox = new JComboBox<String>(controller.getCompagnieAeree());
 		compagniaComboBox.setEditable(false);
 		compagniaComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		compagniaComboBox.setSelectedItem(model.getValueAt(table.getSelectedRow(), 1).toString());
@@ -134,7 +130,6 @@ public class CercaCentoKilometriPanel extends JPanel {
 		codiceTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		codiceTextField.setColumns(5);
 		codiceTextField.setText(model.getValueAt(table.getSelectedRow(), 2).toString());
-		
 		codiceTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -170,7 +165,6 @@ public class CercaCentoKilometriPanel extends JPanel {
 		puntiTextField.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		puntiTextField.setColumns(5);
 		puntiTextField.setText(model.getValueAt(table.getSelectedRow(), 5).toString());
-		
 		puntiTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -211,8 +205,6 @@ public class CercaCentoKilometriPanel extends JPanel {
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.gridx = 0;  
 		gc.gridy = 0;
-		//gc.gridwidth = 1;
-		//gc.insets = new Insets(10,20,0,0);
 		gc.anchor = GridBagConstraints.WEST;
 		centerPanel.add(compagniaPanel, gc);
 		gc.gridx = 1;  
@@ -232,8 +224,7 @@ public class CercaCentoKilometriPanel extends JPanel {
 		gc.insets = new Insets(20,0,0,0);
 		centerPanel.add(puntiPanel, gc);
 		
-		mainPanel.add(centerPanel, BorderLayout.CENTER);
-		
+		mainPanel.add(centerPanel, BorderLayout.CENTER);	
 		
 		JPanel bottomPanel = new JPanel(new FlowLayout());
 		bottomPanel.setBackground(new Color (0, 153, 255));
@@ -241,20 +232,19 @@ public class CercaCentoKilometriPanel extends JPanel {
 		aggiornaButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (model.updateRow(codiceTextField.getText(), compagniaComboBox.getSelectedItem().toString(), nomeTextField.getText(), cognomeTextField.getText(), puntiTextField.getText(), table.getSelectedRow()))
+				if (model.updateRow(codiceTextField.getText(), compagniaComboBox.getSelectedItem().toString(), nomeTextField.getText(), cognomeTextField.getText(), 
+									puntiTextField.getText(), table.getSelectedRow()))
 						centoKilometriDialog.dispose();
 			}
 		});
 		
 		bottomPanel.add(aggiornaButton);
-		
 		centoKilometriDialog.add(menuPanel, BorderLayout.NORTH);
 		centoKilometriDialog.add(mainPanel, BorderLayout.CENTER);
 		centoKilometriDialog.add(bottomPanel, BorderLayout.SOUTH);
 		
 		centoKilometriDialog.setLocationRelativeTo(null);
 		centoKilometriDialog.setVisible(true);
-		
 	}	
     
 }

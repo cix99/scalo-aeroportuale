@@ -25,15 +25,15 @@ public class CercaTrattePanel extends JPanel {
 	private JButton eliminaButton;
 	
 	private CercaView cercaView;
-	private ViewsController viewsController;
+	private ViewsController controller;
 	
-    public CercaTrattePanel(LinkedList<Tratta> tratte, ViewsController controller, CercaView cercaView) {
+    public CercaTrattePanel(LinkedList<Tratta> tratte, ViewsController viewsController, CercaView cercaView) {
     	this.cercaView = cercaView;
-    	this.viewsController = controller;
+    	controller = viewsController;
     	
     	setLayout(new BorderLayout());
     	
-    	tableModel = new TableModelTratta(viewsController);
+    	tableModel = new TableModelTratta(controller);
 		table = new JTable(tableModel);
 		tableModel.setData(tratte);
 		scrollPane = new JScrollPane(table);
@@ -58,8 +58,6 @@ public class CercaTrattePanel extends JPanel {
 		table.getColumnModel().getColumn(10).setMinWidth(30);
 		table.getColumnModel().getColumn(10).setMaxWidth(110);
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-		//table.setFillsViewportHeight(false);
-		
 		add(scrollPane, BorderLayout.CENTER);
     }
 
@@ -93,10 +91,8 @@ public class CercaTrattePanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				Object[] options = {"Sì", "No"};
 				if (table.getSelectedRow() != -1) {
-					int choice = JOptionPane.showOptionDialog(CercaTrattePanel.this, "Vuoi davvero eliminare la tratta selezionata?", "Conferma cancellazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-							null,     //do not use a custom Icon
-							options,  //the titles of buttons
-							options[1]); //default button title
+					int choice = JOptionPane.showOptionDialog(CercaTrattePanel.this, "Vuoi davvero eliminare la tratta selezionata?", "Conferma cancellazione", 
+															  JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]); 
 					if (choice == JOptionPane.YES_OPTION) {
 						TableModelTratta model = (TableModelTratta) table.getModel();
 						model.removeRow(table.getSelectedRow());
@@ -126,7 +122,7 @@ public class CercaTrattePanel extends JPanel {
 		menuLabel.setForeground(Color.WHITE);
 		menuPanel.add(menuLabel);
 		
-		TrattaDialogPanel trattaDialogPanel = new TrattaDialogPanel(viewsController, cercaView);
+		TrattaDialogPanel trattaDialogPanel = new TrattaDialogPanel(controller, cercaView, trattaDialog, model);
 		trattaDialogPanel.setIdTratta((int) model.getValueAt(table.getSelectedRow(), 0));
 		trattaDialogPanel.setDestinazione(model.getValueAt(table.getSelectedRow(), 1).toString());
 		trattaDialogPanel.setCompagniaAerea(model.getValueAt(table.getSelectedRow(), 2).toString());
@@ -134,14 +130,13 @@ public class CercaTrattePanel extends JPanel {
 		trattaDialogPanel.setFineImbarcoStimato(model.getValueAt(table.getSelectedRow(), 5).toString());
 		trattaDialogPanel.setGate(model.getValueAt(table.getSelectedRow(), 7).toString());
 		trattaDialogPanel.setMaxPrenotazioni((int) model.getValueAt(table.getSelectedRow(), 10));
-		trattaDialogPanel.setCode(viewsController.getCodaFromIdTratta((int) model.getValueAt(table.getSelectedRow(), 0)));
+		trattaDialogPanel.setCode(controller.getCodaFromIdTratta((int) model.getValueAt(table.getSelectedRow(), 0)));
 		
 		trattaDialog.add(menuPanel, BorderLayout.NORTH);
 		trattaDialog.add(trattaDialogPanel, BorderLayout.CENTER);
 
 		trattaDialog.setLocationRelativeTo(null);
 		trattaDialog.setVisible(true);
-		
 	}	
 
 }

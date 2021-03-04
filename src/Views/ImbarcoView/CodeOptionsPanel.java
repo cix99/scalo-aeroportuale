@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.ListIterator;
-
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -19,9 +18,12 @@ import Views.TopPanel;
 public class CodeOptionsPanel extends JPanel{
 	
 	private JComboBox<String> codaComboBox;
+	
+	private ViewsController controller;
 
 	public CodeOptionsPanel (LinkedList<Coda> codeList, ViewsController viewsController, TopPanel topPanel) {
-
+		controller = viewsController;
+		
 		setBackground(new Color(0,0,153));
 		setBorder(new EmptyBorder(5,5,0,0));
 		
@@ -37,8 +39,7 @@ public class CodeOptionsPanel extends JPanel{
 		codaComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				viewsController.loadPrenotatiImbarcoPerCoda(codaComboBox.getSelectedItem().toString());
-				
+				controller.loadPrenotatiImbarcoPerCoda(codaComboBox.getSelectedItem().toString());
 			}
 		});
 		add(codaComboBox);

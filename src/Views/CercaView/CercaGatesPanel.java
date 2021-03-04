@@ -3,15 +3,14 @@ package Views.CercaView;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-
-import Controllers.ViewsController;
-import Models.Gate;
-import Views.Tables.TableModelGate;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
+
+import Controllers.ViewsController;
+import Models.Gate;
+import Views.Tables.TableModelGate;
 
 @SuppressWarnings("serial")
 public class CercaGatesPanel extends JPanel {
@@ -19,17 +18,16 @@ public class CercaGatesPanel extends JPanel {
 	private JScrollPane scrollPane;
 	private JTable table;
 	private TableModelGate tableModelGate;
-	
 	private JPanel buttonsPanel;
 	private JButton modificaButton;
 	private JButton eliminaButton;
 	
 	private CercaView cercaView;
-//	private ViewsController viewsController;
+	private ViewsController controller;
 	
-    public CercaGatesPanel(LinkedList<Gate> gates, ViewsController controller, CercaView cercaView) {
+    public CercaGatesPanel(LinkedList<Gate> gates, ViewsController viewsController, CercaView cercaView) {
     	this.cercaView = cercaView;
-//    	this.viewsController = controller;
+    	controller = viewsController;
     	
     	setLayout(new BorderLayout());
     	setBackground(new Color(0, 0, 153));
@@ -42,9 +40,7 @@ public class CercaGatesPanel extends JPanel {
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
 		tableRenderer.setHorizontalAlignment(JLabel.CENTER);
 		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer);
-		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-		//table.setFillsViewportHeight(true);
-		
+		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));	
 		add(scrollPane, BorderLayout.CENTER);
     }
     
@@ -67,7 +63,6 @@ public class CercaGatesPanel extends JPanel {
 					JOptionPane.showMessageDialog(CercaGatesPanel.this, "Seleziona un riga da modificare", "Errore modifica", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-			
 		});
 		eliminaButton = new JButton("Elimina");	
 		eliminaButton.setFocusPainted(false);
@@ -137,8 +132,7 @@ public class CercaGatesPanel extends JPanel {
 		gateDialog.add(bottomPanel, BorderLayout.SOUTH);
 		
 		gateDialog.setLocationRelativeTo(null);
-		gateDialog.setVisible(true);
-		
+		gateDialog.setVisible(true);	
 	}	
     
 }

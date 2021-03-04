@@ -21,18 +21,17 @@ public class PrenotatiPanel extends JPanel{
 	private JTable table;
 	private TableModelImbarco tableModel;
 	
-	public PrenotatiPanel(LinkedList<Prenotazione> prenotati, ViewsController controller) { 
-		
+	private ViewsController controller;
+	
+	public PrenotatiPanel(LinkedList<Prenotazione> prenotati, ViewsController viewsController) { 
+		controller = viewsController;
 		setLayout(new BorderLayout());
 		
 		tableModel = new TableModelImbarco(controller);
 		table = new JTable(tableModel);
-		
 		setData(prenotati);
-		
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBackground(new Color (0, 0, 153));		
-		
+		scrollPane.setBackground(new Color (0, 0, 153));			
 		DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
 		tableRenderer.setHorizontalAlignment(JLabel.CENTER);
 		table.getColumnModel().getColumn(0).setCellRenderer(tableRenderer);
@@ -43,10 +42,7 @@ public class PrenotatiPanel extends JPanel{
 		table.getColumnModel().getColumn(3).setCellRenderer(tableRenderer);
 		table.getColumnModel().getColumn(4).setCellRenderer(tableRenderer);
 		scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-		//table.setFillsViewportHeight(true);
-		
 		add(scrollPane, BorderLayout.CENTER);
-					
 	}
 	
 	public void setData (LinkedList<Prenotazione> prenotati) {

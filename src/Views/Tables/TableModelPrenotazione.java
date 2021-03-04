@@ -1,7 +1,6 @@
 package Views.Tables;
 
 import java.util.LinkedList;
-
 import javax.swing.table.AbstractTableModel;
 
 import Controllers.ViewsController;
@@ -37,22 +36,6 @@ public class TableModelPrenotazione extends AbstractTableModel {
 	@Override
 	public int getColumnCount() {
 		return numberOfColumns;
-	}
-
-	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		switch (columnIndex) {
-		case 1:
-			return true;
-		case 4:
-			return true;
-		case 5:
-			return true;
-		case 7:
-			return true;
-		default:
-			return false;
-		}
 	}
 	
 	@Override
@@ -90,10 +73,10 @@ public class TableModelPrenotazione extends AbstractTableModel {
 		return false;
 	}
 	
-	public void removeRow(int row) {          //removes a row based on number from the data
+	public void removeRow(int row) {         
 		if (controller.deletePrenotazione(prenotazioni.get(row).getId())) {
 			prenotazioni.remove(row);
-			fireTableRowsDeleted(row, row);    //updates the table
+			fireTableRowsDeleted(row, row);   
 		}
 	}
 

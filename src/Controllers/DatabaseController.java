@@ -29,7 +29,7 @@ public class DatabaseController {
 	
 	//Get
     public LinkedList<Tratta> getTrattaInfoFromGate(String nomeGate) {
-    	LinkedList<Tratta> tratte = trattaDao.findTrattaByGate(nomeGate);
+    	LinkedList<Tratta> tratte = trattaDao.findByGate(nomeGate);
     	return tratte;
     }
     
@@ -39,17 +39,17 @@ public class DatabaseController {
     }
     
     public LinkedList<Tratta> getTratteFromCompagnia(String nomeCompagnia) {
-    	LinkedList<Tratta> tratte = trattaDao.findTrattaByCompagnia(nomeCompagnia);
+    	LinkedList<Tratta> tratte = trattaDao.findByCompagnia(nomeCompagnia);
     	return tratte;
     }
     
     public LinkedList<Tratta> getTratteFromCompagnia(String nomeCompagnia, Stato stato) {
-    	LinkedList<Tratta> tratte = trattaDao.findTrattaByCompagnia(nomeCompagnia, stato);
+    	LinkedList<Tratta> tratte = trattaDao.findByCompagnia(nomeCompagnia, stato);
     	return tratte;
     }
     
     public LinkedList<Coda> getCodaByIdTratta(int idTratta) {
-    	LinkedList<Coda> code = codaDao.findCodaByIdTratta(idTratta);
+    	LinkedList<Coda> code = codaDao.findByTratta(idTratta);
     	return code;
     }
     
@@ -232,13 +232,13 @@ public class DatabaseController {
 	}
 	
     public boolean updateNomeCompagnia(String nomeCompagnia, String oldNomeCompagnia) {
-    	if (compagniaAereaDao.updateNomeCompagnia(nomeCompagnia, oldNomeCompagnia))
+    	if (compagniaAereaDao.update(nomeCompagnia, oldNomeCompagnia))
     		return true;
     	return false;
     }
     
     public boolean updateNomeGate(String nomeGate, String oldNomeGate) {
-    	if (gateDao.updateNomeGate(nomeGate, oldNomeGate))
+    	if (gateDao.update(nomeGate, oldNomeGate))
     		return true;
     	return false;
     }
@@ -266,7 +266,23 @@ public class DatabaseController {
 			return true;
 		return false;
 	}
+	
+	public boolean updatePunti(int idTratta, String nomeCompagnia) {
+		LinkedList<Prenotazione> prenotatiCk = prenotazioneDao.findForPunti(idTratta, nomeCompagnia);
+		ListIterator<Prenotazione> cursor = prenotatiCk.listIterator();
+		while (cursor.hasNext()) {
+			Prenotazione current = cursor.next();
+			CentoKilometri ck = centoKilometriDao.findById(current.getCentoKilometri().getId());
+			if (!centoKilometriDao.updatePunti(ck)) {
+				break;
+			}
+		}
+		if (!cursor.hasNext())
+			return true;
+		return false;
+	}
 
+	//Checks
 	public boolean existCentoKilometri(String codice, String nomeCompagnia) {
 		if (centoKilometriDao.exist(codice, nomeCompagnia))
 			return true;
@@ -309,23 +325,9 @@ public class DatabaseController {
 		return false;
 	}
 
+	//Stats
 	public Map<String, Map<String, Integer>> getStatistiche(){
 		return trattaDao.statistiche();
-	}
-
-	public boolean updatePunti(int idTratta, String nomeCompagnia) {
-		LinkedList<Prenotazione> prenotatiCk = prenotazioneDao.findForPunti(idTratta, nomeCompagnia);
-		ListIterator<Prenotazione> cursor = prenotatiCk.listIterator();
-		while (cursor.hasNext()) {
-			Prenotazione current = cursor.next();
-			CentoKilometri ck = centoKilometriDao.findById(current.getCentoKilometri().getId());
-			if (!centoKilometriDao.updatePunti(ck)) {
-				break;
-			}
-		}
-		if (!cursor.hasNext())
-			return true;
-		return false;
 	}
     
 }

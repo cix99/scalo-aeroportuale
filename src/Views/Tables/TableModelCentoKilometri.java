@@ -1,7 +1,6 @@
 package Views.Tables;
 
 import java.util.LinkedList;
-
 import javax.swing.table.AbstractTableModel;
 
 import Controllers.ViewsController;
@@ -67,16 +66,17 @@ public class TableModelCentoKilometri extends AbstractTableModel {
     	   puntiValore = 0;
     	}
 		if (controller.updateCentoKilometri(codice, nomeCompagnia, nome, cognome, puntiValore, centoKilometri.get(row).getId())) {
-			controller.loadCercaCenterPanel("Cento Kilometri");
+			centoKilometri = controller.getCentoKilometri();
+			fireTableDataChanged();
 			return true;
 		}
 		return false;
 	}
 	
-	public void removeRow(int row) {          //removes a row based on number from the data
+	public void removeRow(int row) {        
 		if (controller.deleteCentoKilometri(centoKilometri.get(row).getId())) {
 			centoKilometri.remove(row);
-			fireTableRowsDeleted(row, row);    //updates the table
+			fireTableRowsDeleted(row, row);    
 		}
 	}
 

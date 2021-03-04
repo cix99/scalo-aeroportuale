@@ -38,7 +38,6 @@ public class CompagniaAereaDAO extends JDBC {
             }
             resultSet.close();
             statement.close();
-
         }catch(SQLException e){
             System.out.println(e);
         }
@@ -59,7 +58,6 @@ public class CompagniaAereaDAO extends JDBC {
             }
             resultSet.close();
             statement.close();
-
         }catch(SQLException e){
             System.out.println(e);
         }
@@ -68,10 +66,24 @@ public class CompagniaAereaDAO extends JDBC {
     
 	public boolean delete(String nomeCompagnia) {
 		String query = "DELETE FROM " + tableName + " WHERE nome_compagnia = ?";
-
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, nomeCompagnia);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
+	
+    public boolean update(String nomeCompagnia, String oldNomeCompagnia) {
+		String query = "UPDATE " + tableName + " SET nome_compagnia = ? WHERE nome_compagnia = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, nomeCompagnia);
+            statement.setString(2, oldNomeCompagnia);
             statement.executeUpdate();
             statement.close();
         }catch(SQLException e){
@@ -90,20 +102,4 @@ public class CompagniaAereaDAO extends JDBC {
     	LinkedList<CompagniaAerea> compagniaAereaList = find();
         return compagniaAereaList.get(compagniaAereaList.size() - 1);
     }
-
-    public boolean updateNomeCompagnia(String nomeCompagnia, String oldNomeCompagnia) {
-		String query = "UPDATE " + tableName + " SET nome_compagnia = ? WHERE nome_compagnia = ?";
-        try {
-            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setString(1, nomeCompagnia);
-            statement.setString(2, oldNomeCompagnia);
-            statement.executeUpdate();
-            statement.close();
-        }catch(SQLException e){
-            System.out.println(e);
-            return false;
-        }
-        return true;
-	}
-    
 }

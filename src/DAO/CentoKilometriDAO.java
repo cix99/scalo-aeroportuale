@@ -13,7 +13,6 @@ public class CentoKilometriDAO extends JDBC {
 	
 	public boolean store(CentoKilometri centoKilometri){
         String query = "INSERT INTO " + tableName + " (codice_compagnia, compagnia_aerea, nome, cognome, punti) VALUES  (?, ?, ?, ?, ?)";
-
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, centoKilometri.getCodiceCompagnia());
@@ -130,50 +129,6 @@ public class CentoKilometriDAO extends JDBC {
         return centoKilometriList;
     }
     
-	public boolean delete(int idCentoKilometri) {
-		String query = "DELETE FROM " + tableName + " WHERE id = ?";
-
-        try {
-            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setInt(1, idCentoKilometri);
-            statement.executeUpdate();
-            statement.close();
-        }catch(SQLException e){
-            System.out.println(e);
-            return false;
-        }
-        return true;
-	}
-
-    public CentoKilometri first(){
-        LinkedList<CentoKilometri> centoKilometriList = find();
-        return centoKilometriList.get(0);
-    }
-
-    public CentoKilometri last(){
-    	LinkedList<CentoKilometri> centoKilometriList = find();
-        return centoKilometriList.get(centoKilometriList.size() - 1);
-    }
-
-	public boolean update(String codice, String nomeCompagnia, String nome, String cognome, int punti, int id) {
-		String query = "UPDATE " + tableName + " SET codice_compagnia = ?, compagnia_aerea = ?, nome = ?, cognome = ?, punti = ? WHERE id = ?";
-        try {
-            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
-            statement.setString(1, codice);
-            statement.setString(2, nomeCompagnia);
-            statement.setString(3, nome);
-            statement.setString(4, cognome);
-            statement.setInt(5, punti);
-            statement.setInt(6, id);
-            statement.executeUpdate();
-            statement.close();
-        }catch(SQLException e){
-            System.out.println(e);
-            return false;
-        }
-        return true;
-	}
-
 	public boolean exist(String codice, String nomeCompagnia) {
 		String query = "SELECT * FROM " + tableName + " WHERE codice_compagnia = ? AND compagnia_aerea = ?";
 		boolean exists = false;
@@ -210,7 +165,40 @@ public class CentoKilometriDAO extends JDBC {
         }
         return exists;
 	}
-
+    
+	public boolean delete(int idCentoKilometri) {
+		String query = "DELETE FROM " + tableName + " WHERE id = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setInt(1, idCentoKilometri);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
+	
+	public boolean update(String codice, String nomeCompagnia, String nome, String cognome, int punti, int id) {
+		String query = "UPDATE " + tableName + " SET codice_compagnia = ?, compagnia_aerea = ?, nome = ?, cognome = ?, punti = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
+            statement.setString(1, codice);
+            statement.setString(2, nomeCompagnia);
+            statement.setString(3, nome);
+            statement.setString(4, cognome);
+            statement.setInt(5, punti);
+            statement.setInt(6, id);
+            statement.executeUpdate();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
+	}
+	
 	public boolean updatePunti(CentoKilometri centoKilometri) {
 		String query = "UPDATE " + tableName + " SET punti = ? WHERE id = ?";
         try {
@@ -225,5 +213,15 @@ public class CentoKilometriDAO extends JDBC {
         }
         return true;
 	}
+
+    public CentoKilometri first(){
+        LinkedList<CentoKilometri> centoKilometriList = find();
+        return centoKilometriList.get(0);
+    }
+
+    public CentoKilometri last(){
+    	LinkedList<CentoKilometri> centoKilometriList = find();
+        return centoKilometriList.get(centoKilometriList.size() - 1);
+    }
     
 }

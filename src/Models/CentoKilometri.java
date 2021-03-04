@@ -73,8 +73,5 @@ public class CentoKilometri{
 
 	public void setPunti(int punti) {
 		this.punti = punti;
-	}
-
-
-    
+	} 
 }

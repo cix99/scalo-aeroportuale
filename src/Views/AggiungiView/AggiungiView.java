@@ -25,13 +25,15 @@ public class AggiungiView extends JFrame{
 	private JPanel centerPanel;
 	private JLabel aggiungiLabel;
 
+	private ViewsController controller;
 	
-	public AggiungiView (ViewsController controller) {
+	public AggiungiView (ViewsController viewsController) {
+		controller = viewsController;
+		
 		Image logoImage = new ImageIcon (this.getClass().getResource("/aereo_logo.png")).getImage();
 		setIconImage(logoImage);
 		setTitle("Scalo Aeroportuale - Aggiungi");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//setBounds(50, 50, 1150, 650);
 		setMinimumSize(new Dimension (1300,700));
 		
 		mainPanel = new JPanel(new BorderLayout(0,0));
@@ -58,7 +60,6 @@ public class AggiungiView extends JFrame{
 		mainPanel.add(topPanel, BorderLayout.NORTH);
 		mainPanel.add(sidePanel, BorderLayout.WEST);
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
-
 		
 		addComponentListener(new ComponentAdapter() {
 		    public void componentResized(ComponentEvent componentEvent) {

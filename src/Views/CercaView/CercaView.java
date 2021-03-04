@@ -1,5 +1,14 @@
 package Views.CercaView;
 
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.LinkedList;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import Controllers.ViewsController;
 import Models.CentoKilometri;
 import Models.CompagniaAerea;
@@ -7,15 +16,6 @@ import Models.Gate;
 import Models.Prenotazione;
 import Models.Tratta;
 import Views.TopPanel;
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.LinkedList;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
 public class CercaView extends JFrame {
@@ -28,19 +28,17 @@ public class CercaView extends JFrame {
 	private JComboBox<String> cercaComboBox;
 	private JButton okButton;
 	private JPanel centerPanel;
-	
+	private JPanel buttonsPanel;
 	private CercaTrattePanel cercaTrattePanel;
 	private CercaPrenotazioniPanel cercaPrenotazioniPanel;
 	private CercaCentoKilometriPanel cercaCentoKilometriPanel;
 	private CercaCompagniePanel cercaCompagniePanel;
 	private CercaGatesPanel cercaGatesPanel;
 	
-	private JPanel buttonsPanel;
+	private ViewsController controller;
 	
-	private ViewsController viewsController;
-	
-	public CercaView (ViewsController controller) {
-		this.viewsController = controller;
+	public CercaView (ViewsController viewsController) {
+		controller = viewsController;
 		
 		setTitle("Scalo Aeroportuale - Cerca");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,31 +93,29 @@ public class CercaView extends JFrame {
 	}
 	
 	public void showListaTratte(LinkedList<Tratta> tratte) { 
-		cercaTrattePanel = new CercaTrattePanel(tratte, viewsController, CercaView.this);
+		cercaTrattePanel = new CercaTrattePanel(tratte, controller, CercaView.this);
 		centerPanel.add(cercaTrattePanel, BorderLayout.CENTER);
 		buttonsPanel = cercaTrattePanel.getButtonsPanel();
 		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);
-		//mainPanel.revalidate();
+		centerPanel.repaint();
 	}
 	
 	public void showListaPrenotazioni(LinkedList<Prenotazione> prenotazioni) { 
-		cercaPrenotazioniPanel = new CercaPrenotazioniPanel(prenotazioni, viewsController, CercaView.this);
+		cercaPrenotazioniPanel = new CercaPrenotazioniPanel(prenotazioni, controller, CercaView.this);
 		centerPanel.add(cercaPrenotazioniPanel, BorderLayout.CENTER);
 		buttonsPanel = cercaPrenotazioniPanel.getButtonsPanel();
 		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);
-		//mainPanel.revalidate();
 	}
 	
 	public void showListaCentoKilometri(LinkedList<CentoKilometri> centoKilometri) {
-		cercaCentoKilometriPanel = new CercaCentoKilometriPanel(centoKilometri, viewsController, CercaView.this);
+		cercaCentoKilometriPanel = new CercaCentoKilometriPanel(centoKilometri, controller, CercaView.this);
 		centerPanel.add(cercaCentoKilometriPanel, BorderLayout.CENTER);
 		buttonsPanel = cercaCentoKilometriPanel.getButtonsPanel();
 		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);
-		//mainPanel.revalidate();
 	}
 	
 	public void showListaCompagnie(LinkedList<CompagniaAerea> compagnie) { 
-		cercaCompagniePanel = new CercaCompagniePanel(compagnie, viewsController, CercaView.this);
+		cercaCompagniePanel = new CercaCompagniePanel(compagnie, controller, CercaView.this);
 		centerPanel.add(cercaCompagniePanel, BorderLayout.CENTER);
 		buttonsPanel = cercaCompagniePanel.getButtonsPanel();
 		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);
@@ -127,7 +123,7 @@ public class CercaView extends JFrame {
 	}
 	
 	public void showListaGates(LinkedList<Gate> gates) { 
-		cercaGatesPanel = new CercaGatesPanel(gates, viewsController, CercaView.this);
+		cercaGatesPanel = new CercaGatesPanel(gates, controller, CercaView.this);
 		centerPanel.add(cercaGatesPanel, BorderLayout.CENTER);
 		buttonsPanel = cercaGatesPanel.getButtonsPanel();
 		centerPanel.add(buttonsPanel, BorderLayout.SOUTH);
