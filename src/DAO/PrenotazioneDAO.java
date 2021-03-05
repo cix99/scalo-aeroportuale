@@ -61,10 +61,10 @@ public class PrenotazioneDAO extends JDBC {
 
 	public LinkedList<Prenotazione> findByTrattaId(int trattaId){
         String query = "SELECT * FROM " + tableName + " LEFT JOIN coda ON coda.id = " + tableName + ".coda WHERE coda.id_tratta = ? ORDER BY coda.priority DESC"; 
-        LinkedList<Prenotazione> PrenotazioneList = new LinkedList<Prenotazione>();
-        CodaDAO codaDAO = new CodaDAO();
-        CentoKilometriDAO centoKilometriDAO = new CentoKilometriDAO();
-        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        LinkedList<Prenotazione> prenotazioneList = new LinkedList<Prenotazione>();
+        CodaDAO codaDao = new CodaDAO();
+        CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
+        CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setInt(1, trattaId);
@@ -76,26 +76,26 @@ public class PrenotazioneDAO extends JDBC {
                  prenotazione.setCodicePrenotazione(resultSet.getString("codice_prenotazione"));
                  prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
                  prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
-                 prenotazione.setCoda(codaDAO.findById(resultSet.getInt("coda")));  //da sistemare
-                 prenotazione.setCentoKilometri(centoKilometriDAO.findById(resultSet.getInt("cento_kilometri")));
-                 prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                 prenotazione.setCoda(codaDao.findById(resultSet.getInt("coda")));  //da sistemare
+                 prenotazione.setCentoKilometri(centoKilometriDao.findById(resultSet.getInt("cento_kilometri")));
+                 prenotazione.setCompagniaAerea(compagniaAereaDao.findByName(resultSet.getString("compagnia_aerea")));
                  prenotazione.setImbarcato(resultSet.getBoolean("imbarcato"));
-                 PrenotazioneList.add(prenotazione);
+                 prenotazioneList.add(prenotazione);
              }
             resultSet.close();
             statement.close();
         }catch(SQLException e){
             System.out.println(e);
         }
-        return PrenotazioneList;
+        return prenotazioneList;
     }
     
     public LinkedList<Prenotazione> findByCentoKilometriId(int idCentoKilometri){
         String query = "SELECT * FROM " + tableName + " WHERE cento_kilometri = ?";
-        LinkedList<Prenotazione> PrenotazioneList = new LinkedList<Prenotazione>();
-        CodaDAO codaDAO = new CodaDAO();
-        CentoKilometriDAO centoKilometriDAO = new CentoKilometriDAO();
-        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        LinkedList<Prenotazione> prenotazioneList = new LinkedList<Prenotazione>();
+        CodaDAO codaDao = new CodaDAO();
+        CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
+        CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setInt(1, idCentoKilometri);
@@ -107,26 +107,26 @@ public class PrenotazioneDAO extends JDBC {
                  prenotazione.setCodicePrenotazione(resultSet.getString("codice_prenotazione"));
                  prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
                  prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
-                 prenotazione.setCoda(codaDAO.findById(resultSet.getInt("coda")));  //da sistemare
-                 prenotazione.setCentoKilometri(centoKilometriDAO.findById(resultSet.getInt("cento_kilometri")));
-                 prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                 prenotazione.setCoda(codaDao.findById(resultSet.getInt("coda")));  //da sistemare
+                 prenotazione.setCentoKilometri(centoKilometriDao.findById(resultSet.getInt("cento_kilometri")));
+                 prenotazione.setCompagniaAerea(compagniaAereaDao.findByName(resultSet.getString("compagnia_aerea")));
                  prenotazione.setImbarcato(resultSet.getBoolean("imbarcato"));
-                 PrenotazioneList.add(prenotazione);
+                 prenotazioneList.add(prenotazione);
              }
             resultSet.close();
             statement.close();
         }catch(SQLException e){
             System.out.println(e);
         }
-        return PrenotazioneList;
+        return prenotazioneList;
     }
 	
     public LinkedList<Prenotazione> find(){
         String query = "SELECT * FROM " + tableName;
-        LinkedList<Prenotazione> PrenotaioneList = new LinkedList<Prenotazione>();
-        CodaDAO codaDAO = new CodaDAO();
-        CentoKilometriDAO centoKilometriDAO = new CentoKilometriDAO();
-        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        LinkedList<Prenotazione> prenotaioneList = new LinkedList<Prenotazione>();
+        CodaDAO codaDao = new CodaDAO();
+        CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
+        CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -137,24 +137,23 @@ public class PrenotazioneDAO extends JDBC {
                 prenotazione.setCodicePrenotazione(resultSet.getString("codice_prenotazione"));
                 prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
                 prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
-                prenotazione.setCoda(codaDAO.findById(resultSet.getInt("coda")));
-                prenotazione.setCentoKilometri(centoKilometriDAO.findById(resultSet.getInt("cento_kilometri")));
-                prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                prenotazione.setCoda(codaDao.findById(resultSet.getInt("coda")));
+                prenotazione.setCentoKilometri(centoKilometriDao.findById(resultSet.getInt("cento_kilometri")));
+                prenotazione.setCompagniaAerea(compagniaAereaDao.findByName(resultSet.getString("compagnia_aerea")));
                 prenotazione.setImbarcato(resultSet.getBoolean("imbarcato"));
-                PrenotaioneList.add(prenotazione);
+                prenotaioneList.add(prenotazione);
             }
             resultSet.close();
             statement.close();
         }catch(SQLException e){
             System.out.println(e);
         }
-        return PrenotaioneList;
+        return prenotaioneList;
     }
     
 	public boolean isPrenotazionePossible(int idTratta) {
 		String query = "SELECT COUNT (*) AS num FROM " + tableName + " WHERE id_tratta = ?";
 		int count = 0;	     
-
         TrattaDAO trattaDao = new TrattaDAO();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -175,10 +174,10 @@ public class PrenotazioneDAO extends JDBC {
 
 	public LinkedList<Prenotazione> findForPunti(int idTratta, String nomeCompagnia){
         String query = "SELECT * FROM " + tableName + " WHERE id_tratta = ? AND compagnia_aerea = ? AND imbarcato = ?";
-        LinkedList<Prenotazione> PrenotazioneList = new LinkedList<Prenotazione>();
-        CodaDAO codaDAO = new CodaDAO();
-        CentoKilometriDAO centoKilometriDAO = new CentoKilometriDAO();
-        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        LinkedList<Prenotazione> prenotazioneList = new LinkedList<Prenotazione>();
+        CodaDAO codaDao = new CodaDAO();
+        CentoKilometriDAO centoKilometriDao = new CentoKilometriDAO();
+        CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setInt(1, idTratta);
@@ -192,23 +191,22 @@ public class PrenotazioneDAO extends JDBC {
                  prenotazione.setCodicePrenotazione(resultSet.getString("codice_prenotazione"));
                  prenotazione.setNomePasseggero(resultSet.getString("nome_passeggero"));
                  prenotazione.setCognomePasseggero(resultSet.getString("cognome_passeggero"));
-                 prenotazione.setCoda(codaDAO.findById(resultSet.getInt("coda")));  //da sistemare
-                 prenotazione.setCentoKilometri(centoKilometriDAO.findById(resultSet.getInt("cento_kilometri")));
-                 prenotazione.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                 prenotazione.setCoda(codaDao.findById(resultSet.getInt("coda")));  //da sistemare
+                 prenotazione.setCentoKilometri(centoKilometriDao.findById(resultSet.getInt("cento_kilometri")));
+                 prenotazione.setCompagniaAerea(compagniaAereaDao.findByName(resultSet.getString("compagnia_aerea")));
                  prenotazione.setImbarcato(resultSet.getBoolean("imbarcato"));
-                 PrenotazioneList.add(prenotazione);
+                 prenotazioneList.add(prenotazione);
              }
             resultSet.close();
             statement.close();
         }catch(SQLException e){
             System.out.println(e);
         }
-        return PrenotazioneList;
+        return prenotazioneList;
     }
     
 	public boolean delete(String idPrenotazione) {
 		String query = "DELETE FROM " + tableName + " WHERE id = ?";
-
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, idPrenotazione);
@@ -252,12 +250,12 @@ public class PrenotazioneDAO extends JDBC {
     }
 
     public Prenotazione first(){
-    	LinkedList<Prenotazione> PrenotaioneList = find();
-        return PrenotaioneList.get(0);
+    	LinkedList<Prenotazione> prenotazioneList = find();
+        return prenotazioneList.get(0);
     }
 
     public Prenotazione last(){
-    	LinkedList<Prenotazione> PrenotaioneList = find();
-        return PrenotaioneList.get(PrenotaioneList.size() - 1);
+    	LinkedList<Prenotazione> prenotazioneList = find();
+        return prenotazioneList.get(prenotazioneList.size() - 1);
     }
 }

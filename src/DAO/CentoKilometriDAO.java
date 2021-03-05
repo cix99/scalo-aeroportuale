@@ -31,7 +31,7 @@ public class CentoKilometriDAO extends JDBC {
     
     public CentoKilometri findById(int id){
         String query = "SELECT * FROM " + tableName + " WHERE id = ?";
-        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
         CentoKilometri centoKilometri = new CentoKilometri();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -40,7 +40,7 @@ public class CentoKilometriDAO extends JDBC {
             while (resultSet.next()) {
                 centoKilometri.setId(resultSet.getInt("id"));
                 centoKilometri.setCodiceCompagnia(resultSet.getString("codice_compagnia"));
-                centoKilometri.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                centoKilometri.setCompagniaAerea(compagniaAereaDao.findByName(resultSet.getString("compagnia_aerea")));
                 centoKilometri.setNome(resultSet.getString("nome"));
                 centoKilometri.setCognome(resultSet.getString("cognome"));
                 centoKilometri.setPunti(resultSet.getInt("punti"));
@@ -56,7 +56,7 @@ public class CentoKilometriDAO extends JDBC {
     public LinkedList<CentoKilometri> findByCompany(String nomeCompagnia){
         String query = "SELECT * FROM " + tableName + " WHERE compagnia_aerea = ? ORDER BY codice_compagnia ASC";
         LinkedList<CentoKilometri> centoKilometriList = new LinkedList<CentoKilometri>();
-        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             statement.setString(1, nomeCompagnia);
@@ -65,7 +65,7 @@ public class CentoKilometriDAO extends JDBC {
                 CentoKilometri centoKilometri = new CentoKilometri();
                 centoKilometri.setId(resultSet.getInt("id"));
                 centoKilometri.setCodiceCompagnia(resultSet.getString("codice_compagnia"));
-                centoKilometri.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                centoKilometri.setCompagniaAerea(compagniaAereaDao.findByName(resultSet.getString("compagnia_aerea")));
                 centoKilometri.setNome(resultSet.getString("nome"));
                 centoKilometri.setCognome(resultSet.getString("cognome"));
                 centoKilometri.setPunti(resultSet.getInt("punti"));
@@ -81,7 +81,7 @@ public class CentoKilometriDAO extends JDBC {
     
     public CentoKilometri findByCodeAndCompany(String codiceCompagnia, String nomeCompagnia){
         String query = "SELECT * FROM " + tableName + " WHERE codice_compagnia = ? AND compagnia_aerea = ?";
-        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
         CentoKilometri centoKilometri = new CentoKilometri();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
@@ -91,7 +91,7 @@ public class CentoKilometriDAO extends JDBC {
             while (resultSet.next()) {
                 centoKilometri.setId(resultSet.getInt("id"));
                 centoKilometri.setCodiceCompagnia(resultSet.getString("codice_compagnia"));
-                centoKilometri.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                centoKilometri.setCompagniaAerea(compagniaAereaDao.findByName(resultSet.getString("compagnia_aerea")));
                 centoKilometri.setNome(resultSet.getString("nome"));
                 centoKilometri.setCognome(resultSet.getString("cognome"));
                 centoKilometri.setPunti(resultSet.getInt("punti"));
@@ -107,7 +107,7 @@ public class CentoKilometriDAO extends JDBC {
     public LinkedList<CentoKilometri> find(){
         String query = "SELECT * FROM " + tableName;
         LinkedList<CentoKilometri> centoKilometriList = new LinkedList<CentoKilometri>();
-        CompagniaAereaDAO compagniaAereaDAO = new CompagniaAereaDAO();
+        CompagniaAereaDAO compagniaAereaDao = new CompagniaAereaDAO();
         try {
             PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -115,7 +115,7 @@ public class CentoKilometriDAO extends JDBC {
                 CentoKilometri centoKilometri = new CentoKilometri();
                 centoKilometri.setId(resultSet.getInt("id"));
                 centoKilometri.setCodiceCompagnia(resultSet.getString("codice_compagnia"));
-                centoKilometri.setCompagniaAerea(compagniaAereaDAO.findByName(resultSet.getString("compagnia_aerea")));
+                centoKilometri.setCompagniaAerea(compagniaAereaDao.findByName(resultSet.getString("compagnia_aerea")));
                 centoKilometri.setNome(resultSet.getString("nome"));
                 centoKilometri.setCognome(resultSet.getString("cognome"));
                 centoKilometri.setPunti(resultSet.getInt("punti")); 

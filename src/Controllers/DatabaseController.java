@@ -88,9 +88,11 @@ public class DatabaseController {
 	}
     
 	//Save
-	public boolean saveNuovaPrenotazione(String nome, String cognome, String codicePrenotazione, String centoKilometri, String compagniaCentoKilometri, String compagniaVolo, int idTratta, String coda) {
+	public boolean saveNuovaPrenotazione(String nome, String cognome, String codicePrenotazione, String centoKilometri, String compagniaCentoKilometri, 
+										 String compagniaVolo, int idTratta, String coda) {
 		Prenotazione prenotazione;
-		prenotazione = new Prenotazione(idTratta, nome, cognome, codicePrenotazione, codaDao.findByNameAndTratta(coda, idTratta), centoKilometriDao.findByCodeAndCompany(centoKilometri, compagniaCentoKilometri), new CompagniaAerea(compagniaVolo));
+		prenotazione = new Prenotazione(idTratta, nome, cognome, codicePrenotazione, codaDao.findByNameAndTratta(coda, idTratta), 
+										centoKilometriDao.findByCodeAndCompany(centoKilometri, compagniaCentoKilometri), new CompagniaAerea(compagniaVolo));
 		if (prenotazioneDao.store(prenotazione))
 			return true;
 		return false;
@@ -104,7 +106,8 @@ public class DatabaseController {
 		return false;
 	}
 
-	public boolean saveNuovaTratta(String destinazione, String nomeCompagnia, String gate, LocalDateTime inizioImbarco, LocalDateTime fineImbarco, int maxPrenotazioni, ArrayList<Coda> code) {
+	public boolean saveNuovaTratta(String destinazione, String nomeCompagnia, String gate, LocalDateTime inizioImbarco, LocalDateTime fineImbarco,
+								   int maxPrenotazioni, ArrayList<Coda> code) {
 		Tratta tratta = new Tratta(destinazione, new CompagniaAerea(nomeCompagnia), new Gate(gate), inizioImbarco, fineImbarco, maxPrenotazioni);
 		int idTratta = trattaDao.store(tratta);
 		if (idTratta != 0) {
@@ -190,7 +193,8 @@ public class DatabaseController {
     	return false;
     }
     
-	public boolean updateTratta(int idTratta, String gate, LocalDateTime dataInizio, LocalDateTime dataFine, String maxPrenotazione, ArrayList<Coda> nuoveCodeList, int numeroCodeUpdate) {
+	public boolean updateTratta(int idTratta, String gate, LocalDateTime dataInizio, LocalDateTime dataFine, String maxPrenotazione, 
+								ArrayList<Coda> nuoveCodeList, int numeroCodeUpdate) {
 		int max;
     	try {
     	   max = Integer.parseInt(maxPrenotazione);

@@ -27,7 +27,7 @@ public class Utente {
 	
 	public void loadUtenti() {
 //		addUtente ("","");
-//		addUtente ("admin","password");
+		addUtente ("admin","password");
 		addUtente ("Federico","Napoli23");
 		addUtente ("Ciro","Napoli24");
 		addUtente ("Ferdinando","Napoli25");

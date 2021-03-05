@@ -48,8 +48,7 @@ public class CompagniaAereaDAO extends JDBC {
         String query = "SELECT * FROM " + tableName + " ORDER BY nome_compagnia ASC";
         LinkedList<CompagniaAerea> compagniaAereaList = new LinkedList<CompagniaAerea>();
         try {
-            PreparedStatement statement = JDBC
-            		.GetConnection().prepareStatement(query);
+            PreparedStatement statement = JDBC.GetConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 CompagniaAerea compagniaAerea = new CompagniaAerea();
