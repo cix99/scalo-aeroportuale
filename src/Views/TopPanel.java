@@ -27,7 +27,7 @@ public class TopPanel extends JPanel{
 		
 		backButtonPanel = new JPanel();
 		if (isInHomeFrame == false) { 
-			ImageIcon backImage = new ImageIcon(new ImageIcon("img/back_arrow.png").getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH));
+			ImageIcon backImage = new ImageIcon(new ImageIcon (this.getClass().getResource("/back_arrow.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH));
 			backButton = new JButton(backImage);
 			backButton.setFocusPainted(false);
 			backButton.setSize(40, 20);

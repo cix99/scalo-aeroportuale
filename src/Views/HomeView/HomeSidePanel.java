@@ -194,7 +194,7 @@ public class HomeSidePanel extends JPanel {
 		userPanel.setLayout(new BorderLayout(0,0));
 		userPanel.setBorder(new EmptyBorder(0,5,5,0));
 		
-		ImageIcon userImage = new ImageIcon(new ImageIcon("img/user.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+		ImageIcon userImage = new ImageIcon(new ImageIcon (this.getClass().getResource("/user.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
 		JLabel userLabel = new JLabel();
 		userLabel.setIcon(userImage);
 		userLabel.setText(username);

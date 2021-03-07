@@ -114,7 +114,7 @@ public class LoginView extends JFrame {
 		contentPane.add(loginLabel);
 
 		sfondoLabel = new JLabel("");
-		Image sfondoImage = new ImageIcon (this.getClass().getResource("/bello.png")).getImage();
+		Image sfondoImage = new ImageIcon (this.getClass().getResource("/background.png")).getImage();
 		sfondoLabel.setIcon(new ImageIcon(sfondoImage));
 		sfondoLabel.setBounds(0, 0, 804, 519);
 		contentPane.add(sfondoLabel);
